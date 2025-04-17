@@ -17,6 +17,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.PredicateAssert
 import java.util.function.Predicate
 
-fun <T> Predicate<T>.assert(): PredicateAssert<T> {
+fun <T> Predicate<T>?.assert(): PredicateAssert<T> {
     return assertThat(this)
 }

@@ -35,6 +35,12 @@ class JdkTest {
     }
 
     @Test
+    fun `given NullableBoolean when assert then BooleanAssert`() {
+        val value: Boolean? = null
+        assertThat(value.assert()).isInstanceOf(BooleanAssert::class.java)
+    }
+
+    @Test
     fun `given Byte when assert then ByteAssert`() {
         val value: Byte = 1
         assertThat(value.assert()).isInstanceOf(ByteAssert::class.java)
