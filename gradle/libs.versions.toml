@@ -3,7 +3,7 @@
 assertj = "3.27.3"
 # testing
 mockk = "1.14.0"
-junit = "5.11.4"
+junit = "5.12.2"
 # plugins
 detekt = "1.23.8"
 dokka = "2.0.0"
