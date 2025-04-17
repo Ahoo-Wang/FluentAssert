@@ -21,6 +21,7 @@ import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.IntegerAssert
+import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
 import org.assertj.core.api.ListAssert
 import org.assertj.core.api.LongAssert
@@ -72,6 +73,10 @@ fun String.assert(): StringAssert {
 }
 
 fun <T> T.assert(): ObjectAssert<T> {
+    return assertThat(this)
+}
+
+fun <T> Iterable<T>.assert(): IterableAssert<T> {
     return assertThat(this)
 }
 

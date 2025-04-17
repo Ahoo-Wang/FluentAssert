@@ -9,6 +9,7 @@ import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.IntegerAssert
+import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
 import org.assertj.core.api.ListAssert
 import org.assertj.core.api.LongAssert
@@ -91,6 +92,12 @@ class JdkTest {
     fun `given Iterator when assert then IteratorAssert`() {
         val value = mockk<Iterator<String>>()
         assertThat(value.assert()).isInstanceOf(IteratorAssert::class.java)
+    }
+
+    @Test
+    fun `given Iterable when assert then IterableAssert`() {
+        val value = mockk<Iterable<String>>()
+        assertThat(value.assert()).isInstanceOf(IterableAssert::class.java)
     }
 
     @Test
