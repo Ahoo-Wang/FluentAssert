@@ -13,7 +13,6 @@
 
 dependencies {
     api(platform(libs.assertj.bom))
-    api(platform(libs.junit.bom))
     constraints {
         api(libs.mockk)
         api(libs.detekt.formatting)

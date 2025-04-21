@@ -112,6 +112,7 @@ configure(libraryProjects) {
     }
     dependencies {
         api(platform(dependenciesProject))
+        api(platform(rootProject.libs.junit.bom))
         detektPlugins(dependenciesProject)
         testImplementation("org.assertj:assertj-core")
         testImplementation("org.junit.jupiter:junit-jupiter-api")
