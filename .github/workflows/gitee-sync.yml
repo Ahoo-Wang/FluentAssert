@@ -15,5 +15,5 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
-          source-repo: "git@github.com:Ahoo-Wang/KotlinAssert.git"
-          destination-repo: "git@gitee.com:AhooWang/KotlinAssert.git"
+          source-repo: "git@github.com:Ahoo-Wang/FluentAssert.git"
+          destination-repo: "git@gitee.com:AhooWang/FluentAssert.git"

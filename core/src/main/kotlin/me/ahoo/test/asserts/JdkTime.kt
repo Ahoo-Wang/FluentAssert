@@ -40,50 +40,50 @@ import java.time.ZonedDateTime
 import java.time.temporal.Temporal
 import java.util.*
 
-fun Date.assert(): DateAssert {
+fun Date?.assert(): DateAssert {
     return assertThat(this) as DateAssert
 }
 
-fun ZonedDateTime.assert(): ZonedDateTimeAssert {
+fun ZonedDateTime?.assert(): ZonedDateTimeAssert {
     return assertThat(this) as ZonedDateTimeAssert
 }
 
-fun Temporal.assert(): TemporalAssert {
+fun Temporal?.assert(): TemporalAssert {
     return assertThatTemporal(this)
 }
 
-fun LocalDateTime.assert(): LocalDateTimeAssert {
+fun LocalDateTime?.assert(): LocalDateTimeAssert {
     return assertThat(this) as LocalDateTimeAssert
 }
 
-fun OffsetDateTime.assert(): OffsetDateTimeAssert {
+fun OffsetDateTime?.assert(): OffsetDateTimeAssert {
     return assertThat(this) as OffsetDateTimeAssert
 }
 
-fun OffsetTime.assert(): OffsetTimeAssert {
+fun OffsetTime?.assert(): OffsetTimeAssert {
     return assertThat(this) as OffsetTimeAssert
 }
 
-fun LocalTime.assert(): LocalTimeAssert {
+fun LocalTime?.assert(): LocalTimeAssert {
     return assertThat(this) as LocalTimeAssert
 }
 
-fun LocalDate.assert(): LocalDateAssert {
+fun LocalDate?.assert(): LocalDateAssert {
     return assertThat(this) as LocalDateAssert
 }
 
-fun YearMonth.assert(): YearMonthAssert {
+fun YearMonth?.assert(): YearMonthAssert {
     return assertThat(this) as YearMonthAssert
 }
 
-fun Instant.assert(): InstantAssert {
+fun Instant?.assert(): InstantAssert {
     return assertThat(this) as InstantAssert
 }
 
-fun Duration.assert(): DurationAssert {
+fun Duration?.assert(): DurationAssert {
     return assertThat(this) as DurationAssert
 }
 
-fun Period.assert(): PeriodAssert {
+fun Period?.assert(): PeriodAssert {
     return assertThat(this) as PeriodAssert
 }

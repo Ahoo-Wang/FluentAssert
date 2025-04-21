@@ -22,18 +22,18 @@ import java.net.URI
 import java.net.URL
 import java.nio.file.Path
 
-fun Path.assert(): PathAssert {
+fun Path?.assert(): PathAssert {
     return PathAssert(this)
 }
 
-fun File.assert(): FileAssert {
+fun File?.assert(): FileAssert {
     return FileAssert(this)
 }
 
-fun URL.assert(): UrlAssert {
+fun URL?.assert(): UrlAssert {
     return UrlAssert(this)
 }
 
-fun URI.assert(): UriAssert {
+fun URI?.assert(): UriAssert {
     return UriAssert(this)
 }

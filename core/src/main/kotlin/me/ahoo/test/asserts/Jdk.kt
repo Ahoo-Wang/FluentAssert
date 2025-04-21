@@ -21,6 +21,7 @@ import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.IntegerAssert
+import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
 import org.assertj.core.api.ListAssert
 import org.assertj.core.api.LongAssert
@@ -35,74 +36,78 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.stream.Stream
 
-fun Boolean.assert(): BooleanAssert {
+fun Boolean?.assert(): BooleanAssert {
     return BooleanAssert(this)
 }
 
-fun Byte.assert(): ByteAssert {
+fun Byte?.assert(): ByteAssert {
     return ByteAssert(this)
 }
 
-fun Short.assert(): ShortAssert {
+fun Short?.assert(): ShortAssert {
     return ShortAssert(this)
 }
 
-fun Int.assert(): IntegerAssert {
+fun Int?.assert(): IntegerAssert {
     return IntegerAssert(this)
 }
 
-fun Long.assert(): LongAssert {
+fun Long?.assert(): LongAssert {
     return LongAssert(this)
 }
 
-fun Float.assert(): FloatAssert {
+fun Float?.assert(): FloatAssert {
     return FloatAssert(this)
 }
 
-fun Double.assert(): DoubleAssert {
+fun Double?.assert(): DoubleAssert {
     return DoubleAssert(this)
 }
 
-fun BigDecimal.assert(): BigDecimalAssert {
+fun BigDecimal?.assert(): BigDecimalAssert {
     return BigDecimalAssert(this)
 }
 
-fun String.assert(): StringAssert {
+fun String?.assert(): StringAssert {
     return StringAssert(this)
 }
 
-fun <T> T.assert(): ObjectAssert<T> {
+fun <T> T?.assert(): ObjectAssert<T> {
     return assertThat(this)
 }
 
-fun <T> Iterator<T>.assert(): IteratorAssert<T> {
+fun <T> Iterable<T>?.assert(): IterableAssert<T> {
     return assertThat(this)
 }
 
-fun <T> Collection<T>.assert(): CollectionAssert<T> {
+fun <T> Iterator<T>?.assert(): IteratorAssert<T> {
+    return assertThat(this)
+}
+
+fun <T> Collection<T>?.assert(): CollectionAssert<T> {
     return CollectionAssert(this)
 }
 
-fun <T> Array<T>.assert(): ObjectArrayAssert<T> {
+fun <T> Array<T>?.assert(): ObjectArrayAssert<T> {
     return assertThat(this)
 }
 
-fun <T> List<T>.assert(): ListAssert<T> {
+fun <T> List<T>??.assert(): ListAssert<T> {
     return ListAssert(this)
 }
 
-fun <T : Throwable> T.assert(): ThrowableAssert<T> {
+fun <T : Throwable> T?.assert(): ThrowableAssert<T> {
     return ThrowableAssert(this)
 }
 
-fun <T> Optional<T>.assert(): OptionalAssert<T> {
+fun <T> Optional<T>?.assert(): OptionalAssert<T> {
     return assertThat<T>(this)
 }
 
-fun <K, V> Map<K, V>.assert(): MapAssert<K, V> {
+fun <K, V> Map<K, V>?.assert(): MapAssert<K, V> {
     return MapAssert(this)
 }
 
-fun <T> Stream<T>.assert(): ListAssert<T> {
+fun <T> Stream<T>?.assert(): ListAssert<T> {
     return assertThat(this)
 }

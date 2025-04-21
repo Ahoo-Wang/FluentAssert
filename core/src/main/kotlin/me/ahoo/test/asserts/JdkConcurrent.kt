@@ -17,6 +17,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.FutureAssert
 import java.util.concurrent.Future
 
-fun <V> Future<V>.assert(): FutureAssert<V> {
+fun <V> Future<V>?.assert(): FutureAssert<V> {
     return assertThat(this)
 }

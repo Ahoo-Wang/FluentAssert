@@ -134,6 +134,22 @@ configure(publishProjects) {
                 name = "projectBuildRepo"
                 url = uri(layout.buildDirectory.dir("repos"))
             }
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/Ahoo-Wang/FluentAssert")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+            maven {
+                name = "LinYiPackages"
+                url = uri(project.properties["linyiPackageReleaseUrl"].toString())
+                credentials {
+                    username = project.properties["linyiPackageUsername"]?.toString()
+                    password = project.properties["linyiPackagePwd"]?.toString()
+                }
+            }
         }
         publications {
             val publishName = if (isBom) "mavenBom" else "mavenLibrary"
