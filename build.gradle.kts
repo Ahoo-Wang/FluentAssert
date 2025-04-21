@@ -116,6 +116,7 @@ configure(libraryProjects) {
         testImplementation("org.assertj:assertj-core")
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testImplementation("org.junit.jupiter:junit-jupiter-params")
+        testImplementation("org.junit.platform:junit-platform-launcher")
         testImplementation("io.mockk:mockk") {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
