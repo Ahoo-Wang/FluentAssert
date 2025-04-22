@@ -14,9 +14,20 @@
 package me.ahoo.test.asserts
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.CompletableFutureAssert
 import org.assertj.core.api.FutureAssert
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletionStage
 import java.util.concurrent.Future
 
 fun <V> Future<V>?.assert(): FutureAssert<V> {
+    return assertThat(this)
+}
+
+fun <V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V> {
+    return assertThat(this)
+}
+
+fun <V> CompletionStage<V>?.assert(): CompletableFutureAssert<V> {
     return assertThat(this)
 }
