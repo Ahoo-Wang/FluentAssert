@@ -20,6 +20,7 @@ import org.assertj.core.api.ByteAssert
 import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.FloatAssert
+import org.assertj.core.api.GenericComparableAssert
 import org.assertj.core.api.IntegerAssert
 import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
@@ -105,4 +106,8 @@ fun <K, V> Map<K, V>?.assert(): MapAssert<K, V> {
 
 fun <T> Stream<T>?.assert(): ListAssert<T> {
     return assertThat(this)
+}
+
+fun <T : Comparable<T>?> T.assert(): GenericComparableAssert<T> {
+    return GenericComparableAssert(this)
 }
