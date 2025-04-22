@@ -31,7 +31,6 @@ import org.assertj.core.api.ObjectAssert
 import org.assertj.core.api.OptionalAssert
 import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
-import org.assertj.core.api.ThrowableAssert
 import java.math.BigDecimal
 import java.util.*
 import java.util.stream.Stream
@@ -94,10 +93,6 @@ fun <T> Array<T>?.assert(): ObjectArrayAssert<T> {
 
 fun <T> List<T>??.assert(): ListAssert<T> {
     return ListAssert(this)
-}
-
-fun <T : Throwable> T?.assert(): ThrowableAssert<T> {
-    return ThrowableAssert(this)
 }
 
 fun <T> Optional<T>?.assert(): OptionalAssert<T> {
