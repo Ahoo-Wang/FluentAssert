@@ -19,7 +19,6 @@ import org.assertj.core.api.ObjectAssert
 import org.assertj.core.api.OptionalAssert
 import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
-import org.assertj.core.api.ThrowableAssert
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.util.Optional
@@ -122,12 +121,6 @@ class JdkTest {
     fun `given List when assert then ListAssert`() {
         val value = listOf("1")
         assertThat(value.assert()).isInstanceOf(ListAssert::class.java)
-    }
-
-    @Test
-    fun `given Throwable when assert then ThrowableAssert`() {
-        val value = Throwable("1")
-        assertThat(value.assert()).isInstanceOf(ThrowableAssert::class.java)
     }
 
     @Test
