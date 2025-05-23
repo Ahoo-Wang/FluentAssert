@@ -115,12 +115,12 @@ configure(libraryProjects) {
         testImplementation(platform(rootProject.libs.junit.bom))
         detektPlugins(dependenciesProject)
         testImplementation("org.assertj:assertj-core")
-        testImplementation("org.junit.jupiter:junit-jupiter-api")
-        testImplementation("org.junit.jupiter:junit-jupiter-params")
-        testImplementation("org.junit.platform:junit-platform-launcher")
         testImplementation("io.mockk:mockk") {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testImplementation("org.junit.jupiter:junit-jupiter-params")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting")
     }
