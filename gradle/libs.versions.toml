@@ -5,11 +5,10 @@ assertj = "3.27.3"
 mockk = "1.14.2"
 junit = "5.13.1"
 # plugins
+kotlin = "2.1.21"
 detekt = "1.23.8"
 dokka = "2.0.0"
-kotlin = "2.1.21"
 publish-plugin = "2.0.0"
-ksp = "2.1.21-2.0.2"
 kover = "0.9.1"
 test-retry = "1.6.2"
 
@@ -19,12 +18,9 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 [plugins]
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "publish-plugin" }
 test-retry = { id = "org.gradle.test-retry", version.ref = "test-retry" }
