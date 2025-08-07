@@ -1,6 +1,6 @@
 [versions]
 # libraries
-assertj = "3.27.3"
+assertj = "3.27.4"
 # testing
 mockk = "1.14.5"
 junit = "5.13.4"
