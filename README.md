@@ -9,12 +9,21 @@
 [![Integration Test Status](https://github.com/Ahoo-Wang/FluentAssert/actions/workflows/codecov.yml/badge.svg)](https://github.com/Ahoo-Wang/FluentAssert)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Ahoo-Wang/FluentAssert)
 
-## Modules
+## Quick Start
 
-- `fluent-assert-core`: Core module providing fluent assertions for JDK types
-- `fluent-assert-jdk`: JDK-specific assertions
-- `fluent-assert-jdk-concurrent`: JDK concurrent utilities assertions
-- `fluent-assert-jdk-function`: JDK function interfaces assertions
-- `fluent-assert-jdk-io`: JDK I/O assertions
-- `fluent-assert-jdk-time`: JDK time assertions
-- `fluent-assert-throwable`: Throwable assertions
+### Maven
+
+```xml
+<dependency>
+    <groupId>me.ahoo.test</groupId>
+    <artifactId>fluent-assert-core</artifactId>
+    <version>latest-version</version>
+    <scope>test</scope>
+</dependency>
+```
+
+### Gradle
+
+```kotlin
+testImplementation("me.ahoo.test:fluent-assert-core:latest-version")
+```
