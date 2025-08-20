@@ -19,7 +19,8 @@ class JdkConcurrentTest {
 
     @Test
     fun `given CompletableFuture when assert then CompletableFutureAssert`() {
-        val value = mockk<CompletableFuture<String>>()
+        val value = CompletableFuture.completedFuture("test")
+        value.assert().isCompletedWithValue("test")
         value.assert().assert().isInstanceOf(CompletableFutureAssert::class.java)
     }
 
