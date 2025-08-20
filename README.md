@@ -9,6 +9,8 @@
 [![Integration Test Status](https://github.com/Ahoo-Wang/FluentAssert/actions/workflows/codecov.yml/badge.svg)](https://github.com/Ahoo-Wang/FluentAssert)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Ahoo-Wang/FluentAssert)
 
+FluentAssert is a Kotlin library that provides fluent assertions for JDK types, making your tests more readable and expressive.
+
 ## Quick Start
 
 ### Maven
