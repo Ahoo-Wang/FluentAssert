@@ -27,3 +27,65 @@
 ```kotlin
 testImplementation("me.ahoo.test:fluent-assert-core:latest-version")
 ```
+
+## Usage Examples
+
+### Basic Assertions
+
+```kotlin
+// String assertions
+val name = "FluentAssert"
+name.assert().startsWith("Fluent").endsWith("Assert").contains("uentAss")
+
+// Number assertions
+val age = 25
+age.assert().isGreaterThan(18).isLessThan(60)
+
+// Boolean assertions
+val isActive = true
+isActive.assert().isTrue()
+
+// List assertions
+val items = listOf("apple", "banana", "orange")
+items.assert().hasSize(3).contains("banana")
+```
+
+### Collection Assertions
+
+```kotlin
+val numbers = listOf(1, 2, 3, 4, 5)
+numbers.assert()
+    .isNotEmpty()
+    .hasSize(5)
+    .contains(3)
+    .allSatisfy { it.assert().isPositive() }
+```
+
+### Exception Assertions
+
+```kotlin
+// Assert that a specific exception is thrown
+assertThrownBy<IllegalArgumentException> {
+    throw IllegalArgumentException("Invalid argument")
+}.assert().hasMessage("Invalid argument")
+
+// Or use the extension function directly
+val exception = IllegalArgumentException("Invalid argument")
+exception.assert().hasMessage("Invalid argument")
+```
+
+### Time Assertions
+
+```kotlin
+val now = LocalDateTime.now()
+val yesterday = now.minusDays(1)
+
+now.assert().isAfter(yesterday)
+```
+
+### Concurrent Assertions
+
+```kotlin
+val future = CompletableFuture.completedFuture("result")
+future.assert().isCompletedWithValue("result")
+```
