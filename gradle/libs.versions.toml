@@ -5,7 +5,7 @@ assertj = "3.27.6"
 mockk = "1.14.6"
 junit = "5.14.0"
 # plugins
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 detekt = "1.23.8"
 dokka = "2.1.0"
 publish-plugin = "2.0.0"
