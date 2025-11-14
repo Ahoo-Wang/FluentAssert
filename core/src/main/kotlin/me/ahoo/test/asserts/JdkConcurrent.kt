@@ -20,14 +20,56 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Future
 
-fun <V> Future<V>?.assert(): FutureAssert<V> {
-    return assertThat(this)
-}
+/**
+ * Creates a fluent assertion for Future objects.
+ *
+ * This extension function provides access to AssertJ's FutureAssert methods for fluent testing
+ * of Future objects, including null-safe operations and asynchronous result verification.
+ *
+ * Example:
+ * ```kotlin
+ * val future = executor.submit(Callable { "result" })
+ * future.assert().isDone().isNotCancelled()
+ * ```
+ *
+ * @param V The type of the future's result value
+ * @receiver Future<V>? The future to assert on (nullable)
+ * @return FutureAssert<V> A fluent assertion object for futures
+ */
+fun <V> Future<V>?.assert(): FutureAssert<V> = assertThat(this)
 
-fun <V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V> {
-    return assertThat(this)
-}
+/**
+ * Creates a fluent assertion for CompletableFuture objects.
+ *
+ * This extension function provides access to AssertJ's CompletableFutureAssert methods for fluent testing
+ * of CompletableFuture objects, including null-safe operations and completion state verification.
+ *
+ * Example:
+ * ```kotlin
+ * val future = CompletableFuture.completedFuture("success")
+ * future.assert().isCompleted().isCompletedWithValue("success")
+ * ```
+ *
+ * @param V The type of the completable future's result value
+ * @receiver CompletableFuture<V>? The completable future to assert on (nullable)
+ * @return CompletableFutureAssert<V> A fluent assertion object for completable futures
+ */
+fun <V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V> = assertThat(this)
 
-fun <V> CompletionStage<V>?.assert(): CompletableFutureAssert<V> {
-    return assertThat(this)
-}
+/**
+ * Creates a fluent assertion for CompletionStage objects.
+ *
+ * This extension function provides access to AssertJ's CompletableFutureAssert methods for fluent testing
+ * of CompletionStage objects, including null-safe operations and completion state verification.
+ *
+ * Example:
+ * ```kotlin
+ * val stage = CompletableFuture.completedFuture("result")
+ * stage.assert().isCompleted().isCompletedWithValue("result")
+ * ```
+ *
+ * @param V The type of the completion stage's result value
+ * @receiver CompletionStage<V>? The completion stage to assert on (nullable)
+ * @return CompletableFutureAssert<V> A fluent assertion object for completion stages
+ */
+fun <V> CompletionStage<V>?.assert(): CompletableFutureAssert<V> = assertThat(this)
