@@ -22,18 +22,70 @@ import java.net.URI
 import java.net.URL
 import java.nio.file.Path
 
-fun Path?.assert(): PathAssert {
-    return PathAssert(this)
-}
+/**
+ * Creates a fluent assertion for Path objects.
+ *
+ * This extension function provides access to AssertJ's PathAssert methods for fluent testing
+ * of file system paths, including null-safe operations and path property verification.
+ *
+ * Example:
+ * ```kotlin
+ * val path = Paths.get("/tmp/test.txt")
+ * path.assert().exists().isReadable()
+ * ```
+ *
+ * @receiver Path? The path to assert on (nullable)
+ * @return PathAssert A fluent assertion object for paths
+ */
+fun Path?.assert(): PathAssert = PathAssert(this)
 
-fun File?.assert(): FileAssert {
-    return FileAssert(this)
-}
+/**
+ * Creates a fluent assertion for URI objects.
+ *
+ * This extension function provides access to AssertJ's UriAssert methods for fluent testing
+ * of URI objects, including null-safe operations and URI property verification.
+ *
+ * Example:
+ * ```kotlin
+ * val uri = URI("https://example.com/path?query=value")
+ * uri.assert().hasHost("example.com").hasPath("/path")
+ * ```
+ *
+ * @receiver URI? The URI to assert on (nullable)
+ * @return UriAssert A fluent assertion object for URIs
+ */
+fun File?.assert(): FileAssert = FileAssert(this)
 
-fun URL?.assert(): UrlAssert {
-    return UrlAssert(this)
-}
+/**
+ * Creates a fluent assertion for URL objects.
+ *
+ * This extension function provides access to AssertJ's UrlAssert methods for fluent testing
+ * of URL objects, including null-safe operations and URL property verification.
+ *
+ * Example:
+ * ```kotlin
+ * val url = URL("https://example.com")
+ * url.assert().hasHost("example.com").hasProtocol("https")
+ * ```
+ *
+ * @receiver URL? The URL to assert on (nullable)
+ * @return UrlAssert A fluent assertion object for URLs
+ */
+fun URL?.assert(): UrlAssert = UrlAssert(this)
 
-fun URI?.assert(): UriAssert {
-    return UriAssert(this)
-}
+/**
+ * Creates a fluent assertion for URI objects.
+ *
+ * This extension function provides access to AssertJ's UriAssert methods for fluent testing
+ * of URI objects, including null-safe operations and URI property verification.
+ *
+ * Example:
+ * ```kotlin
+ * val uri = URI("https://example.com/path?query=value")
+ * uri.assert().hasHost("example.com").hasPath("/path")
+ * ```
+ *
+ * @receiver URI? The URI to assert on (nullable)
+ * @return UriAssert A fluent assertion object for URIs
+ */
+fun URI?.assert(): UriAssert = UriAssert(this)

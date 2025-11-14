@@ -17,6 +17,20 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.PredicateAssert
 import java.util.function.Predicate
 
-fun <T> Predicate<T>?.assert(): PredicateAssert<T> {
-    return assertThat(this)
-}
+/**
+ * Creates a fluent assertion for Predicate objects.
+ *
+ * This extension function provides access to AssertJ's PredicateAssert methods for fluent testing
+ * of Predicate functions, including null-safe operations and predicate behavior verification.
+ *
+ * Example:
+ * ```kotlin
+ * val isEven = Predicate<Int> { it % 2 == 0 }
+ * isEven.assert().accepts(2, 4).rejects(1, 3)
+ * ```
+ *
+ * @param T The type of input the predicate accepts
+ * @receiver Predicate<T>? The predicate to assert on (nullable)
+ * @return PredicateAssert<T> A fluent assertion object for predicates
+ */
+fun <T> Predicate<T>?.assert(): PredicateAssert<T> = assertThat(this)
