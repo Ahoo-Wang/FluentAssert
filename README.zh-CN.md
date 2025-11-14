@@ -644,6 +644,15 @@ fun validateConfig(config: DatabaseConfig) {
 
 我们欢迎贡献！请查看我们的[贡献指南](CONTRIBUTING.md)了解详情。
 
+### 面向AI助手
+
+本项目包含对LLM友好的文档文件：
+- **[`llms.txt`](llms.txt)**：面向AI助手的简洁项目概述
+- **[`llms-full.txt`](llms-full.txt)**：完整的API参考和技术细节
+- **[`AGENTS.md`](AGENTS.md)**：面向编码代理的开发指南
+
+在贡献代码时，请使用这些文件来了解项目结构、API模式和编码标准。
+
 ### 开发环境设置
 
 1. **克隆仓库**
