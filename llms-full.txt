@@ -1,0 +1,827 @@
+# FluentAssert - Complete API Reference
+
+## Project Information
+
+**Name:** FluentAssert
+**Version:** 0.2.2
+**Description:** A Kotlin library providing fluent assertions for JDK types
+**Language:** Kotlin
+**Platform:** JVM (Java 17+ required)
+**License:** Apache License 2.0
+**Repository:** https://github.com/Ahoo-Wang/FluentAssert
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Installation](#installation)
+3. [Core Concepts](#core-concepts)
+4. [Complete API Reference](#complete-api-reference)
+5. [Advanced Usage](#advanced-usage)
+6. [Testing](#testing)
+7. [Contributing](#contributing)
+8. [FAQ](#faq)
+
+## Overview
+
+FluentAssert is a Kotlin library that provides fluent assertions for JDK types, making your tests more readable and expressive. The library wraps AssertJ assertions with Kotlin extension functions for better syntax.
+
+### Key Features
+
+- **Fluent API**: Chain assertions in a readable, natural way
+- **Null-Safe**: All extension functions handle nullable types appropriately
+- **Comprehensive Coverage**: Supports all major JDK types and collections
+- **Type-Safe**: Full Kotlin type system integration
+- **AssertJ Powered**: Leverages the robust AssertJ assertion library
+- **Zero Dependencies**: Only depends on AssertJ (transitively)
+- **Kotlin Idiomatic**: Designed specifically for Kotlin developers
+- **IDE Support**: Full IntelliJ IDEA and Android Studio integration
+
+### Requirements
+
+- **Java**: 17 or higher
+- **Kotlin**: 1.8.0 or higher
+- **JUnit**: 5.x (for testing)
+
+## Installation
+
+### Maven
+
+```xml
+<dependency>
+    <groupId>me.ahoo.test</groupId>
+    <artifactId>fluent-assert-core</artifactId>
+    <version>0.2.2</version>
+    <scope>test</scope>
+</dependency>
+```
+
+### Gradle (Kotlin DSL)
+
+```kotlin
+testImplementation("me.ahoo.test:fluent-assert-core:0.2.2")
+```
+
+### Gradle (Groovy DSL)
+
+```gradle
+testImplementation 'me.ahoo.test:fluent-assert-core:0.2.2'
+```
+
+## Core Concepts
+
+### Extension Functions Pattern
+
+All FluentAssert extensions follow the pattern:
+```kotlin
+value.assert().assertionMethod(expectedValue)
+```
+
+This provides a fluent, readable API that chains naturally.
+
+### Null Safety
+
+All extension functions accept nullable types:
+```kotlin
+val nullableString: String? = null
+nullableString.assert().isNull()  // Safe to call
+```
+
+### Type Coverage
+
+FluentAssert supports comprehensive JDK type coverage:
+
+#### Primitive Types
+- `Boolean?.assert(): BooleanAssert`
+- `Byte?.assert(): ByteAssert`
+- `Short?.assert(): ShortAssert`
+- `Int?.assert(): IntegerAssert`
+- `Long?.assert(): LongAssert`
+- `Float?.assert(): FloatAssert`
+- `Double?.assert(): DoubleAssert`
+- `BigDecimal?.assert(): BigDecimalAssert`
+
+#### Text Types
+- `String?.assert(): StringAssert`
+
+#### Generic Types
+- `<T> T?.assert(): ObjectAssert<T>`
+- `<T : Comparable<T>?> T.assert(): GenericComparableAssert<T>`
+
+#### Collections
+- `<T> Iterable<T>?.assert(): IterableAssert<T>`
+- `<T> Iterator<T>?.assert(): IteratorAssert<T>`
+- `<T> Collection<T>?.assert(): CollectionAssert<T>`
+- `<T> Array<T>?.assert(): ObjectArrayAssert<T>`
+- `<T> List<T>??.assert(): ListAssert<T>`
+- `<T> Optional<T>?.assert(): OptionalAssert<T>`
+- `<K, V> Map<K, V>?.assert(): MapAssert<K, V>`
+- `<T> Stream<T>?.assert(): ListAssert<T>`
+
+#### Time and Date
+- `Date?.assert(): DateAssert`
+- `ZonedDateTime?.assert(): ZonedDateTimeAssert`
+- `Temporal?.assert(): TemporalAssert`
+- `LocalDateTime?.assert(): LocalDateTimeAssert`
+- `OffsetDateTime?.assert(): OffsetDateTimeAssert`
+- `OffsetTime?.assert(): OffsetTimeAssert`
+- `LocalTime?.assert(): LocalTimeAssert`
+- `LocalDate?.assert(): LocalDateAssert`
+- `YearMonth?.assert(): YearMonthAssert`
+- `Instant?.assert(): InstantAssert`
+- `Duration?.assert(): DurationAssert`
+- `Period?.assert(): PeriodAssert`
+
+#### File System and I/O
+- `Path?.assert(): PathAssert`
+- `File?.assert(): FileAssert`
+- `URL?.assert(): UrlAssert`
+- `URI?.assert(): UriAssert`
+
+#### Concurrent Programming
+- `<V> Future<V>?.assert(): FutureAssert<V>`
+- `<V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V>`
+- `<V> CompletionStage<V>?.assert(): CompletionStageAssert<V>`
+
+#### Functional Programming
+- `<T> Predicate<T>?.assert(): PredicateAssert<T>`
+
+#### Exception Testing
+- `<T : Throwable> T?.assert(): ThrowableAssert<T>`
+- `assertThrownBy<T : Throwable>(Class<T>, () -> Unit): ThrowableAssert<T>`
+- `assertThrownBy<T : Throwable>(() -> Unit): ThrowableAssert<T>` (reified)
+
+## Complete API Reference
+
+### Core JDK Types
+
+#### Primitive Types
+
+##### `Boolean?.assert(): BooleanAssert`
+Creates assertions for boolean values.
+
+```kotlin
+true.assert().isTrue()
+false.assert().isFalse()
+val nullableBool: Boolean? = null
+nullableBool.assert().isNull()
+```
+
+##### `Byte?.assert(): ByteAssert`
+Creates assertions for byte values.
+
+```kotlin
+val value: Byte = 42
+value.assert().isEqualTo(42).isPositive()
+```
+
+##### `Short?.assert(): ShortAssert`
+Creates assertions for short values.
+
+```kotlin
+val value: Short = 1000
+value.assert().isEqualTo(1000).isGreaterThan(0)
+```
+
+##### `Int?.assert(): IntegerAssert`
+Creates assertions for integer values.
+
+```kotlin
+val age = 25
+age.assert().isEqualTo(25).isBetween(18, 65)
+```
+
+##### `Long?.assert(): LongAssert`
+Creates assertions for long values.
+
+```kotlin
+val timestamp = System.currentTimeMillis()
+timestamp.assert().isPositive().isGreaterThan(0)
+```
+
+##### `Float?.assert(): FloatAssert`
+Creates assertions for float values.
+
+```kotlin
+val pi = 3.14f
+pi.assert().isEqualTo(3.14f).isPositive()
+```
+
+##### `Double?.assert(): DoubleAssert`
+Creates assertions for double values.
+
+```kotlin
+val price = 19.99
+price.assert().isEqualTo(19.99).isPositive()
+```
+
+##### `BigDecimal?.assert(): BigDecimalAssert`
+Creates assertions for BigDecimal values.
+
+```kotlin
+val amount = BigDecimal("123.45")
+amount.assert().isEqualTo("123.45").isPositive()
+```
+
+#### Text Types
+
+##### `String?.assert(): StringAssert`
+Creates assertions for string values.
+
+```kotlin
+val name = "FluentAssert"
+name.assert()
+    .startsWith("Fluent")
+    .endsWith("Assert")
+    .contains("uentAss")
+    .hasLength(11)
+```
+
+#### Generic Types
+
+##### `<T> T?.assert(): ObjectAssert<T>`
+Creates assertions for any object type.
+
+```kotlin
+val person = Person("John", 30)
+person.assert()
+    .isNotNull()
+    .hasFieldOrPropertyWithValue("name", "John")
+```
+
+##### `<T : Comparable<T>?> T.assert(): GenericComparableAssert<T>`
+Creates assertions for comparable objects.
+
+```kotlin
+val version = "2.0.0"
+version.assert()
+    .isGreaterThan("1.0.0")
+    .isLessThan("3.0.0")
+```
+
+### Collections
+
+##### `<T> Iterable<T>?.assert(): IterableAssert<T>`
+Creates assertions for iterable collections.
+
+```kotlin
+val numbers = listOf(1, 2, 3, 4, 5)
+numbers.assert()
+    .hasSize(5)
+    .contains(3)
+    .doesNotContain(6)
+    .allMatch { it > 0 }
+```
+
+##### `<T> Iterator<T>?.assert(): IteratorAssert<T>`
+Creates assertions for iterators.
+
+```kotlin
+val iterator = listOf(1, 2, 3).iterator()
+iterator.assert().hasNext()
+```
+
+##### `<T> Collection<T>?.assert(): CollectionAssert<T>`
+Creates assertions for collections.
+
+```kotlin
+val set = setOf("apple", "banana", "orange")
+set.assert()
+    .hasSize(3)
+    .contains("apple")
+    .doesNotContain("grape")
+```
+
+##### `<T> Array<T>?.assert(): ObjectArrayAssert<T>`
+Creates assertions for arrays.
+
+```kotlin
+val array = arrayOf("a", "b", "c")
+array.assert()
+    .hasSize(3)
+    .contains("b")
+    .doesNotContain("d")
+```
+
+##### `<T> List<T>??.assert(): ListAssert<T>`
+Creates assertions for lists.
+
+```kotlin
+val items = listOf("apple", "banana", "orange")
+items.assert()
+    .hasSize(3)
+    .contains("apple", "banana")
+    .element(0).isEqualTo("apple")
+```
+
+##### `<T> Optional<T>?.assert(): OptionalAssert<T>`
+Creates assertions for Optional values.
+
+```kotlin
+val present = Optional.of("value")
+present.assert()
+    .isPresent()
+    .contains("value")
+
+val empty = Optional.empty<String>()
+empty.assert().isEmpty()
+```
+
+##### `<K, V> Map<K, V>?.assert(): MapAssert<K, V>`
+Creates assertions for maps.
+
+```kotlin
+val map = mapOf("key1" to "value1", "key2" to "value2")
+map.assert()
+    .hasSize(2)
+    .containsKey("key1")
+    .containsValue("value1")
+    .containsEntry("key1", "value1")
+```
+
+##### `<T> Stream<T>?.assert(): ListAssert<T>`
+Creates assertions for streams (converted to lists).
+
+```kotlin
+val stream = listOf(1, 2, 3, 4, 5).stream()
+stream.assert()
+    .hasSize(5)
+    .contains(3)
+    .allMatch { it > 0 }
+```
+
+### Time and Date
+
+##### `Date?.assert(): DateAssert`
+Creates assertions for Date objects.
+
+```kotlin
+val date = Date()
+date.assert()
+    .isToday()
+    .isBefore(Date(System.currentTimeMillis() + 1000))
+```
+
+##### `ZonedDateTime?.assert(): ZonedDateTimeAssert`
+Creates assertions for ZonedDateTime objects.
+
+```kotlin
+val zonedDateTime = ZonedDateTime.now()
+zonedDateTime.assert()
+    .isToday()
+    .hasZone(ZoneId.systemDefault())
+```
+
+##### `Temporal?.assert(): TemporalAssert`
+Creates assertions for any Temporal objects.
+
+```kotlin
+val instant = Instant.now()
+instant.assert()
+    .isBefore(Instant.now().plusSeconds(1))
+```
+
+##### `LocalDateTime?.assert(): LocalDateTimeAssert`
+Creates assertions for LocalDateTime objects.
+
+```kotlin
+val dateTime = LocalDateTime.now()
+dateTime.assert()
+    .isToday()
+    .isBefore(LocalDateTime.now().plusHours(1))
+```
+
+##### `OffsetDateTime?.assert(): OffsetDateTimeAssert`
+Creates assertions for OffsetDateTime objects.
+
+```kotlin
+val offsetDateTime = OffsetDateTime.now()
+offsetDateTime.assert()
+    .isToday()
+    .hasOffset(ZoneOffset.UTC)
+```
+
+##### `OffsetTime?.assert(): OffsetTimeAssert`
+Creates assertions for OffsetTime objects.
+
+```kotlin
+val offsetTime = OffsetTime.now()
+offsetTime.assert()
+    .isBefore(OffsetTime.now().plusHours(1))
+```
+
+##### `LocalTime?.assert(): LocalTimeAssert`
+Creates assertions for LocalTime objects.
+
+```kotlin
+val time = LocalTime.of(10, 30)
+time.assert()
+    .isBefore(LocalTime.of(12, 0))
+    .hasHour(10)
+    .hasMinute(30)
+```
+
+##### `LocalDate?.assert(): LocalDateAssert`
+Creates assertions for LocalDate objects.
+
+```kotlin
+val date = LocalDate.of(2023, 12, 25)
+date.assert()
+    .hasYear(2023)
+    .hasMonth(12)
+    .hasDayOfMonth(25)
+```
+
+##### `YearMonth?.assert(): YearMonthAssert`
+Creates assertions for YearMonth objects.
+
+```kotlin
+val yearMonth = YearMonth.of(2023, 12)
+yearMonth.assert()
+    .hasYear(2023)
+    .hasMonth(12)
+```
+
+##### `Instant?.assert(): InstantAssert`
+Creates assertions for Instant objects.
+
+```kotlin
+val instant = Instant.now()
+instant.assert()
+    .isBefore(Instant.now().plusSeconds(1))
+```
+
+##### `Duration?.assert(): DurationAssert`
+Creates assertions for Duration objects.
+
+```kotlin
+val duration = Duration.ofHours(2)
+duration.assert()
+    .hasHours(2)
+    .isGreaterThan(Duration.ofHours(1))
+```
+
+##### `Period?.assert(): PeriodAssert`
+Creates assertions for Period objects.
+
+```kotlin
+val period = Period.of(1, 2, 3)
+period.assert()
+    .hasYears(1)
+    .hasMonths(2)
+    .hasDays(3)
+```
+
+### File System and I/O
+
+##### `Path?.assert(): PathAssert`
+Creates assertions for Path objects.
+
+```kotlin
+val path = Paths.get("/tmp/test.txt")
+path.assert()
+    .exists()
+    .isReadable()
+    .isRegularFile()
+```
+
+##### `File?.assert(): FileAssert`
+Creates assertions for File objects.
+
+```kotlin
+val file = File("/tmp/test.txt")
+file.assert()
+    .exists()
+    .isFile()
+    .canRead()
+    .hasName("test.txt")
+```
+
+##### `URL?.assert(): UrlAssert`
+Creates assertions for URL objects.
+
+```kotlin
+val url = URL("https://example.com")
+url.assert()
+    .hasHost("example.com")
+    .hasProtocol("https")
+    .hasPort(443)
+```
+
+##### `URI?.assert(): UriAssert`
+Creates assertions for URI objects.
+
+```kotlin
+val uri = URI("https://example.com/path?query=value")
+uri.assert()
+    .hasHost("example.com")
+    .hasPath("/path")
+    .hasQuery("query=value")
+```
+
+### Concurrent Programming
+
+##### `<V> Future<V>?.assert(): FutureAssert<V>`
+Creates assertions for Future objects.
+
+```kotlin
+val future = executor.submit(Callable { "result" })
+future.assert()
+    .isDone()
+    .isNotCancelled()
+```
+
+##### `<V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V>`
+Creates assertions for CompletableFuture objects.
+
+```kotlin
+val future = CompletableFuture.completedFuture("success")
+future.assert()
+    .isCompleted()
+    .isCompletedWithValue("success")
+```
+
+##### `<V> CompletionStage<V>?.assert(): CompletionStageAssert<V>`
+Creates assertions for CompletionStage objects.
+
+```kotlin
+val stage = CompletableFuture.completedFuture("result")
+stage.assert()
+    .isCompleted()
+    .isCompletedWithValue("result")
+```
+
+### Functional Programming
+
+##### `<T> Predicate<T>?.assert(): PredicateAssert<T>`
+Creates assertions for Predicate functions.
+
+```kotlin
+val isEven = Predicate<Int> { it % 2 == 0 }
+isEven.assert()
+    .accepts(2, 4, 6)
+    .rejects(1, 3, 5)
+```
+
+### Exception Testing
+
+##### `<T : Throwable> T?.assert(): ThrowableAssert<T>`
+Creates assertions for Throwable objects.
+
+```kotlin
+val exception = RuntimeException("test error")
+exception.assert()
+    .hasMessage("test error")
+    .isInstanceOf(RuntimeException::class.java)
+```
+
+##### `assertThrownBy<T : Throwable>(Class<T>, () -> Unit): ThrowableAssert<T>`
+Asserts that code throws a specific exception type.
+
+```kotlin
+assertThrownBy(IllegalArgumentException::class.java) {
+    throw IllegalArgumentException("invalid argument")
+}.assert().hasMessage("invalid argument")
+```
+
+##### `assertThrownBy<T : Throwable>(() -> Unit): ThrowableAssert<T>` (reified)
+Asserts that code throws a specific exception type (Kotlin reified version).
+
+```kotlin
+assertThrownBy<IllegalArgumentException> {
+    throw IllegalArgumentException("invalid argument")
+}.assert().hasMessage("invalid argument")
+```
+
+## Advanced Usage
+
+### Complex Business Logic Validation
+
+```kotlin
+data class User(val name: String, val age: Int, val email: String)
+
+fun validateUser(user: User) {
+    user.name.assert()
+        .isNotBlank()
+        .hasSizeBetween(2, 50)
+        .matches("[a-zA-Z\\s]+")
+
+    user.age.assert()
+        .isBetween(13, 120)
+
+    user.email.assert()
+        .isNotBlank()
+        .matches("[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}")
+}
+```
+
+### Data Processing Pipeline Testing
+
+```kotlin
+fun processData(input: List<String>): List<String> {
+    return input
+        .filter { it.isNotBlank() }
+        .map { it.uppercase() }
+        .distinct()
+        .sorted()
+}
+
+fun testDataProcessing() {
+    val input = listOf("  apple", "", "banana", "  APPLE", "cherry")
+    val result = processData(input)
+
+    result.assert()
+        .hasSize(3)
+        .contains("APPLE", "BANANA", "CHERRY")
+        .isSorted()
+        .allMatch { it == it.uppercase() }
+}
+```
+
+### Configuration Validation
+
+```kotlin
+data class DatabaseConfig(
+    val host: String,
+    val port: Int,
+    val database: String,
+    val credentials: Map<String, String>
+)
+
+fun validateConfig(config: DatabaseConfig) {
+    config.host.assert()
+        .isNotBlank()
+        .matches("^[a-zA-Z0-9.-]+$")
+
+    config.port.assert()
+        .isBetween(1024, 65535)
+
+    config.database.assert()
+        .isNotBlank()
+        .hasSizeBetween(1, 64)
+
+    config.credentials.assert()
+        .isNotEmpty()
+        .containsKey("username")
+        .containsKey("password")
+}
+```
+
+## Testing
+
+### Test Structure
+
+```
+core/src/test/kotlin/me/ahoo/test/asserts/
+├── JdkTest.kt              # Core JDK type tests
+├── JdkConcurrentTest.kt    # Concurrent programming tests
+├── JdkFunctionTest.kt      # Functional programming tests
+├── JdkIOTest.kt            # I/O tests
+├── JdkTimeTest.kt          # Time/date tests
+└── ThrowableTest.kt        # Exception testing
+```
+
+### Test Coverage
+
+- **Unit Tests**: Comprehensive coverage of all extension functions
+- **Null Safety**: Tests for nullable type handling
+- **Edge Cases**: Boundary condition testing
+- **Integration**: AssertJ compatibility testing
+
+### Running Tests
+
+```bash
+# Run all tests
+./gradlew test
+
+# Run specific test class
+./gradlew test --tests "*JdkTest*"
+
+# Run specific test method
+./gradlew test --tests "*JdkTest*" --tests "*booleanTest*"
+
+# Generate coverage report
+./gradlew jacocoTestReport
+```
+
+## Contributing
+
+### Development Setup
+
+1. **Prerequisites**: Java 17+, Kotlin 1.8.0+, Git
+2. **Clone**: `git clone https://github.com/Ahoo-Wang/FluentAssert.git`
+3. **Build**: `./gradlew build`
+4. **Test**: `./gradlew test`
+
+### Code Style
+
+- Follow Kotlin official conventions
+- Maximum line length: 300 characters
+- Use backticks for descriptive test names
+- Comprehensive documentation with examples
+
+### Adding New Assertion Types
+
+1. Create extension function in appropriate module
+2. Follow pattern: `Type?.assert(): AssertJTypeAssert`
+3. Add comprehensive tests
+4. Update documentation
+
+### Pull Request Process
+
+1. Create feature branch
+2. Make changes with tests
+3. Run full test suite
+4. Submit PR with description
+
+## FAQ
+
+### General Questions
+
+**Q: What is FluentAssert?**
+A: FluentAssert is a Kotlin library providing fluent assertions for JDK types using extension functions.
+
+**Q: Why use FluentAssert over AssertJ directly?**
+A: More Kotlin-idiomatic API, better null safety, improved type inference, and enhanced IDE support.
+
+**Q: Is FluentAssert production-ready?**
+A: Yes, it has comprehensive test coverage and follows semantic versioning.
+
+### Technical Questions
+
+**Q: Does FluentAssert add runtime overhead?**
+A: Minimal. Extensions are inlined where possible and delegate to optimized AssertJ.
+
+**Q: What JDK versions are supported?**
+A: Java 17 and higher, with full compatibility with modern JDK types.
+
+**Q: Can I mix FluentAssert and AssertJ?**
+A: Yes, they are fully compatible.
+
+### Troubleshooting
+
+**Q: Compilation errors?**
+A: Ensure Java 17+, Kotlin 1.8.0+, and correct dependencies.
+
+**Q: IDE doesn't recognize extensions?**
+A: Check Kotlin plugin is updated and dependencies are configured.
+
+## Project Structure Details
+
+### Core Modules
+
+- **core**: Main library with all extension functions
+- **dependencies**: BOM for dependency management
+- **bom**: Bill of Materials for multi-module projects
+
+### Configuration Files
+
+- **config/detekt/detekt.yml**: Static analysis rules
+- **config/logback.xml**: Logging configuration
+- **gradle.properties**: Build properties
+- **settings.gradle.kts**: Project settings
+
+### Build System
+
+- **Gradle Kotlin DSL**: Modern build configuration
+- **JaCoCo**: Code coverage reporting
+- **Detekt**: Kotlin static analysis
+- **Test Retry**: Flaky test handling
+
+## Performance Considerations
+
+- **Inlining**: Extension functions are inlined where beneficial
+- **Delegation**: Direct delegation to AssertJ for optimal performance
+- **Memory**: No additional object allocation for assertions
+- **Compatibility**: Full AssertJ performance characteristics
+
+## Migration Guide
+
+### From AssertJ
+
+```kotlin
+// Before
+assertThat(value).isEqualTo(expected)
+
+// After
+value.assert().isEqualTo(expected)
+```
+
+### From JUnit Assertions
+
+```kotlin
+// Before
+assertEquals(expected, actual)
+assertTrue(condition)
+
+// After
+actual.assert().isEqualTo(expected)
+condition.assert().isTrue()
+```
+
+## License
+
+Licensed under the Apache License, Version 2.0.
+
+Copyright 2021-present Ahoo Wang <ahoowang@qq.com>
+
+See LICENSE file for full license text.
