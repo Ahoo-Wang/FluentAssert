@@ -2,7 +2,7 @@
 # libraries
 assertj = "3.27.6"
 # testing
-mockk = "1.14.6"
+mockk = "1.14.7"
 junit = "5.14.1"
 # plugins
 kotlin = "2.2.21"
