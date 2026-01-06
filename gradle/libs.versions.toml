@@ -3,7 +3,7 @@
 assertj = "3.27.6"
 # testing
 mockk = "1.14.7"
-junit = "6.0.1"
+junit = "6.0.2"
 # plugins
 kotlin = "2.3.0"
 detekt = "1.23.8"
