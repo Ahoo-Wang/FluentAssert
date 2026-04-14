@@ -533,7 +533,7 @@ exception.assert()
 ```kotlin
 assertThrownBy(IllegalArgumentException::class.java) {
     throw IllegalArgumentException("invalid argument")
-}.assert().hasMessage("invalid argument")
+}.hasMessage("invalid argument")
 ```
 
 ##### `assertThrownBy<T : Throwable>(() -> Unit): ThrowableAssert<T>` (reified)
@@ -542,7 +542,7 @@ assertThrownBy(IllegalArgumentException::class.java) {
 ```kotlin
 assertThrownBy<IllegalArgumentException> {
     throw IllegalArgumentException("invalid argument")
-}.assert().hasMessage("invalid argument")
+}.hasMessage("invalid argument")
 ```
 
 ## 高级示例

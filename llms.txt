@@ -105,7 +105,7 @@ numbers.assert()
 ```kotlin
 assertThrownBy<IllegalArgumentException> {
     throw IllegalArgumentException("error")
-}.assert().hasMessage("error")
+}.hasMessage("error")
 ```
 
 ### Time Assertions

@@ -536,7 +536,7 @@ Asserts that code throws a specific exception type.
 ```kotlin
 assertThrownBy(IllegalArgumentException::class.java) {
     throw IllegalArgumentException("invalid argument")
-}.assert().hasMessage("invalid argument")
+}.hasMessage("invalid argument")
 ```
 
 ##### `assertThrownBy<T : Throwable>(() -> Unit): ThrowableAssert<T>` (reified)
@@ -545,7 +545,7 @@ Asserts that code throws a specific exception type (Kotlin reified version).
 ```kotlin
 assertThrownBy<IllegalArgumentException> {
     throw IllegalArgumentException("invalid argument")
-}.assert().hasMessage("invalid argument")
+}.hasMessage("invalid argument")
 ```
 
 ## Comparison with AssertJ
