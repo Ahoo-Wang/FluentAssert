@@ -35,7 +35,7 @@ FluentAssert is a Kotlin library that provides fluent assertions for JDK types, 
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>0.2.6</version>
+    <version>0.2.8</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -43,13 +43,13 @@ FluentAssert is a Kotlin library that provides fluent assertions for JDK types, 
 ### Gradle (Kotlin DSL)
 
 ```kotlin
-testImplementation("me.ahoo.test:fluent-assert-core:0.2.6")
+testImplementation("me.ahoo.test:fluent-assert-core:0.2.8")
 ```
 
 ### Gradle (Groovy DSL)
 
 ```gradle
-testImplementation 'me.ahoo.test:fluent-assert-core:0.2.6'
+testImplementation 'me.ahoo.test:fluent-assert-core:0.2.8'
 ```
 
 ## Quick Start
@@ -100,6 +100,7 @@ All extension functions follow the pattern `Type.assert(): AssertJTypeAssert`, w
 | **Concurrent**  | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`                                                                                                    |
 | **Functional**  | `Predicate<T>`                                                                                                                                               |
 | **Exceptions**  | `Throwable`                                                                                                                                                  |
+| **Custom**      | `AssertProvider<A>`                                                                                                                                          |
 
 ### Exception Testing Functions
 
@@ -516,6 +517,20 @@ val isEven = Predicate<Int> { it % 2 == 0 }
 isEven.assert()
     .accepts(2, 4, 6)
     .rejects(1, 3, 5)
+```
+
+### Custom Assertion Providers
+
+##### `<A> AssertProvider<A>.assert(): A`
+Creates assertions for objects implementing AssertJ's `AssertProvider` interface. Delegates to `assertThat(this)` to obtain the provider's custom assertion type.
+
+```kotlin
+class MoneyAssertProvider(private val amount: BigDecimal) : AssertProvider<BigDecimalAssert> {
+    override fun actual(): BigDecimalAssert = assertThat(amount)
+}
+
+val provider = MoneyAssertProvider(BigDecimal("99.99"))
+provider.assert().isPositive().isLessThan(BigDecimal("100"))
 ```
 
 ### Exception Testing
