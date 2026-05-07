@@ -13,14 +13,16 @@ FluentAssert is a Kotlin library providing fluent `.assert()` extension function
 ./gradlew :core:build                  # Build core library only
 ./gradlew test                         # Run all tests
 ./gradlew :core:test                   # Run core tests only
-./gradlew :core:test --tests "*JdkTest*"                        # Single test class
-./gradlew :core:test --tests "*JdkTest*" --tests "*booleanTest*" # Single test method
+./gradlew :core:test --tests "*JdkTest*"                                      # Single test class
+./gradlew :core:test --tests "*JdkTest*" --tests "*given Boolean when*"       # Single test method
 ./gradlew detekt                       # Lint with Detekt
 ./gradlew detekt --auto-correct        # Auto-fix lint issues
 ./gradlew code-coverage-report:koverXmlReport  # Coverage report
 ```
 
 Requires JDK 17 (toolchain auto-provisions via Gradle).
+
+**Kotlin compiler flags:** `-Xjsr305=strict` (null-safety interop with Java), `-Xjvm-default=all-compatibility` (default methods in interfaces).
 
 ## Module Structure
 
@@ -30,6 +32,8 @@ Requires JDK 17 (toolchain auto-provisions via Gradle).
 - **`:code-coverage-report`** — Aggregates Kover/JaCoCo reports (not published)
 
 Only `:core` contains library code. All other modules are build infrastructure.
+
+**Dependency chain:** `:core` → `:dependencies` (pins AssertJ BOM, mockk, detekt-formatting versions). `:bom` constrains all library project versions for consumers.
 
 ## Architecture
 
@@ -43,8 +47,9 @@ All extension functions live in `core/src/main/kotlin/me/ahoo/test/asserts/`:
 | `JdkConcurrent.kt` | Future, CompletableFuture, CompletionStage |
 | `JdkFunction.kt` | Predicate |
 | `Throwable.kt` | Throwable extension + `assertThrownBy<T>{}` function |
+| `AssertProvider.kt` | `AssertProvider<A>` — delegates to AssertJ's `assertThat(this)` for custom assertion providers |
 
-**Design pattern:** Each function is `fun Type?.assert(): AssertJType` — nullable receiver for null safety, delegates to the corresponding AssertJ assertion class. No custom assertion logic.
+**Design pattern:** Most functions use `fun Type?.assert(): AssertJType` — nullable receiver for null safety, delegates to the corresponding AssertJ assertion class. `AssertProvider` uses a non-nullable receiver (`fun AssertProvider<A>.assert(): A`) since AssertJ's `assertThat` handles the delegation. No custom assertion logic.
 
 **Import:** Always `import me.ahoo.test.asserts.assert` (not AssertJ's `assertThat`).
 
