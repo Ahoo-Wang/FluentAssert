@@ -70,15 +70,6 @@ val isActive = true
 isActive.assert().isTrue()
 ```
 
-### **llms.txt** For AI Assistants
-
-This project includes LLM-friendly documentation files:
-- **[`llms.txt`](llms.txt)**: Concise project overview for AI assistants
-- **[`llms-full.txt`](llms-full.txt)**: Complete API reference and technical details
-- **[`AGENTS.md`](AGENTS.md)**: Development guidelines for coding agents
-
-Use these files to understand the project structure, API patterns, and coding standards when contributing.
-
 ## API Reference
 
 ### Core Extension Functions
