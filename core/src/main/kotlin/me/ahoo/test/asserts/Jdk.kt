@@ -295,10 +295,10 @@ fun <T> Array<T>?.assert(): ObjectArrayAssert<T> = assertThat(this)
  * ```
  *
  * @param T The type of elements in the list
- * @receiver List<T>?? The list to assert on (double nullable)
+ * @receiver List<T>? The list to assert on (nullable)
  * @return ListAssert<T> A fluent assertion object for lists
  */
-fun <T> List<T>??.assert(): ListAssert<T> = ListAssert(this)
+fun <T> List<T>?.assert(): ListAssert<T> = ListAssert(this)
 
 /**
  * Creates a fluent assertion for Optional objects.

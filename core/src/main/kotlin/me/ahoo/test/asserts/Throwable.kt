@@ -5,22 +5,20 @@ import org.assertj.core.api.ThrowableAssert
 import org.assertj.core.error.ShouldBeInstance.shouldBeInstance
 
 /**
- * Asserts that a specific type of exception is thrown by the given executable (reified version).
+ * Creates a fluent assertion for Throwable values.
  *
- * This inline function provides a more convenient syntax for asserting exceptions using Kotlin's
- * reified generics, eliminating the need to explicitly specify the exception class.
+ * This extension function provides access to AssertJ's ThrowableAssert methods for fluent testing
+ * of exceptions, including null-safe operations.
  *
  * Example:
  * ```kotlin
- * assertThrownBy<IllegalArgumentException> {
- *     throw IllegalArgumentException("invalid argument")
- * }.assert().hasMessage("invalid argument")
+ * val exception = IllegalArgumentException("invalid argument")
+ * exception.assert().hasMessage("invalid argument")
  * ```
  *
- * @param T The type of exception expected to be thrown (must extend Throwable)
- * @param shouldRaiseThrowable The executable that should throw the exception
- * @return ThrowableAssert<T> A fluent assertion object for the thrown exception
- * @throws AssertionError if no exception is thrown or if the wrong type of exception is thrown
+ * @param T The type of exception being asserted
+ * @receiver T? The throwable to assert on (nullable)
+ * @return ThrowableAssert<T> A fluent assertion object for the throwable
  */
 fun <T : Throwable> T?.assert(): ThrowableAssert<T> = ThrowableAssert(this)
 
@@ -34,7 +32,7 @@ fun <T : Throwable> T?.assert(): ThrowableAssert<T> = ThrowableAssert(this)
  * ```kotlin
  * assertThrownBy(IllegalArgumentException::class.java) {
  *     throw IllegalArgumentException("invalid argument")
- * }.assert().hasMessage("invalid argument")
+ * }.hasMessage("invalid argument")
  * ```
  *
  * @param T The type of exception expected to be thrown (must extend Throwable)
@@ -67,7 +65,7 @@ fun <T : Throwable> assertThrownBy(
  * ```kotlin
  * assertThrownBy<IllegalArgumentException> {
  *     throw IllegalArgumentException("invalid argument")
- * }.assert().hasMessage("invalid argument")
+ * }.hasMessage("invalid argument")
  * ```
  *
  * @param T The type of exception expected to be thrown (must extend Throwable)

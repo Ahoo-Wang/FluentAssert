@@ -41,19 +41,19 @@ import java.time.temporal.Temporal
 import java.util.*
 
 /**
- * Creates a fluent assertion for Period objects.
+ * Creates a fluent assertion for Date objects.
  *
- * This extension function provides access to AssertJ's PeriodAssert methods for fluent testing
- * of Period objects, including null-safe operations and period property verification.
+ * This extension function provides access to AssertJ's DateAssert methods for fluent testing
+ * of Date objects, including null-safe operations and date property verification.
  *
  * Example:
  * ```kotlin
- * val period = Period.of(1, 2, 3)
- * period.assert().hasYears(1).hasMonths(2).hasDays(3)
+ * val date = Date()
+ * date.assert().isToday()
  * ```
  *
- * @receiver Period? The period to assert on (nullable)
- * @return PeriodAssert A fluent assertion object for periods
+ * @receiver Date? The date to assert on (nullable)
+ * @return DateAssert A fluent assertion object for dates
  */
 fun Date?.assert(): DateAssert = assertThat(this) as DateAssert
 
@@ -116,8 +116,8 @@ fun LocalDateTime?.assert(): LocalDateTimeAssert = assertThat(this) as LocalDate
  *
  * Example:
  * ```kotlin
- * val offsetDateTime = OffsetDateTime.now()
- * offsetDateTime.assert().isToday().hasOffset(ZoneOffset.UTC)
+ * val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC)
+ * offsetDateTime.assert().isBefore(offsetDateTime.plusDays(1))
  * ```
  *
  * @receiver OffsetDateTime? The offset date-time to assert on (nullable)
@@ -185,7 +185,7 @@ fun LocalDate?.assert(): LocalDateAssert = assertThat(this) as LocalDateAssert
  * Example:
  * ```kotlin
  * val yearMonth = YearMonth.of(2023, 12)
- * yearMonth.assert().hasYear(2023).hasMonth(12)
+ * yearMonth.assert().hasYear(2023).hasMonth(java.time.Month.DECEMBER)
  * ```
  *
  * @receiver YearMonth? The year-month to assert on (nullable)
