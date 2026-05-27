@@ -61,7 +61,7 @@ For types implementing AssertJ's `AssertProvider<A>`, `.assert()` returns the pr
 provider.assert().isPositive()
 ```
 
-Only use direct `assertThat` when implementing the provider's `actual()` method or when a project explicitly requires raw AssertJ.
+Only use direct `assertThat` when implementing the provider's `assertThat()` method or when a project explicitly requires raw AssertJ.
 
 ## Avoid
 

@@ -55,7 +55,7 @@ All extension functions follow the pattern `Type.assert(): AssertJTypeAssert`, w
 ```kotlin
 import me.ahoo.test.asserts.assert
 import me.ahoo.test.asserts.assertThrownBy
-import java.time.Month
+import java.time.*
 ```
 
 ## Supported Types

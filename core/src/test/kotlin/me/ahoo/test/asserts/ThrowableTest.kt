@@ -1,6 +1,7 @@
 package me.ahoo.test.asserts
 
 import org.assertj.core.api.ThrowableAssert
+import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 
 class ThrowableTest {
@@ -13,10 +14,10 @@ class ThrowableTest {
     @Suppress("TooGenericExceptionThrown")
     @Test
     fun `given Throwable Function when assertThrownBy then ThrowableAssert`() {
-        assertThrownBy<Throwable> {
+        val assertion = assertThrownBy<Throwable> {
             throw Throwable("1")
-        }.assert()
-            .isInstanceOf(ThrowableAssert::class.java)
+        }
+        assertInstanceOf(ThrowableAssert::class.java, assertion)
     }
 
     @Suppress("TooGenericExceptionThrown")

@@ -339,9 +339,9 @@ dateTime.assert()
 为OffsetDateTime对象创建断言。
 
 ```kotlin
-val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC)
+val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC)
 offsetDateTime.assert()
-    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC))
+    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC))
     .isBefore(offsetDateTime.plusDays(1))
 ```
 
@@ -514,7 +514,7 @@ isEven.assert()
 
 ```kotlin
 class MoneyAssertProvider(private val amount: BigDecimal) : AssertProvider<BigDecimalAssert> {
-    override fun actual(): BigDecimalAssert = assertThat(amount)
+    override fun assertThat(): BigDecimalAssert = assertThat(amount)
 }
 
 val provider = MoneyAssertProvider(BigDecimal("99.99"))
