@@ -116,7 +116,7 @@ fun LocalDateTime?.assert(): LocalDateTimeAssert = assertThat(this) as LocalDate
  *
  * Example:
  * ```kotlin
- * val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC)
+ * val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC)
  * offsetDateTime.assert().isBefore(offsetDateTime.plusDays(1))
  * ```
  *
