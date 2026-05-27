@@ -354,9 +354,9 @@ dateTime.assert()
 #### OffsetDateTime
 
 ```kotlin
-val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC)
+val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC)
 offsetDateTime.assert()
-    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC))
+    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, java.time.ZoneOffset.UTC))
     .isBefore(offsetDateTime.plusDays(1))
 ```
 
