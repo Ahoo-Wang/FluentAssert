@@ -1,5 +1,16 @@
 # FluentAssert - Complete API Reference
 
+## Table of Contents
+
+- [Project Information](#project-information)
+- [Installation](#installation)
+- [Core Extension Functions](#core-extension-functions)
+- [Supported Types](#supported-types)
+- [API Examples](#api-examples)
+- [Comparison with AssertJ](#comparison-with-assertj)
+- [When to Use FluentAssert](#when-to-use-fluentassert)
+- [When to Use AssertJ Directly](#when-to-use-assertj-directly)
+
 ## Project Information
 
 **Name:** FluentAssert
