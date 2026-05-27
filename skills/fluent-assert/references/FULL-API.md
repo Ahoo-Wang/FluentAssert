@@ -15,7 +15,7 @@
 
 **Name:** FluentAssert
 
-**Version:** 0.2.8
+**Version:** 1.0.0
 
 **Description:** A Kotlin library providing fluent assertions for JDK types
 
@@ -33,7 +33,7 @@
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>0.2.8</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@
 ### Gradle (Kotlin DSL)
 
 ```kotlin
-testImplementation("me.ahoo.test:fluent-assert-core:0.2.8")
+testImplementation("me.ahoo.test:fluent-assert-core:1.0.0")
 ```
 
 ## Core Extension Functions
