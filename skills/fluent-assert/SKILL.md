@@ -1,17 +1,6 @@
 ---
 name: fluent-assert
-description: |
-  Use FluentAssert for writing Kotlin test assertions. FluentAssert provides a fluent `.assert()` extension that wraps AssertJ with Kotlin idioms.
-
-  MANDATORY whenever writing Kotlin tests with assertions. This includes:
-  - All JUnit 5, JUnit 4, or other Kotlin test frameworks
-  - Any assertion on JDK types (collections, strings, primitives, dates, exceptions, etc.)
-  - Wow framework saga tests with expectCommandBody blocks
-  - Exception testing with assertThrownBy<>
-
-  CRITICAL: Always use `import me.ahoo.test.asserts.assert` - NOT AssertJ's assertThat() which is verbose and not null-safe in Kotlin.
-
-  The library is available as `me.ahoo.test:fluent-assert-core`.
+description: Use when writing or refactoring Kotlin tests that need assertions, including JUnit tests, Wow/SagaSpec tests, JDK types, nullable values, collections, maps, time values, futures, predicates, custom data classes, or exception assertions with assertThrownBy.
 ---
 
 # FluentAssert - Kotlin Fluent Assertions
@@ -24,7 +13,7 @@ description: |
 - [Common Mistakes](#common-mistakes)
 - [References](#references)
 - [Integration with Wow/Saga Tests](#integration-with-wowsaga-tests)
-- [When AssertJ Direct is Still Needed](#when-assertj-direct-is-still-needed)
+- [Advanced AssertJ Methods](#advanced-assertj-methods)
 - [AssertProvider](#assertprovider)
 - [Custom Type Assertions](#custom-type-assertions)
 
@@ -95,7 +84,9 @@ mapOf("key" to "value").assert()
 Optional.of("value").assert()
     .isPresent()
     .contains("value")
-    .isEmpty()                 // for empty Optional
+
+Optional.empty<String>().assert()
+    .isEmpty()
 
 arrayOf(1, 2, 3).assert()
     .hasSize(3)
@@ -104,14 +95,18 @@ arrayOf(1, 2, 3).assert()
 
 ### Time/Date
 ```kotlin
+import java.time.Month
+
 Instant.now().assert().isBefore(Instant.now().plusSeconds(1))
-LocalDate.of(2023, 12, 25).assert().hasYear(2023).hasMonth(12)
+LocalDate.of(2023, 12, 25).assert().hasYear(2023).hasMonth(Month.DECEMBER)
 LocalDateTime.now().assert().isToday()
 Duration.ofHours(2).assert().hasHours(2).isGreaterThan(Duration.ofHours(1))
 ```
 
 ### Exception Testing
 ```kotlin
+import me.ahoo.test.asserts.assertThrownBy
+
 // Assert code throws exception
 assertThrownBy<IllegalArgumentException> {
     throw IllegalArgumentException("invalid")
@@ -136,6 +131,8 @@ URL("https://example.com").assert().hasHost("example.com").hasProtocol("https")
 CompletableFuture.completedFuture("result").assert()
     .isCompleted()
     .isCompletedWithValue("result")
+
+CompletableFuture.failedFuture<String>(RuntimeException("boom")).assert()
     .isCompletedExceptionally()
 ```
 
@@ -256,16 +253,16 @@ class DemoSagaSpec : SagaSpec<DemoSaga>({
 
 ---
 
-## When AssertJ Direct is Still Needed
+## Advanced AssertJ Methods
 
-FluentAssert delegates to AssertJ, so you can always access AssertJ methods:
+FluentAssert delegates to AssertJ, so keep using AssertJ methods from the `.assert()` result:
 
 ```kotlin
 // FluentAssert provides the extension
 value.assert().isEqualTo(expected)
 
-// For specific AssertJ methods not exposed via extension:
-assertThat(value).usingRecursiveComparison().isEqualTo(expected)
+// For specific AssertJ methods, keep chaining from .assert():
+value.assert().usingRecursiveComparison().isEqualTo(expected)
 ```
 
 ---
@@ -313,7 +310,7 @@ provider.assert().isPositive().isLessThan(BigDecimal("100"))
 
 ## Custom Type Assertions
 
-For custom data classes, use AssertJ's `hasFieldOrPropertyWithValue` or `assertThat` with `usingRecursiveComparison`:
+For custom data classes, use AssertJ's `hasFieldOrPropertyWithValue` or recursive comparison from the `.assert()` result:
 
 ```kotlin
 data class Person(val name: String, val age: Int)
@@ -325,7 +322,7 @@ person.assert()
     .hasFieldOrPropertyWithValue("age", 30)
 
 // Using recursive comparison for deep equality
-assertThat(person).usingRecursiveComparison().isEqualTo(expectedPerson)
+person.assert().usingRecursiveComparison().isEqualTo(expectedPerson)
 
 // For nested assertions in collections
 listOf(person).assert().first()

@@ -15,16 +15,26 @@ class ThrowableTest {
     fun `given Throwable Function when assertThrownBy then ThrowableAssert`() {
         assertThrownBy<Throwable> {
             throw Throwable("1")
-        }.assert().isInstanceOf(ThrowableAssert::class.java)
+        }.assert()
+            .isInstanceOf(ThrowableAssert::class.java)
     }
 
     @Suppress("TooGenericExceptionThrown")
     @Test
-    fun `given Null when assertThrownBy then throw AssertionError`() {
+    fun `given no thrown exception when assertThrownBy then throw AssertionError`() {
         assertThrownBy<AssertionError> {
             assertThrownBy<Throwable> {
                 null
-            }.assert()
-        }.assert().withFailMessage { "Expected Throwable to be thrown, but was: null" }
+            }
+        }.hasMessageContaining("Expected Throwable to be thrown, but was: null")
+    }
+
+    @Test
+    fun `given wrong thrown exception type when assertThrownBy then throw AssertionError`() {
+        assertThrownBy<AssertionError> {
+            assertThrownBy<IllegalArgumentException> {
+                throw IllegalStateException("wrong")
+            }
+        }.hasMessageContaining(IllegalArgumentException::class.java.name)
     }
 }

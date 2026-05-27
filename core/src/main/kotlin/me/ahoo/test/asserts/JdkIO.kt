@@ -40,19 +40,19 @@ import java.nio.file.Path
 fun Path?.assert(): PathAssert = PathAssert(this)
 
 /**
- * Creates a fluent assertion for URI objects.
+ * Creates a fluent assertion for File objects.
  *
- * This extension function provides access to AssertJ's UriAssert methods for fluent testing
- * of URI objects, including null-safe operations and URI property verification.
+ * This extension function provides access to AssertJ's FileAssert methods for fluent testing
+ * of file objects, including null-safe operations and file property verification.
  *
  * Example:
  * ```kotlin
- * val uri = URI("https://example.com/path?query=value")
- * uri.assert().hasHost("example.com").hasPath("/path")
+ * val file = File("/tmp/test.txt")
+ * file.assert().exists().isFile()
  * ```
  *
- * @receiver URI? The URI to assert on (nullable)
- * @return UriAssert A fluent assertion object for URIs
+ * @receiver File? The file to assert on (nullable)
+ * @return FileAssert A fluent assertion object for files
  */
 fun File?.assert(): FileAssert = FileAssert(this)
 

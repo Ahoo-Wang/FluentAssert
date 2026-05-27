@@ -250,7 +250,7 @@ array.assert()
     .doesNotContain("d")
 ```
 
-##### `<T> List<T>??.assert(): ListAssert<T>`
+##### `<T> List<T>?.assert(): ListAssert<T>`
 Creates assertions for lists.
 
 ```kotlin
@@ -342,10 +342,10 @@ dateTime.assert()
 Creates assertions for OffsetDateTime objects.
 
 ```kotlin
-val offsetDateTime = OffsetDateTime.now()
+val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC)
 offsetDateTime.assert()
-    .isToday()
-    .hasOffset(ZoneOffset.UTC)
+    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC))
+    .isBefore(offsetDateTime.plusDays(1))
 ```
 
 ##### `OffsetTime?.assert(): OffsetTimeAssert`
@@ -375,7 +375,7 @@ Creates assertions for LocalDate objects.
 val date = LocalDate.of(2023, 12, 25)
 date.assert()
     .hasYear(2023)
-    .hasMonth(12)
+    .hasMonth(java.time.Month.DECEMBER)
     .hasDayOfMonth(25)
 ```
 
@@ -386,7 +386,7 @@ Creates assertions for YearMonth objects.
 val yearMonth = YearMonth.of(2023, 12)
 yearMonth.assert()
     .hasYear(2023)
-    .hasMonth(12)
+    .hasMonth(java.time.Month.DECEMBER)
 ```
 
 ##### `Instant?.assert(): InstantAssert`

@@ -124,6 +124,14 @@ class JdkTest {
     }
 
     @Test
+    fun `given NullableList when assert then ListAssert`() {
+        val value: List<String>? = null
+        val assertion = value.assert()
+        assertion.isNull()
+        assertion.assert().isInstanceOf(ListAssert::class.java)
+    }
+
+    @Test
     fun `given Optional when assert then OptionalAssert`() {
         val value = Optional.of("1")
         value.assert().assert().isInstanceOf(OptionalAssert::class.java)

@@ -247,7 +247,7 @@ array.assert()
     .doesNotContain("d")
 ```
 
-##### `<T> List<T>??.assert(): ListAssert<T>`
+##### `<T> List<T>?.assert(): ListAssert<T>`
 为列表创建断言。
 
 ```kotlin
@@ -339,10 +339,10 @@ dateTime.assert()
 为OffsetDateTime对象创建断言。
 
 ```kotlin
-val offsetDateTime = OffsetDateTime.now()
+val offsetDateTime = OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC)
 offsetDateTime.assert()
-    .isToday()
-    .hasOffset(ZoneOffset.UTC)
+    .isEqualTo(OffsetDateTime.of(2023, 12, 25, 10, 30, 0, 0, ZoneOffset.UTC))
+    .isBefore(offsetDateTime.plusDays(1))
 ```
 
 ##### `OffsetTime?.assert(): OffsetTimeAssert`
@@ -372,7 +372,7 @@ time.assert()
 val date = LocalDate.of(2023, 12, 25)
 date.assert()
     .hasYear(2023)
-    .hasMonth(12)
+    .hasMonth(java.time.Month.DECEMBER)
     .hasDayOfMonth(25)
 ```
 
@@ -383,7 +383,7 @@ date.assert()
 val yearMonth = YearMonth.of(2023, 12)
 yearMonth.assert()
     .hasYear(2023)
-    .hasMonth(12)
+    .hasMonth(java.time.Month.DECEMBER)
 ```
 
 ##### `Instant?.assert(): InstantAssert`
