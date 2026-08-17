@@ -197,13 +197,16 @@ person.assert()
 ```
 
 ##### `<T : Comparable<T>?> T?.assert(): GenericComparableAssert<T>`
-Creates assertions for comparable objects.
+Creates assertions for comparable objects. Note that a `String` receiver resolves to `StringAssert` instead.
 
 ```kotlin
-val version = "2.0.0"
-version.assert()
-    .isGreaterThan("1.0.0")
-    .isLessThan("3.0.0")
+class Version(val value: Int) : Comparable<Version> {
+    override fun compareTo(other: Version): Int = value.compareTo(other.value)
+}
+
+Version(2).assert()
+    .isGreaterThan(Version(1))
+    .isLessThan(Version(3))
 ```
 
 ### Collections
