@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.util.Optional
 import java.util.stream.Stream
-import kotlin.jvm.java
 
 class JdkTest {
 
@@ -152,6 +151,12 @@ class JdkTest {
     @Test
     fun `given ComparableObj when assert then GenericComparableAssert`() {
         val value = ComparableObj("1")
+        value.assert().assert().isInstanceOf(GenericComparableAssert::class.java)
+    }
+
+    @Test
+    fun `given NullableComparableObj when assert then GenericComparableAssert`() {
+        val value: ComparableObj? = null
         value.assert().assert().isInstanceOf(GenericComparableAssert::class.java)
     }
 
