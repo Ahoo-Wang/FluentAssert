@@ -35,7 +35,7 @@ FluentAssert is a Kotlin library that provides fluent assertions for JDK types, 
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -43,13 +43,13 @@ FluentAssert is a Kotlin library that provides fluent assertions for JDK types, 
 ### Gradle (Kotlin DSL)
 
 ```kotlin
-testImplementation("me.ahoo.test:fluent-assert-core:1.0.0")
+testImplementation("me.ahoo.test:fluent-assert-core:1.1.0")
 ```
 
 ### Gradle (Groovy DSL)
 
 ```gradle
-testImplementation 'me.ahoo.test:fluent-assert-core:1.0.0'
+testImplementation 'me.ahoo.test:fluent-assert-core:1.1.0'
 ```
 
 ## Quick Start
