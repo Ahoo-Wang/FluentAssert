@@ -60,12 +60,16 @@ fun <T : Throwable> assertThrownBy(
     shouldRaiseThrowable: () -> Unit
 ): ThrowableAssert<T> {
     val throwable = Assertions.catchThrowable(shouldRaiseThrowable)
-    return throwable
+    // describedAs/overridingErrorMessage persist on the assert instance's WritableAssertionInfo,
+    // so run the diagnostics on a throwaway instance and return a fresh one — otherwise chained
+    // assertions report their failures as type-check errors.
+    throwable
         .assert()
         .describedAs { "Expected ${throwableType.simpleName} to be thrown, but was: $throwable" }
         .isNotNull()
         .overridingErrorMessage(shouldBeInstance(throwable, throwableType).create())
-        .isInstanceOf(throwableType) as ThrowableAssert<T>
+        .isInstanceOf(throwableType)
+    return throwable.assert() as ThrowableAssert<T>
 }
 
 /**

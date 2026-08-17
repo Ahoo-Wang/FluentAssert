@@ -2,6 +2,7 @@ package me.ahoo.test.asserts
 
 import org.assertj.core.api.ThrowableAssert
 import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 class ThrowableTest {
@@ -37,5 +38,25 @@ class ThrowableTest {
                 throw IllegalStateException("wrong")
             }
         }.hasMessageContaining(IllegalArgumentException::class.java.name)
+    }
+
+    @Test
+    fun `given matching type when chained message assertion fails then failure reports message not type`() {
+        val error = assertThrows(AssertionError::class.java) {
+            assertThrownBy<IllegalArgumentException> {
+                throw IllegalArgumentException("boom-expected")
+            }.hasMessageContaining("wrong-fragment")
+        }
+        error.message!!.assert()
+            .contains("wrong-fragment")
+            .contains("boom-expected")
+        error.message!!.assert().doesNotContain("to be an instance of")
+    }
+
+    @Test
+    fun `given matching type and message when assertThrownBy then chained assertions pass`() {
+        assertThrownBy<IllegalArgumentException> {
+            throw IllegalArgumentException("boom-expected")
+        }.hasMessage("boom-expected").hasMessageContaining("boom")
     }
 }
