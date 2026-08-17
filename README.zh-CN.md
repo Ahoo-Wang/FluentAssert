@@ -194,13 +194,16 @@ person.assert()
 ```
 
 ##### `<T : Comparable<T>?> T?.assert(): GenericComparableAssert<T>`
-为可比较对象创建断言。
+为可比较对象创建断言。注意：`String` 接收者会解析到更具体的 `StringAssert`。
 
 ```kotlin
-val version = "2.0.0"
-version.assert()
-    .isGreaterThan("1.0.0")
-    .isLessThan("3.0.0")
+class Version(val value: Int) : Comparable<Version> {
+    override fun compareTo(other: Version): Int = value.compareTo(other.value)
+}
+
+Version(2).assert()
+    .isGreaterThan(Version(1))
+    .isLessThan(Version(3))
 ```
 
 ### 集合
