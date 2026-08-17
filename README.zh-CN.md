@@ -193,7 +193,7 @@ person.assert()
     .hasFieldOrPropertyWithValue("name", "John")
 ```
 
-##### `<T : Comparable<T>?> T.assert(): GenericComparableAssert<T>`
+##### `<T : Comparable<T>?> T?.assert(): GenericComparableAssert<T>`
 为可比较对象创建断言。
 
 ```kotlin
@@ -246,6 +246,8 @@ array.assert()
     .contains("b")
     .doesNotContain("d")
 ```
+
+> **注意**：原生类型数组（`IntArray`、`LongArray`、`ByteArray` 等）不在 `Array<T>` 覆盖范围内——请先调用 `.toTypedArray()` 或 `.toList()` 以获得数组/列表断言 API。
 
 ##### `<T> List<T>?.assert(): ListAssert<T>`
 为列表创建断言。
@@ -485,7 +487,7 @@ future.assert()
     .isCompletedWithValue("success")
 ```
 
-##### `<V> CompletionStage<V>?.assert(): CompletionStageAssert<V>`
+##### `<V> CompletionStage<V>?.assert(): CompletableFutureAssert<V>`
 为CompletionStage对象创建断言。
 
 ```kotlin
