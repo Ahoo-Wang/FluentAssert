@@ -371,7 +371,8 @@ fun <T> Stream<T>?.assert(): ListAssert<T> = assertThat(this)
  * ```
  *
  * @param T The comparable type (must implement Comparable<T>)
- * @receiver T The comparable object to assert on
+ * @receiver T? The comparable object to assert on (nullable)
  * @return GenericComparableAssert<T> A fluent assertion object for comparable objects
  */
-fun <T : Comparable<T>?> T.assert(): GenericComparableAssert<T> = GenericComparableAssert(this)
+@Suppress("UNCHECKED_CAST")
+fun <T : Comparable<T>?> T?.assert(): GenericComparableAssert<T> = GenericComparableAssert(this as T)

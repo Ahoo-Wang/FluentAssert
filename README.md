@@ -196,7 +196,7 @@ person.assert()
     .hasFieldOrPropertyWithValue("name", "John")
 ```
 
-##### `<T : Comparable<T>?> T.assert(): GenericComparableAssert<T>`
+##### `<T : Comparable<T>?> T?.assert(): GenericComparableAssert<T>`
 Creates assertions for comparable objects.
 
 ```kotlin
@@ -249,6 +249,8 @@ array.assert()
     .contains("b")
     .doesNotContain("d")
 ```
+
+> **Note**: Primitive arrays (`IntArray`, `LongArray`, `ByteArray`, etc.) are not covered by `Array<T>` — call `.toTypedArray()` or `.toList()` first to get the array/list assertion APIs.
 
 ##### `<T> List<T>?.assert(): ListAssert<T>`
 Creates assertions for lists.
@@ -488,7 +490,7 @@ future.assert()
     .isCompletedWithValue("success")
 ```
 
-##### `<V> CompletionStage<V>?.assert(): CompletionStageAssert<V>`
+##### `<V> CompletionStage<V>?.assert(): CompletableFutureAssert<V>`
 Creates assertions for CompletionStage objects.
 
 ```kotlin

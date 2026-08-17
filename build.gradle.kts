@@ -68,7 +68,7 @@ configure(libraryProjects) {
     configure<DetektExtension> {
         config.setFrom(files("${rootProject.rootDir}/config/detekt/detekt.yml"))
         buildUponDefaultConfig = true
-        autoCorrect = true
+        autoCorrect = false
     }
     apply<DokkaPlugin>()
     apply<JacocoPlugin>()
@@ -106,9 +106,6 @@ configure(libraryProjects) {
             }
             failOnPassedAfterRetry = true
         }
-    }
-    tasks.withType<JavaCompile> {
-        options.compilerArgs.addAll(listOf("-parameters"))
     }
     dependencies {
         api(platform(dependenciesProject))
