@@ -362,12 +362,16 @@ fun <T> Stream<T>?.assert(): ListAssert<T> = assertThat(this)
  * Creates a fluent assertion for Comparable objects.
  *
  * This extension function provides access to AssertJ's GenericComparableAssert methods for fluent testing
- * of comparable objects, enabling comparison operations.
+ * of comparable objects, enabling comparison operations. Types with more specific overloads (such as String)
+ * resolve to their dedicated assertion class instead.
  *
  * Example:
  * ```kotlin
- * val version = "2.0.0"
- * version.assert().isGreaterThan("1.0.0").isLessThan("3.0.0")
+ * class Version(val value: Int) : Comparable<Version> {
+ *     override fun compareTo(other: Version): Int = value.compareTo(other.value)
+ * }
+ *
+ * Version(2).assert().isGreaterThan(Version(1)).isLessThan(Version(3))
  * ```
  *
  * @param T The comparable type (must implement Comparable<T>)
