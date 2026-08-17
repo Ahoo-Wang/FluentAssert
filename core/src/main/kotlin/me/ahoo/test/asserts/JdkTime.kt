@@ -40,6 +40,11 @@ import java.time.ZonedDateTime
 import java.time.temporal.Temporal
 import java.util.*
 
+// AssertJ's assertThat(Temporal) factories return wildcard-typed self-references
+// (e.g. AbstractLocalDateAssert<?>); the casts below narrow the static type to the
+// concrete assertion class, which is required because most of these classes expose
+// no public constructor.
+
 /**
  * Creates a fluent assertion for Date objects.
  *
