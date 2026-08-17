@@ -32,7 +32,7 @@ FluentAssert是一个为JDK类型提供流畅断言的Kotlin库，使您的测�
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -40,13 +40,13 @@ FluentAssert是一个为JDK类型提供流畅断言的Kotlin库，使您的测�
 ### Gradle (Kotlin DSL)
 
 ```kotlin
-testImplementation("me.ahoo.test:fluent-assert-core:1.0.0")
+testImplementation("me.ahoo.test:fluent-assert-core:1.1.0")
 ```
 
 ### Gradle (Groovy DSL)
 
 ```gradle
-testImplementation 'me.ahoo.test:fluent-assert-core:1.0.0'
+testImplementation 'me.ahoo.test:fluent-assert-core:1.1.0'
 ```
 
 ## 快速开始
