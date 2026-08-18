@@ -127,6 +127,30 @@
         "Uses boxed().assert().containsExactly(1, 2, 3)",
         "Does not call collection assertion methods on the original IntStream"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "Write a Kotlin test that declares val values: Iterable<String> = listOf(\"a\", \"b\"), verifies the elements in order, and identifies the assertion type returned by values.assert().",
+      "expected_output": "Keep the receiver statically typed as Iterable<String>, call values.assert().containsExactly(\"a\", \"b\"), and identify the result as IterableAssert<String>",
+      "files": [],
+      "expectations": [
+        "Declares val values: Iterable<String> = listOf(\"a\", \"b\")",
+        "Calls values.assert().containsExactly(\"a\", \"b\")",
+        "Identifies values.assert() as IterableAssert<String>",
+        "Does not infer the receiver as List<String> or identify the result as ListAssert"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Write a Kotlin test that declares a java.time.temporal.Temporal backed by an Instant, asserts equality with the Instant, and identifies the assertion type returned by temporal.assert().",
+      "expected_output": "Declare val temporal: Temporal = Instant.parse(...), call temporal.assert().isEqualTo(expectedInstant), and identify the result as TemporalAssert",
+      "files": [],
+      "expectations": [
+        "Declares the receiver explicitly as Temporal instead of relying on Instant inference",
+        "Calls temporal.assert().isEqualTo(expectedInstant)",
+        "Identifies temporal.assert() as TemporalAssert",
+        "Does not identify the result as InstantAssert"
+      ]
     }
   ]
 }
