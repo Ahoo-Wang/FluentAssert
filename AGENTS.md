@@ -57,7 +57,7 @@ Main source package: `core/src/main/kotlin/me/ahoo/test/asserts/`.
 
 Key files:
 
-- `Jdk.kt` covers primitives, strings, BigDecimal, collections, arrays, optionals, streams, generic objects, and comparable values.
+- `Jdk.kt` covers primitives, Char, strings and string builders, BigDecimal, BigInteger, collections, object and primitive arrays, optionals, streams, generic objects, and comparable values.
 - `JdkTime.kt` covers Date, java.time temporal values, Duration, and Period.
 - `JdkIO.kt` covers Path, File, URL, and URI.
 - `JdkConcurrent.kt` covers Future, ScheduledFuture, CompletableFuture, and CompletionStage.
@@ -87,9 +87,8 @@ Do not add custom assertion semantics in this library unless requested. The libr
 
 These are verified facts about how the overloads resolve; keep docs and examples consistent with them:
 
-- Primitive arrays (`IntArray`, `LongArray`, `ByteArray`, ...) are not `Array<T>` and fall back to `T?.assert()` → `ObjectAssert`. README documents `.toList()`/`.toTypedArray()` as the workaround; extending coverage is an ask-first API change.
-- A statically `CharSequence`-typed receiver resolves to `ObjectAssert`, not `StringAssert`.
-- `StringBuilder` implements `Comparable<StringBuilder>`, so `sb.assert()` resolves to `GenericComparableAssert<StringBuilder>` — still no string assertions.
+- Primitive arrays (`IntArray`, `LongArray`, ...) are not `Array<T>`; each has a dedicated overload returning its AssertJ `XxxArrayAssert`.
+- A statically `CharSequence`-typed receiver resolves to `ObjectAssert`. There is deliberately no `CharSequence` overload: types that are both `CharSequence` and `Comparable` (`CharBuffer`, user types) would become ambiguous. `StringBuilder`/`StringBuffer` (both `Comparable`) have dedicated overloads returning `CharSequenceAssert`.
 - The `Comparable` overload has the same specificity as the interface overloads, so a type that is `Comparable` and also `Iterable`/`Map`/`Future`/`Throwable` is an ambiguity compile error. JDK types with this shape need a dedicated overload (as `ScheduledFuture` has); user types must use a statically typed receiver.
 - `CompletionStage<V>.assert()` returns `CompletableFutureAssert<V>`; there is no `CompletionStageAssert`.
 - KDoc and skill examples must genuinely exercise the overload they document — e.g. a `String` receiver never demonstrates the `GenericComparableAssert` overload because it resolves to `StringAssert`.

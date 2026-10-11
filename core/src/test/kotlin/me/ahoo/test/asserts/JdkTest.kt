@@ -2,12 +2,16 @@ package me.ahoo.test.asserts
 
 import io.mockk.mockk
 import org.assertj.core.api.BigDecimalAssert
+import org.assertj.core.api.BigIntegerAssert
 import org.assertj.core.api.BooleanAssert
 import org.assertj.core.api.ByteAssert
+import org.assertj.core.api.CharSequenceAssert
+import org.assertj.core.api.CharacterAssert
 import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.GenericComparableAssert
+import org.assertj.core.api.IntArrayAssert
 import org.assertj.core.api.IntegerAssert
 import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
@@ -21,6 +25,7 @@ import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.util.Optional
 import java.util.stream.Stream
 
@@ -84,6 +89,47 @@ class JdkTest {
     fun `given String when assert then StringAssert`() {
         val value: String = "1"
         value.assert().assert().isInstanceOf(StringAssert::class.java)
+    }
+
+    @Test
+    fun `given Char when assert then CharacterAssert`() {
+        val grade = 'A'
+        grade.assert().isUpperCase().isEqualTo('A')
+        grade.assert().assert().isInstanceOf(CharacterAssert::class.java)
+    }
+
+    @Test
+    fun `given BigInteger when assert then BigIntegerAssert`() {
+        val count = BigInteger("12345678901234567890")
+        count.assert().isPositive().isGreaterThan(BigInteger.TEN)
+        count.assert().assert().isInstanceOf(BigIntegerAssert::class.java)
+    }
+
+    @Test
+    fun `given StringBuilder when assert then CharSequenceAssert`() {
+        val text = StringBuilder("Fluent").append("Assert")
+        text.assert().startsWith("Fluent").hasSize(12)
+        text.assert().assert().isInstanceOf(CharSequenceAssert::class.java)
+    }
+
+    @Test
+    fun `given StringBuffer when assert then CharSequenceAssert`() {
+        val text = StringBuffer("Fluent").append("Assert")
+        text.assert().endsWith("Assert").hasSize(12)
+        text.assert().assert().isInstanceOf(CharSequenceAssert::class.java)
+    }
+
+    @Test
+    fun `given primitive arrays when assert then primitive array asserts`() {
+        booleanArrayOf(true, false).assert().contains(true)
+        byteArrayOf(1, 2, 3).assert().hasSize(3).contains(2)
+        shortArrayOf(1, 2, 3).assert().hasSize(3).contains(2)
+        intArrayOf(1, 2, 3).assert().hasSize(3).containsExactly(1, 2, 3)
+        longArrayOf(1, 2, 3).assert().hasSize(3).contains(2L)
+        floatArrayOf(1f, 2f).assert().hasSize(2).contains(2f)
+        doubleArrayOf(1.0, 2.0).assert().hasSize(2).contains(2.0)
+        charArrayOf('a', 'b').assert().containsExactly('a', 'b')
+        intArrayOf(1).assert().assert().isInstanceOf(IntArrayAssert::class.java)
     }
 
     @Test

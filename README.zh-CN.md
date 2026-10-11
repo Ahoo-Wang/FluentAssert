@@ -80,9 +80,9 @@ isActive.assert().isTrue()
 
 | 类别        | 类型                                                                                                                                                           |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **基本类型**  | `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `BigDecimal`                                                                                   |
-| **文本**    | `String`                                                                                                                                                     |
-| **集合**    | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`                                                 |
+| **基本类型**  | `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `Char`, `BigDecimal`, `BigInteger`                                                             |
+| **文本**    | `String`, `StringBuilder`, `StringBuffer`                                                                                                                    |
+| **集合**    | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`, 原生类型数组（`IntArray` 等）                           |
 | **时间/日期** | `Date`, `ZonedDateTime`, `LocalDateTime`, `OffsetDateTime`, `OffsetTime`, `LocalTime`, `LocalDate`, `YearMonth`, `Instant`, `Duration`, `Period`, `Temporal` |
 | **I/O**   | `Path`, `File`, `URL`, `URI`                                                                                                                                 |
 | **并发**    | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`, `ScheduledFuture<V>`                                                                              |
@@ -159,12 +159,28 @@ val price = 19.99
 price.assert().isEqualTo(19.99).isPositive()
 ```
 
+##### `Char?.assert(): CharacterAssert`
+为字符值创建断言。
+
+```kotlin
+val grade = 'A'
+grade.assert().isUpperCase().isEqualTo('A')
+```
+
 ##### `BigDecimal?.assert(): BigDecimalAssert`
 为BigDecimal值创建断言。
 
 ```kotlin
 val amount = BigDecimal("123.45")
 amount.assert().isEqualTo("123.45").isPositive()
+```
+
+##### `BigInteger?.assert(): BigIntegerAssert`
+为BigInteger值创建断言。
+
+```kotlin
+val count = BigInteger("12345678901234567890")
+count.assert().isPositive().isGreaterThan(BigInteger.TEN)
 ```
 
 #### 文本类型
@@ -180,6 +196,18 @@ name.assert()
     .contains("uentAss")
     .hasLength(11)
 ```
+
+##### `StringBuilder?.assert(): CharSequenceAssert` / `StringBuffer?.assert(): CharSequenceAssert`
+为可变字符串构建器创建文本断言。二者同时实现了 `Comparable`，专用重载使其不再解析为 `GenericComparableAssert`。
+
+```kotlin
+val text = StringBuilder("Fluent").append("Assert")
+text.assert()
+    .startsWith("Fluent")
+    .hasSize(12)
+```
+
+> **注意**：静态类型为 `CharSequence` 的接收者没有专用重载（解析为 `ObjectAssert`），因为同时实现 `CharSequence` 与 `Comparable` 的类型（如 `CharBuffer`）会产生歧义。请先调用 `.toString()`。
 
 #### 泛型类型
 
@@ -250,7 +278,15 @@ array.assert()
     .doesNotContain("d")
 ```
 
-> **注意**：原生类型数组（`IntArray`、`LongArray`、`ByteArray` 等）不在 `Array<T>` 覆盖范围内——请先调用 `.toTypedArray()` 或 `.toList()` 以获得数组/列表断言 API。
+##### 原生类型数组: `IntArray?.assert(): IntArrayAssert`, ...
+每种 Kotlin 原生类型数组都有专用重载：`BooleanArray`、`ByteArray`、`ShortArray`、`IntArray`、`LongArray`、`FloatArray`、`DoubleArray`、`CharArray` 分别解析为对应的 AssertJ `XxxArrayAssert`。
+
+```kotlin
+val ids = intArrayOf(1, 2, 3)
+ids.assert()
+    .hasSize(3)
+    .containsExactly(1, 2, 3)
+```
 
 ##### `<T> List<T>?.assert(): ListAssert<T>`
 为列表创建断言。
