@@ -88,7 +88,7 @@ All extension functions follow the pattern `Type.assert(): AssertJTypeAssert`, w
 | **Collections** | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`                                                 |
 | **Time/Date**   | `Date`, `ZonedDateTime`, `LocalDateTime`, `OffsetDateTime`, `OffsetTime`, `LocalTime`, `LocalDate`, `YearMonth`, `Instant`, `Duration`, `Period`, `Temporal` |
 | **I/O**         | `Path`, `File`, `URL`, `URI`                                                                                                                                 |
-| **Concurrent**  | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`                                                                                                    |
+| **Concurrent**  | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`, `ScheduledFuture<V>`                                                                              |
 | **Functional**  | `Predicate<T>`                                                                                                                                               |
 | **Exceptions**  | `Throwable`                                                                                                                                                  |
 | **Custom**      | `AssertProvider<A>`                                                                                                                                          |
@@ -482,6 +482,17 @@ future.assert()
     .isDone()
     .isNotCancelled()
 ```
+
+##### `<V> ScheduledFuture<V>?.assert(): FutureAssert<V>`
+Creates assertions for ScheduledFuture objects. `ScheduledFuture` is also `Comparable<Delayed>`, so this dedicated overload keeps the call unambiguous.
+
+```kotlin
+val future = scheduler.schedule(Callable { "result" }, 1, TimeUnit.SECONDS)
+future.assert()
+    .isNotCancelled()
+```
+
+> **Note**: A custom type that implements `Comparable` *and* another supported interface (`Iterable`, `Map`, `Future`, `Throwable`, ...) makes `.assert()` ambiguous and fails to compile. Pick the overload with a statically typed receiver, e.g. `val items: Iterable<Item> = value; items.assert()`.
 
 ##### `<V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V>`
 Creates assertions for CompletableFuture objects.

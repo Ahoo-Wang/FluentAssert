@@ -73,6 +73,7 @@ Only use direct `assertThat` when implementing the provider's `assertThat()` met
 - Do not switch to `assertThat(value).usingRecursiveComparison()`; keep chaining from `value.assert()`.
 - Do not call `.assert()` on primitive arrays (`IntArray`, `LongArray`, ...) — they fall back to `ObjectAssert` with no collection APIs. Convert first: `ints.toList().assert().hasSize(3).contains(42)`.
 - Do not expect string assertions from non-`String` text receivers. A statically `CharSequence`-typed value resolves to `ObjectAssert`; `StringBuilder` (it implements `Comparable<StringBuilder>`) resolves to `GenericComparableAssert`. Use a `String` (`.toString()`) instead.
+- Do not call `.assert()` directly on a custom type that implements `Comparable` plus `Iterable`/`Map`/`Future`/`Throwable` — it is ambiguous and does not compile. Declare the receiver with the intended static type first (`val items: Iterable<Item> = value; items.assert()`).
 - There is no `CompletionStageAssert`; `stage.assert()` returns `CompletableFutureAssert`.
 
 ## References

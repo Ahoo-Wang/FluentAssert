@@ -151,6 +151,18 @@
         "Identifies temporal.assert() as TemporalAssert",
         "Does not identify the result as InstantAssert"
       ]
+    },
+    {
+      "id": 14,
+      "prompt": "Write a Kotlin test for a class `Batch(val items: List<String>) : Iterable<String>, Comparable<Batch>` that asserts the batch contains exactly \"a\" and \"b\" using FluentAssert.",
+      "expected_output": "Declare the receiver as Iterable<String> (for example val iterable: Iterable<String> = batch) and call iterable.assert().containsExactly(\"a\", \"b\"), explaining that batch.assert() is an overload-resolution ambiguity",
+      "files": [],
+      "expectations": [
+        "Does not call .assert() directly on the Batch-typed receiver",
+        "Declares the receiver with static type Iterable<String> before calling assert()",
+        "Calls containsExactly(\"a\", \"b\") on the resulting IterableAssert",
+        "Explains that Comparable plus Iterable makes batch.assert() ambiguous"
+      ]
     }
   ]
 }

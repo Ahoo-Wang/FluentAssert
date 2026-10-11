@@ -55,7 +55,7 @@ Key files:
 - `Jdk.kt` covers primitives, strings, BigDecimal, collections, arrays, optionals, streams, generic objects, and comparable values.
 - `JdkTime.kt` covers Date, java.time temporal values, Duration, and Period.
 - `JdkIO.kt` covers Path, File, URL, and URI.
-- `JdkConcurrent.kt` covers Future, CompletableFuture, and CompletionStage.
+- `JdkConcurrent.kt` covers Future, ScheduledFuture, CompletableFuture, and CompletionStage.
 - `JdkFunction.kt` covers Predicate.
 - `Throwable.kt` covers Throwable assertions and `assertThrownBy<T>`.
 - `AssertProvider.kt` covers AssertJ `AssertProvider<A>`.
@@ -85,6 +85,7 @@ These are verified facts about how the overloads resolve; keep docs and examples
 - Primitive arrays (`IntArray`, `LongArray`, `ByteArray`, ...) are not `Array<T>` and fall back to `T?.assert()` → `ObjectAssert`. README documents `.toList()`/`.toTypedArray()` as the workaround; extending coverage is an ask-first API change.
 - A statically `CharSequence`-typed receiver resolves to `ObjectAssert`, not `StringAssert`.
 - `StringBuilder` implements `Comparable<StringBuilder>`, so `sb.assert()` resolves to `GenericComparableAssert<StringBuilder>` — still no string assertions.
+- The `Comparable` overload has the same specificity as the interface overloads, so a type that is `Comparable` and also `Iterable`/`Map`/`Future`/`Throwable` is an ambiguity compile error. JDK types with this shape need a dedicated overload (as `ScheduledFuture` has); user types must use a statically typed receiver.
 - `CompletionStage<V>.assert()` returns `CompletableFutureAssert<V>`; there is no `CompletionStageAssert`.
 - KDoc and skill examples must genuinely exercise the overload they document — e.g. a `String` receiver never demonstrates the `GenericComparableAssert` overload because it resolves to `StringAssert`.
 - When documenting resolution behavior, verify the claim with a throwaway test before writing it down; intuition about Kotlin overload resolution is unreliable here.

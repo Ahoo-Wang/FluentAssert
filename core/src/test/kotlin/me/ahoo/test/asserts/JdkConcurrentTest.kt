@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Future
+import java.util.concurrent.ScheduledFuture
 
 class JdkConcurrentTest {
 
@@ -32,5 +33,12 @@ class JdkConcurrentTest {
             } returns mockk()
         }
         value.assert().assert().isInstanceOf(CompletableFutureAssert::class.java)
+    }
+
+    @Test
+    fun `given ScheduledFuture when assert then FutureAssert`() {
+        val value = mockk<ScheduledFuture<String>>()
+        val assertion: FutureAssert<String> = value.assert()
+        assertion.assert().isInstanceOf(FutureAssert::class.java)
     }
 }
