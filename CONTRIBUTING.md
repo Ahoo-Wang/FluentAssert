@@ -148,7 +148,8 @@ Rules:
 ## Code review
 
 - Every pull request needs an approving review from a [code owner](.github/CODEOWNERS) and green required
-  checks (`Build`, `Analyze (java-kotlin)`, `Codecov`), with all conversations resolved.
+  checks (`Build`, `Analyze (java-kotlin)`, `Codecov`, `Kotlin minimum consumer`, `Kotlin toolchain consumer`),
+  with all conversations resolved.
 - Reviewers focus on overload-resolution impact, the ABI dump diff, test coverage of new resolutions, and
   documentation consistency.
 
