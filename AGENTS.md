@@ -32,6 +32,10 @@ JDK 17 is required. Gradle configures the Kotlin JVM toolchain automatically.
 
 Tests use JUnit 5 and MockK. CI enables Gradle test retry with up to two retries and `failOnPassedAfterRetry = true`.
 
+Integration tests live in `core/src/integrationTest/` (JVM test suite `integrationTest`, part of `check`) and exercise real JDK resources and AssertJ failure messages: `./gradlew :core:integrationTest`.
+
+`check` also enforces 100% line coverage of production sources (`koverVerify`) and the Apache-2.0 header on every Kotlin source (`checkLicenseHeaders`). Requirements and their verifying tests are listed in `REQUIREMENTS.md`.
+
 Before committing changes to library behavior, run at least `./gradlew :core:test`. For broad changes, run `./gradlew build`.
 
 For suspected API bugs (wrong overload picked, wrong AssertJ type returned), write a failing test that reproduces the exact symptom and confirm RED before touching implementation. Overload resolution is decided by the static receiver type, so adding or widening an overload changes resolution for existing call sites — treat that as a behavior change.
@@ -112,7 +116,9 @@ These are verified facts about how the overloads resolve; keep docs and examples
 
 ## Publishing & CI
 
-Coverage CI runs `./gradlew code-coverage-report:koverXmlReport --stacktrace` and uploads `code-coverage-report/build/reports/kover/report.xml`.
+`ci.yml` runs `./gradlew build` on every push to `main` and pull request; `codeql.yml` runs CodeQL for Kotlin; `labeler.yml` labels PRs from changed paths (`.github/labeler.yml`). Coverage CI runs `./gradlew code-coverage-report:koverXmlReport --stacktrace` and uploads `code-coverage-report/build/reports/kover/report.xml`.
+
+Versioning follows the semver policy in `CONTRIBUTING.md#versioning-and-releases` (adding an overload is minor, removing/changing a signature is major); record user-visible changes under `Unreleased` in `CHANGELOG.md`.
 
 Package publishing is triggered by GitHub Release creation or manual workflow dispatch. It publishes to GitHub Packages and Maven Central using signing and repository credentials from CI secrets.
 

@@ -1,0 +1,49 @@
+name: Bug report
+description: An overload resolves to the wrong assertion, fails to compile, or behaves differently from AssertJ.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please search [existing issues](https://github.com/Ahoo-Wang/FluentAssert/issues?q=is%3Aissue) first.
+        Overload resolution depends on the **static** type of the receiver, so please include the declared type in your example.
+  - type: input
+    id: version
+    attributes:
+      label: FluentAssert version
+      placeholder: "1.2.0"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Kotlin, JDK and AssertJ versions
+      placeholder: "Kotlin 2.2.21, JDK 17, AssertJ 3.27.7"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Kotlin code including the declared type of the receiver.
+      render: kotlin
+      placeholder: |
+        val value: ScheduledFuture<String> = scheduler.schedule(Callable { "x" }, 1, TimeUnit.SECONDS)
+        value.assert()
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Which assertion type did you expect (e.g. `FutureAssert<String>`)?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Resolved assertion type, compiler error or stack trace.
+      render: text
+    validations:
+      required: true

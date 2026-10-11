@@ -1,0 +1,44 @@
+# Path-based PR labels, applied by .github/workflows/labeler.yml (actions/labeler v5+ config format).
+
+core:
+  - changed-files:
+      - any-glob-to-any-file: 'core/src/main/**'
+
+api:
+  - changed-files:
+      - any-glob-to-any-file: 'core/api/**'
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'core/src/test/**'
+          - 'core/src/integrationTest/**'
+
+build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.gradle.kts'
+          - 'gradle.properties'
+          - 'gradle/wrapper/**'
+          - 'config/**'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'gradle/libs.versions.toml'
+          - 'renovate.json'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+# all-globs-to-any-file: a Markdown file outside skills/ (negations do not work with any-glob-to-any-file).
+documentation:
+  - changed-files:
+      - all-globs-to-any-file:
+          - '**/*.md'
+          - '!skills/**'
+
+skills:
+  - changed-files:
+      - any-glob-to-any-file: 'skills/**'

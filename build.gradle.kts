@@ -17,6 +17,8 @@ import org.gradle.testretry.TestRetryPlugin
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
@@ -59,6 +61,26 @@ allprojects {
     }
 }
 
+// Every Kotlin source file must carry the Apache-2.0 header (see LICENSE).
+val checkLicenseHeaders by tasks.registering {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Verifies that all Kotlin sources start with the Apache-2.0 license header."
+    val sources = fileTree(rootDir) {
+        include("**/src/**/*.kt")
+        exclude("**/build/**")
+    }
+    inputs.files(sources)
+    doLast {
+        val missing = sources.files.filterNot { it.readText().contains("Licensed under the Apache License, Version 2.0") }
+        check(missing.isEmpty()) {
+            "Missing Apache-2.0 license header:\n" + missing.joinToString("\n") { it.relativeTo(rootDir).path }
+        }
+    }
+}
+tasks.named("check") {
+    dependsOn(checkLicenseHeaders)
+}
+
 configure(bomProjects) {
     apply<JavaPlatformPlugin>()
     configure<JavaPlatformExtension> {
@@ -85,6 +107,22 @@ configure(libraryProjects) {
     }
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    configure<KoverProjectExtension> {
+        currentProject {
+            sources {
+                // Kover only recognizes the default test source set; keep test suites out of the measured code.
+                excludedSourceSets.add("integrationTest")
+            }
+        }
+        reports {
+            verify {
+                // Every public API is a one-line delegation, so anything below full line coverage is an untested overload.
+                rule("Full line coverage") {
+                    minBound(100, CoverageUnit.LINE)
+                }
+            }
+        }
+    }
     configure<KotlinJvmProjectExtension> {
         jvmToolchain(17)
         // Consumers compile against this library with their own Kotlin version: target the oldest
