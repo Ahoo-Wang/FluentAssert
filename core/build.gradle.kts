@@ -23,3 +23,10 @@ testing {
 tasks.named("check") {
     dependsOn(testing.suites.named("integrationTest"))
 }
+
+// KDoc examples are @sample references to these executable tests, so every documented example compiles and runs.
+extensions.configure<org.jetbrains.dokka.gradle.DokkaExtension> {
+    dokkaSourceSets.configureEach {
+        samples.from("src/test/kotlin/me/ahoo/test/asserts/samples")
+    }
+}

@@ -22,73 +22,31 @@ import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
 
 /**
- * Creates a fluent assertion for Future objects.
+ * Returns a [FutureAssert] for this future.
  *
- * This extension function provides access to AssertJ's FutureAssert methods for fluent testing
- * of Future objects, including null-safe operations and asynchronous result verification.
- *
- * Example:
- * ```kotlin
- * val future = executor.submit(Callable { "result" })
- * future.assert().isDone().isNotCancelled()
- * ```
- *
- * @param V The type of the future's result value
- * @receiver Future<V>? The future to assert on (nullable)
- * @return FutureAssert<V> A fluent assertion object for futures
+ * @sample me.ahoo.test.asserts.samples.JdkConcurrentSamples.future
  */
 fun <V> Future<V>?.assert(): FutureAssert<V> = assertThat(this)
 
 /**
- * Creates a fluent assertion for ScheduledFuture objects.
+ * Returns a [FutureAssert] for this scheduled future.
  *
- * [ScheduledFuture] is both a [Future] and a `Comparable<Delayed>`, so without this dedicated overload
- * the call would be ambiguous between the `Future` and `Comparable` overloads.
+ * [ScheduledFuture] is also `Comparable<Delayed>`; this dedicated overload avoids an ambiguity with the `Comparable` overload.
  *
- * Example:
- * ```kotlin
- * val future = scheduler.schedule(Callable { "result" }, 1, TimeUnit.SECONDS)
- * future.assert().isNotCancelled()
- * ```
- *
- * @param V The type of the future's result value
- * @receiver ScheduledFuture<V>? The scheduled future to assert on (nullable)
- * @return FutureAssert<V> A fluent assertion object for futures
+ * @sample me.ahoo.test.asserts.samples.JdkConcurrentSamples.scheduledFuture
  */
 fun <V> ScheduledFuture<V>?.assert(): FutureAssert<V> = assertThat(this as Future<V>?)
 
 /**
- * Creates a fluent assertion for CompletableFuture objects.
+ * Returns a [CompletableFutureAssert] for this future.
  *
- * This extension function provides access to AssertJ's CompletableFutureAssert methods for fluent testing
- * of CompletableFuture objects, including null-safe operations and completion state verification.
- *
- * Example:
- * ```kotlin
- * val future = CompletableFuture.completedFuture("success")
- * future.assert().isCompleted().isCompletedWithValue("success")
- * ```
- *
- * @param V The type of the completable future's result value
- * @receiver CompletableFuture<V>? The completable future to assert on (nullable)
- * @return CompletableFutureAssert<V> A fluent assertion object for completable futures
+ * @sample me.ahoo.test.asserts.samples.JdkConcurrentSamples.completableFuture
  */
 fun <V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V> = assertThat(this)
 
 /**
- * Creates a fluent assertion for CompletionStage objects.
+ * Returns a [CompletableFutureAssert] for this stage, converted with [CompletionStage.toCompletableFuture]; AssertJ has no `CompletionStageAssert`.
  *
- * This extension function provides access to AssertJ's CompletableFutureAssert methods for fluent testing
- * of CompletionStage objects, including null-safe operations and completion state verification.
- *
- * Example:
- * ```kotlin
- * val stage = CompletableFuture.completedFuture("result")
- * stage.assert().isCompleted().isCompletedWithValue("result")
- * ```
- *
- * @param V The type of the completion stage's result value
- * @receiver CompletionStage<V>? The completion stage to assert on (nullable)
- * @return CompletableFutureAssert<V> A fluent assertion object for completion stages
+ * @sample me.ahoo.test.asserts.samples.JdkConcurrentSamples.completionStage
  */
 fun <V> CompletionStage<V>?.assert(): CompletableFutureAssert<V> = assertThat(this)

@@ -18,41 +18,22 @@ import org.assertj.core.api.ThrowableAssert
 import org.assertj.core.error.ShouldBeInstance.shouldBeInstance
 
 /**
- * Creates a fluent assertion for Throwable values.
+ * Returns a [ThrowableAssert] for this throwable.
  *
- * This extension function provides access to AssertJ's ThrowableAssert methods for fluent testing
- * of exceptions, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val exception = IllegalArgumentException("invalid argument")
- * exception.assert().hasMessage("invalid argument")
- * ```
- *
- * @param T The type of exception being asserted
- * @receiver T? The throwable to assert on (nullable)
- * @return ThrowableAssert<T> A fluent assertion object for the throwable
+ * @sample me.ahoo.test.asserts.samples.ThrowableSamples.throwable
  */
 fun <T : Throwable> T?.assert(): ThrowableAssert<T> = ThrowableAssert(this)
 
 /**
- * Asserts that a specific type of exception is thrown by the given executable.
+ * Runs [shouldRaiseThrowable] and returns a [ThrowableAssert] for the throwable it raised.
  *
- * This function executes the provided lambda and verifies that it throws an exception of the specified type.
- * It provides detailed error messages when the assertion fails.
+ * Use this overload when the expected type is only available as a [Class]; otherwise prefer the reified one.
+ * The returned assertion is fresh, so failures of chained assertions report their own diagnostics.
  *
- * Example:
- * ```kotlin
- * assertThrownBy(IllegalArgumentException::class.java) {
- *     throw IllegalArgumentException("invalid argument")
- * }.hasMessage("invalid argument")
- * ```
- *
- * @param T The type of exception expected to be thrown (must extend Throwable)
- * @param throwableType The class of the expected exception
- * @param shouldRaiseThrowable The executable that should throw the exception
- * @return ThrowableAssert<T> A fluent assertion object for the thrown exception
- * @throws AssertionError if no exception is thrown or if the wrong type of exception is thrown
+ * @param throwableType the expected type; subtypes are accepted
+ * @param shouldRaiseThrowable the code that should throw
+ * @throws AssertionError if nothing is thrown or the throwable is not a [throwableType]
+ * @sample me.ahoo.test.asserts.samples.ThrowableSamples.assertThrownByClass
  */
 @Suppress("UNCHECKED_CAST")
 fun <T : Throwable> assertThrownBy(
@@ -73,22 +54,10 @@ fun <T : Throwable> assertThrownBy(
 }
 
 /**
- * Asserts that a specific type of exception is thrown by the given executable (reified version).
+ * Runs [shouldRaiseThrowable] and returns a [ThrowableAssert] for the throwable it raised, expecting a [T].
  *
- * This inline function provides a more convenient syntax for asserting exceptions using Kotlin's
- * reified generics, eliminating the need to explicitly specify the exception class.
- *
- * Example:
- * ```kotlin
- * assertThrownBy<IllegalArgumentException> {
- *     throw IllegalArgumentException("invalid argument")
- * }.hasMessage("invalid argument")
- * ```
- *
- * @param T The type of exception expected to be thrown (must extend Throwable)
- * @param shouldRaiseThrowable The executable that should throw the exception
- * @return ThrowableAssert<T> A fluent assertion object for the thrown exception
- * @throws AssertionError if no exception is thrown or if the wrong type of exception is thrown
+ * @throws AssertionError if nothing is thrown or the throwable is not a [T]
+ * @sample me.ahoo.test.asserts.samples.ThrowableSamples.assertThrownByReified
  */
 inline fun <reified T : Throwable> assertThrownBy(noinline shouldRaiseThrowable: () -> Unit): ThrowableAssert<T> =
     assertThrownBy(T::class.java, shouldRaiseThrowable)
