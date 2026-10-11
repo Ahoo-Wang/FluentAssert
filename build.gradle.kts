@@ -16,6 +16,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.testretry.TestRetryPlugin
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     alias(libs.plugins.publish)
@@ -81,6 +82,9 @@ configure(libraryProjects) {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     configure<KotlinJvmProjectExtension> {
         jvmToolchain(17)
+        // The public API is the overload set itself; lock it with a reviewed ABI dump (core/api/).
+        @OptIn(ExperimentalAbiValidation::class)
+        abiValidation()
     }
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {

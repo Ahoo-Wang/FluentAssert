@@ -36,6 +36,11 @@ Before committing changes to library behavior, run at least `./gradlew :core:tes
 
 For suspected API bugs (wrong overload picked, wrong AssertJ type returned), write a failing test that reproduces the exact symptom and confirm RED before touching implementation. Overload resolution is decided by the static receiver type, so adding or widening an overload changes resolution for existing call sites — treat that as a behavior change.
 
+Two guards lock the public contract:
+
+- `OverloadResolutionContractTest` pins each receiver type to its overload with typed assignments (`val a: InstantAssert = instant.assert()`), so a wrong or widened resolution fails compilation. Add a line there for every new overload.
+- `core/api/core.api` is the reviewed ABI dump, verified by `checkKotlinAbi` (part of `check`). After an intentional public API change run `./gradlew :core:updateKotlinAbi` and commit the dump with the change.
+
 ## Project Structure
 
 ```text
@@ -96,7 +101,7 @@ These are verified facts about how the overloads resolve; keep docs and examples
 - Import the extension with `import me.ahoo.test.asserts.assert` in examples and tests.
 - Keep KDoc examples short and executable-looking.
 - Follow existing test naming with backtick JUnit method names, for example `fun \`given Boolean when assert then BooleanAssert\`()`.
-- Tests commonly verify the returned AssertJ type with `value.assert().assert().isInstanceOf(...)`.
+- Tests commonly verify the returned AssertJ type with `value.assert().assert().isInstanceOf(...)`; static return types belong in `OverloadResolutionContractTest`.
 - Detekt max line length is 300. Wildcard imports are allowed only for `java.util.*`, `org.hamcrest.Matchers.*`, `org.hamcrest.MatcherAssert.*`, and `org.junit.jupiter.api.Assertions.*` (see `config/detekt/detekt.yml`); `java.time.*` and others fail lint.
 
 ## Git & PR Workflow
