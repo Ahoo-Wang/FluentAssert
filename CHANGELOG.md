@@ -7,6 +7,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-11
+
+No API change; the library behaves exactly like 1.2.0. This release ships the corrected documentation
+(including the API docs on javadoc.io) and the new quality gates.
+
 ### Added
 - `integrationTest` suite covering real file system, executor and AssertJ failure-reporting scenarios.
 - CI workflow running the full `./gradlew build`, CodeQL analysis and path-based PR labeling.
@@ -72,7 +77,8 @@ All notable changes to this project are documented here. The format follows
 ### Added
 - Initial `.assert()` extensions, `Iterable` support and nullable receivers. ([#3], [#4])
 
-[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v0.2.8...v1.0.0

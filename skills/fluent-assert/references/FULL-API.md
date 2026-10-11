@@ -14,7 +14,7 @@
 ### Gradle (Kotlin DSL)
 
 ```kotlin
-testImplementation("me.ahoo.test:fluent-assert-core:1.2.0")
+testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 ```
 
 ### Maven
@@ -23,7 +23,7 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.0")
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <scope>test</scope>
 </dependency>
 ```
