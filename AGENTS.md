@@ -47,7 +47,7 @@ Two guards lock the public contract:
 core/                         # Published library module, source and tests live here
 dependencies/                 # Java platform module pinning dependency versions
 bom/                          # Published BOM for consumers
-code-coverage-report/         # Aggregate Kover/Jacoco reporting module, not published
+code-coverage-report/         # Aggregate Kover reporting module, not published
 skills/                       # fluent-assert skill plugin sources (SKILL.md, FULL-API.md, evals)
 config/detekt/detekt.yml      # Detekt rules
 .github/workflows/            # Coverage and package publishing workflows
@@ -97,7 +97,7 @@ These are verified facts about how the overloads resolve; keep docs and examples
 
 ## Code Style
 
-- Kotlin compiler flags are `-Xjsr305=strict` and `-Xjvm-default=all-compatibility`.
+- Kotlin compiler flag is `-Xjsr305=strict`.
 - Import the extension with `import me.ahoo.test.asserts.assert` in examples and tests.
 - Keep KDoc examples short and executable-looking.
 - Follow existing test naming with backtick JUnit method names, for example `fun \`given Boolean when assert then BooleanAssert\`()`.

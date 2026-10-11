@@ -92,7 +92,7 @@ This project follows a code of conduct to ensure a welcoming environment for all
 ./gradlew detekt --auto-correct
 
 # Generate test coverage report
-./gradlew jacocoTestReport
+./gradlew code-coverage-report:koverHtmlReport
 ```
 
 ### IDE Setup
