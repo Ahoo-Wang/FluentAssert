@@ -197,7 +197,7 @@ name.assert()
     .startsWith("Fluent")
     .endsWith("Assert")
     .contains("uentAss")
-    .hasLength(11)
+    .hasLength(12)
 ```
 
 ##### `StringBuilder?.assert(): CharSequenceAssert` / `StringBuffer?.assert(): CharSequenceAssert`
