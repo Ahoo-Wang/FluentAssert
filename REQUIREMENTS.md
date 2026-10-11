@@ -20,7 +20,7 @@ requirement must update this file, its verification, and [CHANGELOG.md](CHANGELO
 | ID | Requirement | Verified by |
 |----|-------------|-------------|
 | N1 | **Binary compatibility**: public signatures are only added within a major version. | `checkKotlinAbi` against `core/api/core.api` |
-| N2 | **Consumer compatibility**: usable from Kotlin 2.1+ compilers and JDK 17+; the published `kotlin-stdlib` dependency is 2.2.x. | Kotlin `languageVersion`/`apiVersion` 2.2 and `jvmToolchain(17)` in `build.gradle.kts`; a consumer build with Kotlin 2.1.21 compiles and passes, 2.0.21 is rejected (verified manually for 1.2.0) |
+| N2 | **Consumer compatibility**: usable from Kotlin 2.1+ compilers and JDK 17+; the published `kotlin-stdlib` dependency is 2.2.x. | Kotlin `languageVersion`/`apiVersion` 2.2 and `jvmToolchain(17)` in `build.gradle.kts`; a consumer build with Kotlin 2.1.21 compiles and passes, 2.0.21 is rejected (verified manually for 1.2.0 and 1.2.1) |
 | N3 | **Zero overhead**: each extension is a single delegation to an AssertJ constructor or factory. | Code review; 100% line coverage gate |
 | N4 | **Minimal dependencies**: the published POM depends only on `assertj-core` and `kotlin-stdlib`. | Generated POM review on release |
 | N5 | **Quality gates**: every change passes unit and integration tests, detekt, 100% line coverage and license-header checks in CI. | `./gradlew build` in `.github/workflows/ci.yml` |

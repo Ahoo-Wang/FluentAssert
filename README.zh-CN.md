@@ -33,7 +33,7 @@ FluentAssert 刻意保持轻薄。每个扩展函数返回的都是 `assertThat(
 
 ```kotlin
 // Gradle (Kotlin DSL)
-testImplementation("me.ahoo.test:fluent-assert-core:1.2.0")
+testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 ```
 
 ```xml
@@ -41,7 +41,7 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.0")
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <scope>test</scope>
 </dependency>
 ```
