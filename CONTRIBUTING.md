@@ -40,6 +40,16 @@ Import the project into IntelliJ IDEA as a Gradle project with JDK 17.
 | `./gradlew :core:koverVerify` | 100% line coverage of production code |
 | `./gradlew checkLicenseHeaders` | Apache-2.0 header in every Kotlin source |
 
+Consumer compatibility is a separate build, run by the `Kotlin minimum consumer` and `Kotlin toolchain consumer`
+CI jobs. It compiles and tests code using FluentAssert with an older Kotlin compiler, resolving the library only
+from its generated POMs:
+
+```bash
+./gradlew kotlinConsumerRepository                                         # Assemble build/kotlin-consumer-repo
+./gradlew -p compatibility/kotlin-consumer test                            # Minimum supported Kotlin (2.1.21)
+./gradlew -p compatibility/kotlin-consumer test -PkotlinVersion=2.4.21     # Any other compiler version
+```
+
 Run a subset with `./gradlew :core:test --tests "*JdkTest*"`. The aggregate coverage report is
 `./gradlew code-coverage-report:koverHtmlReport`.
 
@@ -54,6 +64,7 @@ core/
 │   └── docs/                               # DocumentationTest and the README/skill example copies
 ├── src/integrationTest/kotlin/             # Integration tests
 └── api/core.api                            # Reviewed public ABI dump
+compatibility/kotlin-consumer/              # Standalone consumer build for Kotlin compatibility checks
 dependencies/                               # Published dependency platform (AssertJ BOM)
 bom/                                        # Published BOM for consumers
 code-coverage-report/                       # Aggregate Kover report
