@@ -93,6 +93,7 @@ All value receivers below are nullable. `AssertProvider<A>.assert()` is the only
 | `URL?` | `UrlAssert` |
 | `URI?` | `UriAssert` |
 | `Future<V>?` | `FutureAssert<V>` |
+| `ScheduledFuture<V>?` | `FutureAssert<V>` |
 | `CompletableFuture<V>?` | `CompletableFutureAssert<V>` |
 | `CompletionStage<V>?` | `CompletableFutureAssert<V>` |
 | `Predicate<T>?` | `PredicateAssert<T>` |
@@ -109,6 +110,7 @@ Kotlin selects an extension from the receiver's static type. Keep examples and f
 - Keep a receiver statically typed as `Iterable<T>` to exercise `IterableAssert`; a `List<T>` receiver resolves to `ListAssert`.
 - Keep a receiver statically typed as `Temporal` to exercise `TemporalAssert`; concrete time types resolve to their dedicated assertion classes.
 - Expect `CompletionStage<V>.assert()` to return `CompletableFutureAssert<V>`; AssertJ has no `CompletionStageAssert`.
+- Disambiguate custom types that implement `Comparable` and another supported interface (`Iterable`, `Map`, `Future`, `Throwable`, ...). `value.assert()` is an overload-resolution ambiguity compile error; declare the receiver with the intended static type, e.g. `val items: Iterable<Item> = value; items.assert()`. `ScheduledFuture` has a dedicated overload and is not affected.
 - Expect `String.assert()` to return `StringAssert`, not `GenericComparableAssert`, even though `String` is comparable.
 
 ## Special APIs

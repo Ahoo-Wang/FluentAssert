@@ -36,13 +36,18 @@ Before committing changes to library behavior, run at least `./gradlew :core:tes
 
 For suspected API bugs (wrong overload picked, wrong AssertJ type returned), write a failing test that reproduces the exact symptom and confirm RED before touching implementation. Overload resolution is decided by the static receiver type, so adding or widening an overload changes resolution for existing call sites — treat that as a behavior change.
 
+Two guards lock the public contract:
+
+- `OverloadResolutionContractTest` pins each receiver type to its overload with typed assignments (`val a: InstantAssert = instant.assert()`), so a wrong or widened resolution fails compilation. Add a line there for every new overload.
+- `core/api/core.api` is the reviewed ABI dump, verified by `checkKotlinAbi` (part of `check`). After an intentional public API change run `./gradlew :core:updateKotlinAbi` and commit the dump with the change.
+
 ## Project Structure
 
 ```text
 core/                         # Published library module, source and tests live here
 dependencies/                 # Java platform module pinning dependency versions
 bom/                          # Published BOM for consumers
-code-coverage-report/         # Aggregate Kover/Jacoco reporting module, not published
+code-coverage-report/         # Aggregate Kover reporting module, not published
 skills/                       # fluent-assert skill plugin sources (SKILL.md, FULL-API.md, evals)
 config/detekt/detekt.yml      # Detekt rules
 .github/workflows/            # Coverage and package publishing workflows
@@ -55,7 +60,7 @@ Key files:
 - `Jdk.kt` covers primitives, strings, BigDecimal, collections, arrays, optionals, streams, generic objects, and comparable values.
 - `JdkTime.kt` covers Date, java.time temporal values, Duration, and Period.
 - `JdkIO.kt` covers Path, File, URL, and URI.
-- `JdkConcurrent.kt` covers Future, CompletableFuture, and CompletionStage.
+- `JdkConcurrent.kt` covers Future, ScheduledFuture, CompletableFuture, and CompletionStage.
 - `JdkFunction.kt` covers Predicate.
 - `Throwable.kt` covers Throwable assertions and `assertThrownBy<T>`.
 - `AssertProvider.kt` covers AssertJ `AssertProvider<A>`.
@@ -74,7 +79,7 @@ fun <T> Iterable<T>?.assert(): IterableAssert<T> = assertThat(this)
 
 All receivers are nullable (including the Comparable overload `fun <T : Comparable<T>?> T?.assert()`), so callers can assert `null` values fluently. `AssertProvider<A>.assert()` is non-nullable because AssertJ handles provider delegation.
 
-`JdkTime.kt` uses `assertThat(...) as XxxAssert` casts because AssertJ's temporal factories return wildcard self-references (`AbstractLocalDateAssert<?>`) and most concrete temporal assert classes have no public constructor; the file header explains this. Prefer direct constructors where they exist (as `JdkIO.kt` does).
+Prefer direct AssertJ constructors where they are public (`JdkIO.kt`, and `Date`/`Instant`/`Duration`/`Period` in `JdkTime.kt`). The remaining `JdkTime.kt` overloads use `assertThat(...) as XxxAssert` casts because their constructors are protected and AssertJ's factories return wildcard self-references (`AbstractLocalDateAssert<?>`); the file header explains this.
 
 Do not add custom assertion semantics in this library unless requested. The library's value is the Kotlin extension API over AssertJ, not reimplementing AssertJ behavior.
 
@@ -85,17 +90,18 @@ These are verified facts about how the overloads resolve; keep docs and examples
 - Primitive arrays (`IntArray`, `LongArray`, `ByteArray`, ...) are not `Array<T>` and fall back to `T?.assert()` → `ObjectAssert`. README documents `.toList()`/`.toTypedArray()` as the workaround; extending coverage is an ask-first API change.
 - A statically `CharSequence`-typed receiver resolves to `ObjectAssert`, not `StringAssert`.
 - `StringBuilder` implements `Comparable<StringBuilder>`, so `sb.assert()` resolves to `GenericComparableAssert<StringBuilder>` — still no string assertions.
+- The `Comparable` overload has the same specificity as the interface overloads, so a type that is `Comparable` and also `Iterable`/`Map`/`Future`/`Throwable` is an ambiguity compile error. JDK types with this shape need a dedicated overload (as `ScheduledFuture` has); user types must use a statically typed receiver.
 - `CompletionStage<V>.assert()` returns `CompletableFutureAssert<V>`; there is no `CompletionStageAssert`.
 - KDoc and skill examples must genuinely exercise the overload they document — e.g. a `String` receiver never demonstrates the `GenericComparableAssert` overload because it resolves to `StringAssert`.
 - When documenting resolution behavior, verify the claim with a throwaway test before writing it down; intuition about Kotlin overload resolution is unreliable here.
 
 ## Code Style
 
-- Kotlin compiler flags are `-Xjsr305=strict` and `-Xjvm-default=all-compatibility`.
+- Kotlin compiler flag is `-Xjsr305=strict`.
 - Import the extension with `import me.ahoo.test.asserts.assert` in examples and tests.
 - Keep KDoc examples short and executable-looking.
 - Follow existing test naming with backtick JUnit method names, for example `fun \`given Boolean when assert then BooleanAssert\`()`.
-- Tests commonly verify the returned AssertJ type with `value.assert().assert().isInstanceOf(...)`.
+- Tests commonly verify the returned AssertJ type with `value.assert().assert().isInstanceOf(...)`; static return types belong in `OverloadResolutionContractTest`.
 - Detekt max line length is 300. Wildcard imports are allowed only for `java.util.*`, `org.hamcrest.Matchers.*`, `org.hamcrest.MatcherAssert.*`, and `org.junit.jupiter.api.Assertions.*` (see `config/detekt/detekt.yml`); `java.time.*` and others fail lint.
 
 ## Git & PR Workflow

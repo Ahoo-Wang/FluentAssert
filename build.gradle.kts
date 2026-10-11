@@ -16,6 +16,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.testretry.TestRetryPlugin
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     alias(libs.plugins.publish)
@@ -23,7 +24,6 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.dokka)
     alias(libs.plugins.test.retry)
-    jacoco
     base
     alias(libs.plugins.kover)
 }
@@ -41,7 +41,6 @@ ext.set("libraryProjects", libraryProjects)
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
     tasks.withType<Jar> {
@@ -71,20 +70,26 @@ configure(libraryProjects) {
         autoCorrect = false
     }
     apply<DokkaPlugin>()
-    apply<JacocoPlugin>()
     apply<JavaLibraryPlugin>()
     configure<JavaPluginExtension> {
         withJavadocJar()
         withSourcesJar()
     }
+    // withJavadocJar() alone packages an empty jar for Kotlin sources; ship the Dokka HTML instead.
+    tasks.named<Jar>("javadocJar") {
+        from(tasks.named("dokkaGeneratePublicationHtml"))
+    }
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlinx.kover")
     configure<KotlinJvmProjectExtension> {
         jvmToolchain(17)
+        // The public API is the overload set itself; lock it with a reviewed ABI dump (core/api/).
+        @OptIn(ExperimentalAbiValidation::class)
+        abiValidation()
     }
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all-compatibility")
+            freeCompilerArgs = listOf("-Xjsr305=strict")
             javaParameters = true
         }
     }
@@ -108,16 +113,15 @@ configure(libraryProjects) {
     dependencies {
         api(platform(dependenciesProject))
         testImplementation(platform(rootProject.libs.junit.bom))
-        detektPlugins(dependenciesProject)
         testImplementation("org.assertj:assertj-core")
-        testImplementation("io.mockk:mockk") {
+        testImplementation(rootProject.libs.mockk) {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testImplementation("org.junit.jupiter:junit-jupiter-params")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting")
+        detektPlugins(rootProject.libs.detekt.formatting)
     }
 }
 
@@ -139,12 +143,15 @@ configure(publishProjects) {
                     password = System.getenv("GITHUB_TOKEN")
                 }
             }
-            maven {
-                name = "LinYiPackages"
-                url = uri(project.properties["linyiPackageReleaseUrl"].toString())
-                credentials {
-                    username = project.properties["linyiPackageUsername"]?.toString()
-                    password = project.properties["linyiPackagePwd"]?.toString()
+            val linyiPackageReleaseUrl = getPropertyOf("linyiPackageReleaseUrl")
+            if (linyiPackageReleaseUrl != null) {
+                maven {
+                    name = "LinYiPackages"
+                    url = uri(linyiPackageReleaseUrl)
+                    credentials {
+                        username = getPropertyOf("linyiPackageUsername")
+                        password = getPropertyOf("linyiPackagePwd")
+                    }
                 }
             }
         }
@@ -187,7 +194,6 @@ configure(publishProjects) {
         }
     }
     configure<SigningExtension> {
-        val isInCI = null != System.getenv("CI")
         if (isInCI) {
             val signingKeyId = System.getenv("SIGNING_KEYID")
             val signingKey = System.getenv("SIGNING_SECRETKEY")
@@ -213,5 +219,5 @@ nexusPublishing {
     }
 }
 
-fun getPropertyOf(name: String) = project.properties[name]?.toString()
+fun getPropertyOf(name: String): String? = providers.gradleProperty(name).orNull
 fun Project.getArchivesName() = "fluent-assert-${project.name}"

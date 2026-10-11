@@ -19,6 +19,7 @@ import org.assertj.core.api.FutureAssert
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Future
+import java.util.concurrent.ScheduledFuture
 
 /**
  * Creates a fluent assertion for Future objects.
@@ -37,6 +38,24 @@ import java.util.concurrent.Future
  * @return FutureAssert<V> A fluent assertion object for futures
  */
 fun <V> Future<V>?.assert(): FutureAssert<V> = assertThat(this)
+
+/**
+ * Creates a fluent assertion for ScheduledFuture objects.
+ *
+ * [ScheduledFuture] is both a [Future] and a `Comparable<Delayed>`, so without this dedicated overload
+ * the call would be ambiguous between the `Future` and `Comparable` overloads.
+ *
+ * Example:
+ * ```kotlin
+ * val future = scheduler.schedule(Callable { "result" }, 1, TimeUnit.SECONDS)
+ * future.assert().isNotCancelled()
+ * ```
+ *
+ * @param V The type of the future's result value
+ * @receiver ScheduledFuture<V>? The scheduled future to assert on (nullable)
+ * @return FutureAssert<V> A fluent assertion object for futures
+ */
+fun <V> ScheduledFuture<V>?.assert(): FutureAssert<V> = assertThat(this as Future<V>?)
 
 /**
  * Creates a fluent assertion for CompletableFuture objects.

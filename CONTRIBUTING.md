@@ -74,6 +74,12 @@ This project follows a code of conduct to ensure a welcoming environment for all
 
 # Run specific test method
 ./gradlew test --tests "*JdkTest*" --tests "*booleanTest*"
+
+# Verify the public ABI against core/api/core.api (also part of ./gradlew check)
+./gradlew :core:checkKotlinAbi
+
+# Update the ABI dump after an intentional public API change
+./gradlew :core:updateKotlinAbi
 ```
 
 ### Code Quality Checks
@@ -86,7 +92,7 @@ This project follows a code of conduct to ensure a welcoming environment for all
 ./gradlew detekt --auto-correct
 
 # Generate test coverage report
-./gradlew jacocoTestReport
+./gradlew code-coverage-report:koverHtmlReport
 ```
 
 ### IDE Setup

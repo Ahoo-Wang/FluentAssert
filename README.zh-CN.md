@@ -85,7 +85,7 @@ isActive.assert().isTrue()
 | **集合**    | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`                                                 |
 | **时间/日期** | `Date`, `ZonedDateTime`, `LocalDateTime`, `OffsetDateTime`, `OffsetTime`, `LocalTime`, `LocalDate`, `YearMonth`, `Instant`, `Duration`, `Period`, `Temporal` |
 | **I/O**   | `Path`, `File`, `URL`, `URI`                                                                                                                                 |
-| **并发**    | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`                                                                                                    |
+| **并发**    | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`, `ScheduledFuture<V>`                                                                              |
 | **函数式**   | `Predicate<T>`                                                                                                                                               |
 | **异常**    | `Throwable`                                                                                                                                                  |
 | **自定义**   | `AssertProvider<A>`                                                                                                                                          |
@@ -479,6 +479,17 @@ future.assert()
     .isDone()
     .isNotCancelled()
 ```
+
+##### `<V> ScheduledFuture<V>?.assert(): FutureAssert<V>`
+为ScheduledFuture对象创建断言。`ScheduledFuture` 同时也是 `Comparable<Delayed>`，该专用重载用于避免调用歧义。
+
+```kotlin
+val future = scheduler.schedule(Callable { "result" }, 1, TimeUnit.SECONDS)
+future.assert()
+    .isNotCancelled()
+```
+
+> **注意**：自定义类型如果同时实现 `Comparable` 和其他已支持的接口（`Iterable`、`Map`、`Future`、`Throwable` 等），`.assert()` 会产生重载歧义导致编译失败。请通过静态类型声明选择重载，例如 `val items: Iterable<Item> = value; items.assert()`。
 
 ##### `<V> CompletableFuture<V>?.assert(): CompletableFutureAssert<V>`
 为CompletableFuture对象创建断言。

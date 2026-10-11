@@ -160,6 +160,19 @@ class JdkTest {
         value.assert().assert().isInstanceOf(GenericComparableAssert::class.java)
     }
 
+    @Test
+    fun `given Comparable Iterable when upcast to Iterable then IterableAssert`() {
+        // Comparable + Iterable is ambiguous for `value.assert()`; a statically typed receiver picks the overload.
+        val value: Iterable<String> = ComparableIterable(listOf("1"))
+        val assertion: IterableAssert<String> = value.assert()
+        assertion.containsExactly("1")
+    }
+
+    class ComparableIterable(private val items: List<String>) : Iterable<String>, Comparable<ComparableIterable> {
+        override fun iterator(): Iterator<String> = items.iterator()
+        override fun compareTo(other: ComparableIterable): Int = items.size.compareTo(other.items.size)
+    }
+
     class ComparableObj(val id: String) : Comparable<ComparableObj> {
         override fun compareTo(other: ComparableObj): Int {
             return this.id.compareTo(other.id)

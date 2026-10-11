@@ -1,0 +1,64 @@
+public final class me/ahoo/test/asserts/AssertProviderKt {
+	public static final fun assert (Lorg/assertj/core/api/AssertProvider;)Ljava/lang/Object;
+}
+
+public final class me/ahoo/test/asserts/JdkConcurrentKt {
+	public static final fun assert (Ljava/util/concurrent/CompletableFuture;)Lorg/assertj/core/api/CompletableFutureAssert;
+	public static final fun assert (Ljava/util/concurrent/CompletionStage;)Lorg/assertj/core/api/CompletableFutureAssert;
+	public static final fun assert (Ljava/util/concurrent/Future;)Lorg/assertj/core/api/FutureAssert;
+	public static final fun assert (Ljava/util/concurrent/ScheduledFuture;)Lorg/assertj/core/api/FutureAssert;
+}
+
+public final class me/ahoo/test/asserts/JdkFunctionKt {
+	public static final fun assert (Ljava/util/function/Predicate;)Lorg/assertj/core/api/PredicateAssert;
+}
+
+public final class me/ahoo/test/asserts/JdkIOKt {
+	public static final fun assert (Ljava/io/File;)Lorg/assertj/core/api/FileAssert;
+	public static final fun assert (Ljava/net/URI;)Lorg/assertj/core/api/UriAssert;
+	public static final fun assert (Ljava/net/URL;)Lorg/assertj/core/api/UrlAssert;
+	public static final fun assert (Ljava/nio/file/Path;)Lorg/assertj/core/api/PathAssert;
+}
+
+public final class me/ahoo/test/asserts/JdkKt {
+	public static final fun assert (Ljava/lang/Boolean;)Lorg/assertj/core/api/BooleanAssert;
+	public static final fun assert (Ljava/lang/Byte;)Lorg/assertj/core/api/ByteAssert;
+	public static final fun assert (Ljava/lang/Comparable;)Lorg/assertj/core/api/GenericComparableAssert;
+	public static final fun assert (Ljava/lang/Double;)Lorg/assertj/core/api/DoubleAssert;
+	public static final fun assert (Ljava/lang/Float;)Lorg/assertj/core/api/FloatAssert;
+	public static final fun assert (Ljava/lang/Integer;)Lorg/assertj/core/api/IntegerAssert;
+	public static final fun assert (Ljava/lang/Iterable;)Lorg/assertj/core/api/IterableAssert;
+	public static final fun assert (Ljava/lang/Long;)Lorg/assertj/core/api/LongAssert;
+	public static final fun assert (Ljava/lang/Object;)Lorg/assertj/core/api/ObjectAssert;
+	public static final fun assert (Ljava/lang/Short;)Lorg/assertj/core/api/ShortAssert;
+	public static final fun assert (Ljava/lang/String;)Lorg/assertj/core/api/StringAssert;
+	public static final fun assert (Ljava/math/BigDecimal;)Lorg/assertj/core/api/BigDecimalAssert;
+	public static final fun assert (Ljava/util/Collection;)Lorg/assertj/core/api/CollectionAssert;
+	public static final fun assert (Ljava/util/Iterator;)Lorg/assertj/core/api/IteratorAssert;
+	public static final fun assert (Ljava/util/List;)Lorg/assertj/core/api/ListAssert;
+	public static final fun assert (Ljava/util/Map;)Lorg/assertj/core/api/MapAssert;
+	public static final fun assert (Ljava/util/Optional;)Lorg/assertj/core/api/OptionalAssert;
+	public static final fun assert (Ljava/util/stream/Stream;)Lorg/assertj/core/api/ListAssert;
+	public static final fun assert ([Ljava/lang/Object;)Lorg/assertj/core/api/ObjectArrayAssert;
+}
+
+public final class me/ahoo/test/asserts/JdkTimeKt {
+	public static final fun assert (Ljava/time/Duration;)Lorg/assertj/core/api/DurationAssert;
+	public static final fun assert (Ljava/time/Instant;)Lorg/assertj/core/api/InstantAssert;
+	public static final fun assert (Ljava/time/LocalDate;)Lorg/assertj/core/api/LocalDateAssert;
+	public static final fun assert (Ljava/time/LocalDateTime;)Lorg/assertj/core/api/LocalDateTimeAssert;
+	public static final fun assert (Ljava/time/LocalTime;)Lorg/assertj/core/api/LocalTimeAssert;
+	public static final fun assert (Ljava/time/OffsetDateTime;)Lorg/assertj/core/api/OffsetDateTimeAssert;
+	public static final fun assert (Ljava/time/OffsetTime;)Lorg/assertj/core/api/OffsetTimeAssert;
+	public static final fun assert (Ljava/time/Period;)Lorg/assertj/core/api/PeriodAssert;
+	public static final fun assert (Ljava/time/YearMonth;)Lorg/assertj/core/api/YearMonthAssert;
+	public static final fun assert (Ljava/time/ZonedDateTime;)Lorg/assertj/core/api/ZonedDateTimeAssert;
+	public static final fun assert (Ljava/time/temporal/Temporal;)Lorg/assertj/core/api/TemporalAssert;
+	public static final fun assert (Ljava/util/Date;)Lorg/assertj/core/api/DateAssert;
+}
+
+public final class me/ahoo/test/asserts/ThrowableKt {
+	public static final fun assert (Ljava/lang/Throwable;)Lorg/assertj/core/api/ThrowableAssert;
+	public static final fun assertThrownBy (Ljava/lang/Class;Lkotlin/jvm/functions/Function0;)Lorg/assertj/core/api/ThrowableAssert;
+}
+
