@@ -97,7 +97,7 @@ These are verified facts about how the overloads resolve; keep docs and examples
 
 ## Code Style
 
-- Kotlin compiler flag is `-Xjsr305=strict`.
+- Kotlin compiler flag is `-Xjsr305=strict`. `languageVersion`/`apiVersion` target Kotlin 2.2 and the published stdlib dependency is pinned by `KOTLIN_CONSUMER_STDLIB_VERSION` in `build.gradle.kts`, so toolchain upgrades do not force consumers onto a newer stdlib; raise them together and only deliberately.
 - Import the extension with `import me.ahoo.test.asserts.assert` in examples and tests.
 - Keep KDoc examples short and executable-looking.
 - Follow existing test naming with backtick JUnit method names, for example `fun \`given Boolean when assert then BooleanAssert\`()`.
