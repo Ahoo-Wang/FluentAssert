@@ -48,6 +48,7 @@ For `LocalDate` and `YearMonth` month assertions, import `java.time.Month`; thos
 
 Use FluentAssert inside expectation blocks too:
 
+<!-- not-compiled: requires the Wow test DSL -->
 ```kotlin
 expectCommandBody<UpdateDemo> {
     data.assert().isNotNull().isEqualTo("updated")

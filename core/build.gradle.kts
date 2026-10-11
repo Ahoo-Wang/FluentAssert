@@ -30,3 +30,15 @@ extensions.configure<org.jetbrains.dokka.gradle.DokkaExtension> {
         samples.from("src/test/kotlin/me/ahoo/test/asserts/samples")
     }
 }
+
+// DocumentationTest reads the READMEs, skill docs and ABI dump; declare them as inputs so doc-only changes rerun it.
+tasks.named<Test>("test") {
+    systemProperty("fluentassert.rootDir", rootDir.absolutePath)
+    systemProperty("fluentassert.version", project.version.toString())
+    inputs.files(
+        rootProject.files("README.md", "README.zh-CN.md"),
+        rootProject.fileTree("skills/fluent-assert") { include("**/*.md") },
+        file("api/core.api"),
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("fluentassert.version", project.version.toString())
+}

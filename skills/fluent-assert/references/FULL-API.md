@@ -28,7 +28,7 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.0")
 </dependency>
 ```
 
-FluentAssert requires Java 17 or later.
+FluentAssert requires JDK 17+ and a Kotlin 2.1+ compiler.
 
 ## Imports
 
