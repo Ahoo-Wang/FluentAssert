@@ -83,9 +83,9 @@ All extension functions follow the pattern `Type.assert(): AssertJTypeAssert`, w
 
 | Category        | Types                                                                                                                                                        |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Primitives**  | `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `BigDecimal`                                                                                   |
-| **Text**        | `String`                                                                                                                                                     |
-| **Collections** | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`                                                 |
+| **Primitives**  | `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `Char`, `BigDecimal`, `BigInteger`                                                             |
+| **Text**        | `String`, `StringBuilder`, `StringBuffer`                                                                                                                    |
+| **Collections** | `Iterable<T>`, `Iterator<T>`, `Collection<T>`, `Array<T>`, `List<T>`, `Map<K,V>`, `Optional<T>`, `Stream<T>`, primitive arrays (`IntArray`, ...)             |
 | **Time/Date**   | `Date`, `ZonedDateTime`, `LocalDateTime`, `OffsetDateTime`, `OffsetTime`, `LocalTime`, `LocalDate`, `YearMonth`, `Instant`, `Duration`, `Period`, `Temporal` |
 | **I/O**         | `Path`, `File`, `URL`, `URI`                                                                                                                                 |
 | **Concurrent**  | `Future<V>`, `CompletableFuture<V>`, `CompletionStage<V>`, `ScheduledFuture<V>`                                                                              |
@@ -162,12 +162,28 @@ val price = 19.99
 price.assert().isEqualTo(19.99).isPositive()
 ```
 
+##### `Char?.assert(): CharacterAssert`
+Creates assertions for character values.
+
+```kotlin
+val grade = 'A'
+grade.assert().isUpperCase().isEqualTo('A')
+```
+
 ##### `BigDecimal?.assert(): BigDecimalAssert`
 Creates assertions for BigDecimal values.
 
 ```kotlin
 val amount = BigDecimal("123.45")
 amount.assert().isEqualTo("123.45").isPositive()
+```
+
+##### `BigInteger?.assert(): BigIntegerAssert`
+Creates assertions for BigInteger values.
+
+```kotlin
+val count = BigInteger("12345678901234567890")
+count.assert().isPositive().isGreaterThan(BigInteger.TEN)
 ```
 
 #### Text Types
@@ -181,8 +197,20 @@ name.assert()
     .startsWith("Fluent")
     .endsWith("Assert")
     .contains("uentAss")
-    .hasLength(11)
+    .hasLength(12)
 ```
+
+##### `StringBuilder?.assert(): CharSequenceAssert` / `StringBuffer?.assert(): CharSequenceAssert`
+Creates text assertions for mutable string builders. Both are also `Comparable`, so these dedicated overloads keep them out of `GenericComparableAssert`.
+
+```kotlin
+val text = StringBuilder("Fluent").append("Assert")
+text.assert()
+    .startsWith("Fluent")
+    .hasSize(12)
+```
+
+> **Note**: There is no overload for a statically `CharSequence`-typed receiver (it resolves to `ObjectAssert`), because types that are both `CharSequence` and `Comparable` (such as `CharBuffer`) would become ambiguous. Call `.toString()` first.
 
 #### Generic Types
 
@@ -253,7 +281,15 @@ array.assert()
     .doesNotContain("d")
 ```
 
-> **Note**: Primitive arrays (`IntArray`, `LongArray`, `ByteArray`, etc.) are not covered by `Array<T>` — call `.toTypedArray()` or `.toList()` first to get the array/list assertion APIs.
+##### Primitive arrays: `IntArray?.assert(): IntArrayAssert`, ...
+Every Kotlin primitive array has a dedicated overload: `BooleanArray`, `ByteArray`, `ShortArray`, `IntArray`, `LongArray`, `FloatArray`, `DoubleArray`, and `CharArray` resolve to the matching AssertJ `XxxArrayAssert`.
+
+```kotlin
+val ids = intArrayOf(1, 2, 3)
+ids.assert()
+    .hasSize(3)
+    .containsExactly(1, 2, 3)
+```
 
 ##### `<T> List<T>?.assert(): ListAssert<T>`
 Creates assertions for lists.

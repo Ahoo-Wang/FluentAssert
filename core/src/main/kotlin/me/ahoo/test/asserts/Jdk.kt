@@ -15,24 +15,36 @@ package me.ahoo.test.asserts
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.BigDecimalAssert
+import org.assertj.core.api.BigIntegerAssert
+import org.assertj.core.api.BooleanArrayAssert
 import org.assertj.core.api.BooleanAssert
+import org.assertj.core.api.ByteArrayAssert
 import org.assertj.core.api.ByteAssert
+import org.assertj.core.api.CharArrayAssert
+import org.assertj.core.api.CharSequenceAssert
+import org.assertj.core.api.CharacterAssert
 import org.assertj.core.api.CollectionAssert
+import org.assertj.core.api.DoubleArrayAssert
 import org.assertj.core.api.DoubleAssert
+import org.assertj.core.api.FloatArrayAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.GenericComparableAssert
+import org.assertj.core.api.IntArrayAssert
 import org.assertj.core.api.IntegerAssert
 import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
 import org.assertj.core.api.ListAssert
+import org.assertj.core.api.LongArrayAssert
 import org.assertj.core.api.LongAssert
 import org.assertj.core.api.MapAssert
 import org.assertj.core.api.ObjectArrayAssert
 import org.assertj.core.api.ObjectAssert
 import org.assertj.core.api.OptionalAssert
+import org.assertj.core.api.ShortArrayAssert
 import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.util.*
 import java.util.stream.Stream
 
@@ -159,6 +171,23 @@ fun Float?.assert(): FloatAssert = FloatAssert(this)
 fun Double?.assert(): DoubleAssert = DoubleAssert(this)
 
 /**
+ * Creates a fluent assertion for Char values.
+ *
+ * This extension function provides access to AssertJ's CharacterAssert methods for fluent testing
+ * of character values, including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val grade = 'A'
+ * grade.assert().isUpperCase().isEqualTo('A')
+ * ```
+ *
+ * @receiver Char? The character value to assert on (nullable)
+ * @return CharacterAssert A fluent assertion object for character values
+ */
+fun Char?.assert(): CharacterAssert = CharacterAssert(this)
+
+/**
  * Creates a fluent assertion for BigDecimal values.
  *
  * This extension function provides access to AssertJ's BigDecimalAssert methods for fluent testing
@@ -176,6 +205,23 @@ fun Double?.assert(): DoubleAssert = DoubleAssert(this)
 fun BigDecimal?.assert(): BigDecimalAssert = BigDecimalAssert(this)
 
 /**
+ * Creates a fluent assertion for BigInteger values.
+ *
+ * This extension function provides access to AssertJ's BigIntegerAssert methods for fluent testing
+ * of BigInteger values, including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val count = BigInteger("12345678901234567890")
+ * count.assert().isPositive().isGreaterThan(BigInteger.TEN)
+ * ```
+ *
+ * @receiver BigInteger? The BigInteger value to assert on (nullable)
+ * @return BigIntegerAssert A fluent assertion object for BigInteger values
+ */
+fun BigInteger?.assert(): BigIntegerAssert = BigIntegerAssert(this)
+
+/**
  * Creates a fluent assertion for String values.
  *
  * This extension function provides access to AssertJ's StringAssert methods for fluent testing
@@ -191,6 +237,40 @@ fun BigDecimal?.assert(): BigDecimalAssert = BigDecimalAssert(this)
  * @return StringAssert A fluent assertion object for string values
  */
 fun String?.assert(): StringAssert = StringAssert(this)
+
+/**
+ * Creates a fluent assertion for StringBuilder values.
+ *
+ * [StringBuilder] is `Comparable<StringBuilder>`, so without this overload it would resolve to
+ * [GenericComparableAssert] and lose the text assertions.
+ *
+ * Example:
+ * ```kotlin
+ * val text = StringBuilder("Fluent").append("Assert")
+ * text.assert().startsWith("Fluent").hasSize(12)
+ * ```
+ *
+ * @receiver StringBuilder? The string builder to assert on (nullable)
+ * @return CharSequenceAssert A fluent assertion object for character sequences
+ */
+fun StringBuilder?.assert(): CharSequenceAssert = CharSequenceAssert(this)
+
+/**
+ * Creates a fluent assertion for StringBuffer values.
+ *
+ * [StringBuffer] is `Comparable<StringBuffer>`, so without this overload it would resolve to
+ * [GenericComparableAssert] and lose the text assertions.
+ *
+ * Example:
+ * ```kotlin
+ * val text = StringBuffer("Fluent").append("Assert")
+ * text.assert().endsWith("Assert").hasSize(12)
+ * ```
+ *
+ * @receiver StringBuffer? The string buffer to assert on (nullable)
+ * @return CharSequenceAssert A fluent assertion object for character sequences
+ */
+fun StringBuffer?.assert(): CharSequenceAssert = CharSequenceAssert(this)
 
 /**
  * Creates a fluent assertion for any object type.
@@ -281,6 +361,142 @@ fun <T> Collection<T>?.assert(): CollectionAssert<T> = CollectionAssert(this)
  * @return ObjectArrayAssert<T> A fluent assertion object for arrays
  */
 fun <T> Array<T>?.assert(): ObjectArrayAssert<T> = assertThat(this)
+
+/**
+ * Creates a fluent assertion for BooleanArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's BooleanArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = booleanArrayOf(true, false)
+ * values.assert().contains(true)
+ * ```
+ *
+ * @receiver BooleanArray? The array to assert on (nullable)
+ * @return BooleanArrayAssert A fluent assertion object for boolean arrays
+ */
+fun BooleanArray?.assert(): BooleanArrayAssert = BooleanArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for ByteArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's ByteArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = byteArrayOf(1, 2, 3)
+ * values.assert().hasSize(3).contains(2)
+ * ```
+ *
+ * @receiver ByteArray? The array to assert on (nullable)
+ * @return ByteArrayAssert A fluent assertion object for byte arrays
+ */
+fun ByteArray?.assert(): ByteArrayAssert = ByteArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for ShortArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's ShortArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = shortArrayOf(1, 2, 3)
+ * values.assert().hasSize(3).contains(2)
+ * ```
+ *
+ * @receiver ShortArray? The array to assert on (nullable)
+ * @return ShortArrayAssert A fluent assertion object for short arrays
+ */
+fun ShortArray?.assert(): ShortArrayAssert = ShortArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for IntArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's IntArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = intArrayOf(1, 2, 3)
+ * values.assert().hasSize(3).containsExactly(1, 2, 3)
+ * ```
+ *
+ * @receiver IntArray? The array to assert on (nullable)
+ * @return IntArrayAssert A fluent assertion object for int arrays
+ */
+fun IntArray?.assert(): IntArrayAssert = IntArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for LongArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's LongArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = longArrayOf(1, 2, 3)
+ * values.assert().hasSize(3).contains(2L)
+ * ```
+ *
+ * @receiver LongArray? The array to assert on (nullable)
+ * @return LongArrayAssert A fluent assertion object for long arrays
+ */
+fun LongArray?.assert(): LongArrayAssert = LongArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for FloatArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's FloatArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = floatArrayOf(1f, 2f)
+ * values.assert().hasSize(2).contains(2f)
+ * ```
+ *
+ * @receiver FloatArray? The array to assert on (nullable)
+ * @return FloatArrayAssert A fluent assertion object for float arrays
+ */
+fun FloatArray?.assert(): FloatArrayAssert = FloatArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for DoubleArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's DoubleArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = doubleArrayOf(1.0, 2.0)
+ * values.assert().hasSize(2).contains(2.0)
+ * ```
+ *
+ * @receiver DoubleArray? The array to assert on (nullable)
+ * @return DoubleArrayAssert A fluent assertion object for double arrays
+ */
+fun DoubleArray?.assert(): DoubleArrayAssert = DoubleArrayAssert(this)
+
+/**
+ * Creates a fluent assertion for CharArray values.
+ *
+ * Primitive arrays are not `Array<T>`; this overload provides AssertJ's CharArrayAssert methods,
+ * including null-safe operations.
+ *
+ * Example:
+ * ```kotlin
+ * val values = charArrayOf('a', 'b')
+ * values.assert().containsExactly('a', 'b')
+ * ```
+ *
+ * @receiver CharArray? The array to assert on (nullable)
+ * @return CharArrayAssert A fluent assertion object for char arrays
+ */
+fun CharArray?.assert(): CharArrayAssert = CharArrayAssert(this)
 
 /**
  * Creates a fluent assertion for List objects.

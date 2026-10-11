@@ -23,6 +23,7 @@ public final class me/ahoo/test/asserts/JdkIOKt {
 public final class me/ahoo/test/asserts/JdkKt {
 	public static final fun assert (Ljava/lang/Boolean;)Lorg/assertj/core/api/BooleanAssert;
 	public static final fun assert (Ljava/lang/Byte;)Lorg/assertj/core/api/ByteAssert;
+	public static final fun assert (Ljava/lang/Character;)Lorg/assertj/core/api/CharacterAssert;
 	public static final fun assert (Ljava/lang/Comparable;)Lorg/assertj/core/api/GenericComparableAssert;
 	public static final fun assert (Ljava/lang/Double;)Lorg/assertj/core/api/DoubleAssert;
 	public static final fun assert (Ljava/lang/Float;)Lorg/assertj/core/api/FloatAssert;
@@ -32,14 +33,25 @@ public final class me/ahoo/test/asserts/JdkKt {
 	public static final fun assert (Ljava/lang/Object;)Lorg/assertj/core/api/ObjectAssert;
 	public static final fun assert (Ljava/lang/Short;)Lorg/assertj/core/api/ShortAssert;
 	public static final fun assert (Ljava/lang/String;)Lorg/assertj/core/api/StringAssert;
+	public static final fun assert (Ljava/lang/StringBuffer;)Lorg/assertj/core/api/CharSequenceAssert;
+	public static final fun assert (Ljava/lang/StringBuilder;)Lorg/assertj/core/api/CharSequenceAssert;
 	public static final fun assert (Ljava/math/BigDecimal;)Lorg/assertj/core/api/BigDecimalAssert;
+	public static final fun assert (Ljava/math/BigInteger;)Lorg/assertj/core/api/BigIntegerAssert;
 	public static final fun assert (Ljava/util/Collection;)Lorg/assertj/core/api/CollectionAssert;
 	public static final fun assert (Ljava/util/Iterator;)Lorg/assertj/core/api/IteratorAssert;
 	public static final fun assert (Ljava/util/List;)Lorg/assertj/core/api/ListAssert;
 	public static final fun assert (Ljava/util/Map;)Lorg/assertj/core/api/MapAssert;
 	public static final fun assert (Ljava/util/Optional;)Lorg/assertj/core/api/OptionalAssert;
 	public static final fun assert (Ljava/util/stream/Stream;)Lorg/assertj/core/api/ListAssert;
+	public static final fun assert ([B)Lorg/assertj/core/api/ByteArrayAssert;
+	public static final fun assert ([C)Lorg/assertj/core/api/CharArrayAssert;
+	public static final fun assert ([D)Lorg/assertj/core/api/DoubleArrayAssert;
+	public static final fun assert ([F)Lorg/assertj/core/api/FloatArrayAssert;
+	public static final fun assert ([I)Lorg/assertj/core/api/IntArrayAssert;
+	public static final fun assert ([J)Lorg/assertj/core/api/LongArrayAssert;
 	public static final fun assert ([Ljava/lang/Object;)Lorg/assertj/core/api/ObjectArrayAssert;
+	public static final fun assert ([S)Lorg/assertj/core/api/ShortArrayAssert;
+	public static final fun assert ([Z)Lorg/assertj/core/api/BooleanArrayAssert;
 }
 
 public final class me/ahoo/test/asserts/JdkTimeKt {

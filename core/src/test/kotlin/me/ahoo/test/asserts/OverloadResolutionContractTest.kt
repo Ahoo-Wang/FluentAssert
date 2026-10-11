@@ -2,18 +2,27 @@ package me.ahoo.test.asserts
 
 import org.assertj.core.api.AssertProvider
 import org.assertj.core.api.BigDecimalAssert
+import org.assertj.core.api.BigIntegerAssert
+import org.assertj.core.api.BooleanArrayAssert
 import org.assertj.core.api.BooleanAssert
+import org.assertj.core.api.ByteArrayAssert
 import org.assertj.core.api.ByteAssert
+import org.assertj.core.api.CharArrayAssert
+import org.assertj.core.api.CharSequenceAssert
+import org.assertj.core.api.CharacterAssert
 import org.assertj.core.api.CollectionAssert
 import org.assertj.core.api.CompletableFutureAssert
 import org.assertj.core.api.DateAssert
+import org.assertj.core.api.DoubleArrayAssert
 import org.assertj.core.api.DoubleAssert
 import org.assertj.core.api.DurationAssert
 import org.assertj.core.api.FileAssert
+import org.assertj.core.api.FloatArrayAssert
 import org.assertj.core.api.FloatAssert
 import org.assertj.core.api.FutureAssert
 import org.assertj.core.api.GenericComparableAssert
 import org.assertj.core.api.InstantAssert
+import org.assertj.core.api.IntArrayAssert
 import org.assertj.core.api.IntegerAssert
 import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.IteratorAssert
@@ -21,6 +30,7 @@ import org.assertj.core.api.ListAssert
 import org.assertj.core.api.LocalDateAssert
 import org.assertj.core.api.LocalDateTimeAssert
 import org.assertj.core.api.LocalTimeAssert
+import org.assertj.core.api.LongArrayAssert
 import org.assertj.core.api.LongAssert
 import org.assertj.core.api.MapAssert
 import org.assertj.core.api.ObjectArrayAssert
@@ -31,6 +41,7 @@ import org.assertj.core.api.OptionalAssert
 import org.assertj.core.api.PathAssert
 import org.assertj.core.api.PeriodAssert
 import org.assertj.core.api.PredicateAssert
+import org.assertj.core.api.ShortArrayAssert
 import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
 import org.assertj.core.api.TemporalAssert
@@ -42,8 +53,10 @@ import org.assertj.core.api.ZonedDateTimeAssert
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.net.URI
 import java.net.URL
+import java.nio.CharBuffer
 import java.nio.file.Path
 import java.time.Duration
 import java.time.Instant
@@ -86,9 +99,27 @@ class OverloadResolutionContractTest {
         val long: LongAssert = (null as Long?).assert()
         val float: FloatAssert = (null as Float?).assert()
         val double: DoubleAssert = (null as Double?).assert()
+        val char: CharacterAssert = (null as Char?).assert()
         val bigDecimal: BigDecimalAssert = (null as BigDecimal?).assert()
+        val bigInteger: BigIntegerAssert = (null as BigInteger?).assert()
         val string: StringAssert = (null as String?).assert()
-        listOf(boolean, byte, short, int, long, float, double, bigDecimal, string).forEach { it.isNull() }
+        val stringBuilder: CharSequenceAssert = (null as StringBuilder?).assert()
+        val stringBuffer: CharSequenceAssert = (null as StringBuffer?).assert()
+        listOf(boolean, byte, short, int, long, float, double, char, bigDecimal, bigInteger, string, stringBuilder, stringBuffer)
+            .forEach { it.isNull() }
+    }
+
+    @Test
+    fun `primitive arrays resolve to their dedicated array assertions`() {
+        val booleans: BooleanArrayAssert = (null as BooleanArray?).assert()
+        val bytes: ByteArrayAssert = (null as ByteArray?).assert()
+        val shorts: ShortArrayAssert = (null as ShortArray?).assert()
+        val ints: IntArrayAssert = (null as IntArray?).assert()
+        val longs: LongArrayAssert = (null as LongArray?).assert()
+        val floats: FloatArrayAssert = (null as FloatArray?).assert()
+        val doubles: DoubleArrayAssert = (null as DoubleArray?).assert()
+        val chars: CharArrayAssert = (null as CharArray?).assert()
+        listOf(booleans, bytes, shorts, ints, longs, floats, doubles, chars).forEach { it.isNull() }
     }
 
     @Test
@@ -163,9 +194,9 @@ class OverloadResolutionContractTest {
 
     @Test
     fun `documented fallbacks keep their resolution`() {
-        val intArray: ObjectAssert<IntArray> = (null as IntArray?).assert()
         val charSequence: ObjectAssert<CharSequence> = (null as CharSequence?).assert()
-        val stringBuilder: GenericComparableAssert<StringBuilder> = (null as StringBuilder?).assert()
-        listOf(intArray, charSequence, stringBuilder).forEach { it.isNull() }
+        // CharBuffer is CharSequence and Comparable; there is deliberately no CharSequence overload that would make this ambiguous.
+        val charBuffer: GenericComparableAssert<CharBuffer> = (null as CharBuffer?).assert()
+        listOf(charSequence, charBuffer).forEach { it.isNull() }
     }
 }
