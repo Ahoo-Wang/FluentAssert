@@ -16,6 +16,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.testretry.TestRetryPlugin
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
@@ -37,6 +38,9 @@ val codeCoverageReportProject = project(":code-coverage-report")
 val publishProjects = subprojects - codeCoverageReportProject
 val libraryProjects = publishProjects - bomProjects
 val isInCI = !System.getenv("CI").isNullOrEmpty()
+
+// Keep in sync with languageVersion/apiVersion (KotlinVersion.KOTLIN_2_2) below.
+val KOTLIN_CONSUMER_STDLIB_VERSION = "2.2.21"
 ext.set("libraryProjects", libraryProjects)
 
 allprojects {
@@ -83,12 +87,18 @@ configure(libraryProjects) {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     configure<KotlinJvmProjectExtension> {
         jvmToolchain(17)
+        // Consumers compile against this library with their own Kotlin version: target the oldest
+        // non-deprecated language/API level and publish a matching stdlib dependency instead of the
+        // build compiler's, so upgrading the build toolchain never forces a consumer stdlib upgrade.
+        coreLibrariesVersion = KOTLIN_CONSUMER_STDLIB_VERSION
         // The public API is the overload set itself; lock it with a reviewed ABI dump (core/api/).
         @OptIn(ExperimentalAbiValidation::class)
         abiValidation()
     }
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
+            languageVersion.set(KotlinVersion.KOTLIN_2_2)
+            apiVersion.set(KotlinVersion.KOTLIN_2_2)
             freeCompilerArgs = listOf("-Xjsr305=strict")
             javaParameters = true
         }
