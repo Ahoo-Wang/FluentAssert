@@ -11,10 +11,8 @@
  * limitations under the License.
  */
 
+// Published and imported by fluent-assert-core: keep it limited to the library's own runtime dependencies.
+// Build and test tooling versions come from the version catalog so they never reach consumers.
 dependencies {
     api(platform(libs.assertj.bom))
-    constraints {
-        api(libs.mockk)
-        api(libs.detekt.formatting)
-    }
 }
