@@ -74,7 +74,7 @@ fun <T> Iterable<T>?.assert(): IterableAssert<T> = assertThat(this)
 
 All receivers are nullable (including the Comparable overload `fun <T : Comparable<T>?> T?.assert()`), so callers can assert `null` values fluently. `AssertProvider<A>.assert()` is non-nullable because AssertJ handles provider delegation.
 
-`JdkTime.kt` uses `assertThat(...) as XxxAssert` casts because AssertJ's temporal factories return wildcard self-references (`AbstractLocalDateAssert<?>`) and most concrete temporal assert classes have no public constructor; the file header explains this. Prefer direct constructors where they exist (as `JdkIO.kt` does).
+Prefer direct AssertJ constructors where they are public (`JdkIO.kt`, and `Date`/`Instant`/`Duration`/`Period` in `JdkTime.kt`). The remaining `JdkTime.kt` overloads use `assertThat(...) as XxxAssert` casts because their constructors are protected and AssertJ's factories return wildcard self-references (`AbstractLocalDateAssert<?>`); the file header explains this.
 
 Do not add custom assertion semantics in this library unless requested. The library's value is the Kotlin extension API over AssertJ, not reimplementing AssertJ behavior.
 

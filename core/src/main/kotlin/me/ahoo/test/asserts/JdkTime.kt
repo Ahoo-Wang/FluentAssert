@@ -40,10 +40,10 @@ import java.time.ZonedDateTime
 import java.time.temporal.Temporal
 import java.util.*
 
-// AssertJ's assertThat(Temporal) factories return wildcard-typed self-references
-// (e.g. AbstractLocalDateAssert<?>); the casts below narrow the static type to the
-// concrete assertion class, which is required because most of these classes expose
-// no public constructor.
+// Date, Instant, Duration and Period use their public AssertJ constructors. The other
+// assertion classes have protected constructors and AssertJ's assertThat factories return
+// wildcard-typed self-references (e.g. AbstractLocalDateAssert<?>), so those overloads cast
+// the factory result to the concrete assertion class.
 
 /**
  * Creates a fluent assertion for Date objects.
@@ -60,7 +60,7 @@ import java.util.*
  * @receiver Date? The date to assert on (nullable)
  * @return DateAssert A fluent assertion object for dates
  */
-fun Date?.assert(): DateAssert = assertThat(this) as DateAssert
+fun Date?.assert(): DateAssert = DateAssert(this)
 
 /**
  * Creates a fluent assertion for ZonedDateTime objects.
@@ -213,7 +213,7 @@ fun YearMonth?.assert(): YearMonthAssert = assertThat(this) as YearMonthAssert
  * @receiver Instant? The instant to assert on (nullable)
  * @return InstantAssert A fluent assertion object for instants
  */
-fun Instant?.assert(): InstantAssert = assertThat(this) as InstantAssert
+fun Instant?.assert(): InstantAssert = InstantAssert(this)
 
 /**
  * Creates a fluent assertion for Duration objects.
@@ -230,7 +230,7 @@ fun Instant?.assert(): InstantAssert = assertThat(this) as InstantAssert
  * @receiver Duration? The duration to assert on (nullable)
  * @return DurationAssert A fluent assertion object for durations
  */
-fun Duration?.assert(): DurationAssert = assertThat(this) as DurationAssert
+fun Duration?.assert(): DurationAssert = DurationAssert(this)
 
 /**
  * Creates a fluent assertion for Period objects.
@@ -247,4 +247,4 @@ fun Duration?.assert(): DurationAssert = assertThat(this) as DurationAssert
  * @receiver Period? The period to assert on (nullable)
  * @return PeriodAssert A fluent assertion object for periods
  */
-fun Period?.assert(): PeriodAssert = assertThat(this) as PeriodAssert
+fun Period?.assert(): PeriodAssert = PeriodAssert(this)
