@@ -81,6 +81,33 @@ tasks.named("check") {
     dependsOn(checkLicenseHeaders)
 }
 
+// A file-based Maven repository holding the library exactly as consumers resolve it (POMs + jar), without signing.
+// compatibility/kotlin-consumer compiles and tests against it with older Kotlin compilers; see CONTRIBUTING.md.
+val kotlinConsumerRepository by tasks.registering(Sync::class) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Assembles a local Maven repository of the library for the Kotlin consumer compatibility build."
+    val libraryVersion = version.toString()
+    val core = project(":core").layout.buildDirectory
+    val platform = project(":dependencies").layout.buildDirectory
+    dependsOn(
+        ":core:jar",
+        ":core:generatePomFileForMavenLibraryPublication",
+        ":dependencies:generatePomFileForMavenBomPublication",
+    )
+    into(layout.buildDirectory.dir("kotlin-consumer-repo"))
+    into("me/ahoo/test/fluent-assert-core/$libraryVersion") {
+        from(core.file("libs/fluent-assert-core-$libraryVersion.jar"))
+        from(core.file("publications/mavenLibrary/pom-default.xml")) {
+            rename { "fluent-assert-core-$libraryVersion.pom" }
+        }
+    }
+    into("me/ahoo/test/fluent-assert-dependencies/$libraryVersion") {
+        from(platform.file("publications/mavenBom/pom-default.xml")) {
+            rename { "fluent-assert-dependencies-$libraryVersion.pom" }
+        }
+    }
+}
+
 configure(bomProjects) {
     apply<JavaPlatformPlugin>()
     configure<JavaPlatformExtension> {
