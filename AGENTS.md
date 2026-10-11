@@ -18,6 +18,7 @@ Read these before changing things; they are the single source for their topics a
 ./gradlew :core:test --tests "me.ahoo.test.asserts.docs.*"   # Documentation examples and consistency
 ./gradlew :core:updateKotlinAbi                         # After an intended public API change
 ./gradlew detekt --auto-correct                         # Fix formatting
+./gradlew kotlinConsumerRepository && ./gradlew -p compatibility/kotlin-consumer test   # Kotlin 2.1 consumer check
 ```
 
 JDK 17 is required. Before claiming a library change is complete, run at least `./gradlew :core:test`; for
@@ -76,6 +77,7 @@ Verified facts that drive design decisions:
   verification before claiming completion.
 - Ask first: changing public extension signatures, publication settings or Maven coordinates, adding
   dependencies, modifying release workflows, raising the consumer Kotlin level (`languageVersion`/`apiVersion`
-  and `KOTLIN_CONSUMER_STDLIB_VERSION` in `build.gradle.kts`).
+  and `KOTLIN_CONSUMER_STDLIB_VERSION` in `build.gradle.kts`, the minimum in
+  `compatibility/kotlin-consumer/settings.gradle.kts`).
 - Never: commit secrets or local machine files, bypass signing or publishing safeguards, rewrite build
   infrastructure for an unrelated feature.

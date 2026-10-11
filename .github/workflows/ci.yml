@@ -59,3 +59,37 @@ jobs:
             **/build/reports/
             **/build/test-results/
           retention-days: 7
+
+  kotlin-compatibility:
+    name: Kotlin ${{ matrix.target }} consumer
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # minimum: the oldest supported consumer Kotlin (default in compatibility/kotlin-consumer/settings.gradle.kts)
+        # toolchain: the Kotlin version this repository builds with (gradle/libs.versions.toml)
+        target: [minimum, toolchain]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Assemble library repository
+        run: ./gradlew kotlinConsumerRepository --stacktrace
+
+      - name: Compile and test consumer
+        run: |
+          if [ "${{ matrix.target }}" = toolchain ]; then
+            KOTLIN_VERSION=$(sed -n 's/^kotlin = "\(.*\)"$/\1/p' gradle/libs.versions.toml)
+            ./gradlew -p compatibility/kotlin-consumer test -PkotlinVersion="$KOTLIN_VERSION" --stacktrace
+          else
+            ./gradlew -p compatibility/kotlin-consumer test --stacktrace
+          fi

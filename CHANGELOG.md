@@ -7,6 +7,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- CI checks consumer compatibility: code using FluentAssert is compiled and tested with the minimum supported
+  Kotlin (2.1.21) and the build toolchain's Kotlin, resolving the library from its generated POMs.
+
 ## [1.2.1] - 2026-10-11
 
 No API change; the library behaves exactly like 1.2.0. This release ships the corrected documentation
