@@ -12,6 +12,17 @@ All notable changes to this project are documented here. The format follows
 - CI workflow running the full `./gradlew build`, CodeQL analysis and path-based PR labeling.
 - Build gates: 100% line coverage (Kover) and Apache-2.0 license headers.
 - `REQUIREMENTS.md`, `SECURITY.md`, issue forms, PR template and CODEOWNERS.
+- Executable documentation: KDoc examples are `@sample` tests rendered by Dokka; `DocumentationTest` compiles
+  README and skill examples and checks type tables and install versions.
+
+### Changed
+- README rewritten (English and Chinese): one complete type table, overload resolution rules and links
+  replace the per-overload reference, which lives in the API documentation.
+- CONTRIBUTING documents which document owns which fact; AGENTS.md defers to it instead of repeating it.
+
+### Fixed
+- Documentation examples that did not compile, failed when run, or exercised a different overload than
+  documented (README and KDoc); the README now states the actual Kotlin 2.1+ requirement instead of 1.8+.
 
 ## [1.2.0] - 2026-10-11
 

@@ -49,550 +49,235 @@ import java.util.*
 import java.util.stream.Stream
 
 /**
- * Creates a fluent assertion for Boolean values.
+ * Returns a [BooleanAssert] for this value.
  *
- * This extension function provides access to AssertJ's BooleanAssert methods for fluent testing
- * of boolean values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val isActive = true
- * isActive.assert().isTrue()
- *
- * val nullableBool: Boolean? = null
- * nullableBool.assert().isNull()
- * ```
- *
- * @receiver Boolean? The boolean value to assert on (nullable)
- * @return BooleanAssert A fluent assertion object for boolean values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.boolean
  */
 fun Boolean?.assert(): BooleanAssert = BooleanAssert(this)
 
 /**
- * Creates a fluent assertion for Byte values.
+ * Returns a [ByteAssert] for this value.
  *
- * This extension function provides access to AssertJ's ByteAssert methods for fluent testing
- * of byte values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val value: Byte = 42
- * value.assert().isEqualTo(42)
- * ```
- *
- * @receiver Byte? The byte value to assert on (nullable)
- * @return ByteAssert A fluent assertion object for byte values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.byte
  */
 fun Byte?.assert(): ByteAssert = ByteAssert(this)
 
 /**
- * Creates a fluent assertion for Short values.
+ * Returns a [ShortAssert] for this value.
  *
- * This extension function provides access to AssertJ's ShortAssert methods for fluent testing
- * of short values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val value: Short = 1000
- * value.assert().isEqualTo(1000)
- * ```
- *
- * @receiver Short? The short value to assert on (nullable)
- * @return ShortAssert A fluent assertion object for short values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.short
  */
 fun Short?.assert(): ShortAssert = ShortAssert(this)
 
 /**
- * Creates a fluent assertion for Int values.
+ * Returns an [IntegerAssert] for this value.
  *
- * This extension function provides access to AssertJ's IntegerAssert methods for fluent testing
- * of integer values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val age = 25
- * age.assert().isGreaterThan(18).isLessThan(100)
- * ```
- *
- * @receiver Int? The integer value to assert on (nullable)
- * @return IntegerAssert A fluent assertion object for integer values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.int
  */
 fun Int?.assert(): IntegerAssert = IntegerAssert(this)
 
 /**
- * Creates a fluent assertion for Long values.
+ * Returns a [LongAssert] for this value.
  *
- * This extension function provides access to AssertJ's LongAssert methods for fluent testing
- * of long values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val timestamp = System.currentTimeMillis()
- * timestamp.assert().isGreaterThan(0)
- * ```
- *
- * @receiver Long? The long value to assert on (nullable)
- * @return LongAssert A fluent assertion object for long values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.long
  */
 fun Long?.assert(): LongAssert = LongAssert(this)
 
 /**
- * Creates a fluent assertion for Float values.
+ * Returns a [FloatAssert] for this value.
  *
- * This extension function provides access to AssertJ's FloatAssert methods for fluent testing
- * of float values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val pi = 3.14f
- * pi.assert().isEqualTo(3.14f)
- * ```
- *
- * @receiver Float? The float value to assert on (nullable)
- * @return FloatAssert A fluent assertion object for float values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.float
  */
 fun Float?.assert(): FloatAssert = FloatAssert(this)
 
 /**
- * Creates a fluent assertion for Double values.
+ * Returns a [DoubleAssert] for this value.
  *
- * This extension function provides access to AssertJ's DoubleAssert methods for fluent testing
- * of double values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val price = 19.99
- * price.assert().isEqualTo(19.99)
- * ```
- *
- * @receiver Double? The double value to assert on (nullable)
- * @return DoubleAssert A fluent assertion object for double values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.double
  */
 fun Double?.assert(): DoubleAssert = DoubleAssert(this)
 
 /**
- * Creates a fluent assertion for Char values.
+ * Returns a [CharacterAssert] for this value.
  *
- * This extension function provides access to AssertJ's CharacterAssert methods for fluent testing
- * of character values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val grade = 'A'
- * grade.assert().isUpperCase().isEqualTo('A')
- * ```
- *
- * @receiver Char? The character value to assert on (nullable)
- * @return CharacterAssert A fluent assertion object for character values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.char
  */
 fun Char?.assert(): CharacterAssert = CharacterAssert(this)
 
 /**
- * Creates a fluent assertion for BigDecimal values.
+ * Returns a [BigDecimalAssert] for this value.
  *
- * This extension function provides access to AssertJ's BigDecimalAssert methods for fluent testing
- * of BigDecimal values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val amount = BigDecimal("123.45")
- * amount.assert().isEqualTo("123.45")
- * ```
- *
- * @receiver BigDecimal? The BigDecimal value to assert on (nullable)
- * @return BigDecimalAssert A fluent assertion object for BigDecimal values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.bigDecimal
  */
 fun BigDecimal?.assert(): BigDecimalAssert = BigDecimalAssert(this)
 
 /**
- * Creates a fluent assertion for BigInteger values.
+ * Returns a [BigIntegerAssert] for this value.
  *
- * This extension function provides access to AssertJ's BigIntegerAssert methods for fluent testing
- * of BigInteger values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val count = BigInteger("12345678901234567890")
- * count.assert().isPositive().isGreaterThan(BigInteger.TEN)
- * ```
- *
- * @receiver BigInteger? The BigInteger value to assert on (nullable)
- * @return BigIntegerAssert A fluent assertion object for BigInteger values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.bigInteger
  */
 fun BigInteger?.assert(): BigIntegerAssert = BigIntegerAssert(this)
 
 /**
- * Creates a fluent assertion for String values.
+ * Returns a [StringAssert] for this value.
  *
- * This extension function provides access to AssertJ's StringAssert methods for fluent testing
- * of string values, including null-safe operations.
+ * Takes precedence over the `Comparable` overload even though [String] is comparable.
  *
- * Example:
- * ```kotlin
- * val name = "FluentAssert"
- * name.assert().startsWith("Fluent").endsWith("Assert").contains("uentAss")
- * ```
- *
- * @receiver String? The string value to assert on (nullable)
- * @return StringAssert A fluent assertion object for string values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.string
  */
 fun String?.assert(): StringAssert = StringAssert(this)
 
 /**
- * Creates a fluent assertion for StringBuilder values.
+ * Returns a [CharSequenceAssert] for this builder.
  *
- * [StringBuilder] is `Comparable<StringBuilder>`, so without this overload it would resolve to
- * [GenericComparableAssert] and lose the text assertions.
+ * [StringBuilder] is `Comparable<StringBuilder>`; this dedicated overload keeps text assertions instead of [GenericComparableAssert].
  *
- * Example:
- * ```kotlin
- * val text = StringBuilder("Fluent").append("Assert")
- * text.assert().startsWith("Fluent").hasSize(12)
- * ```
- *
- * @receiver StringBuilder? The string builder to assert on (nullable)
- * @return CharSequenceAssert A fluent assertion object for character sequences
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.stringBuilder
  */
 fun StringBuilder?.assert(): CharSequenceAssert = CharSequenceAssert(this)
 
 /**
- * Creates a fluent assertion for StringBuffer values.
+ * Returns a [CharSequenceAssert] for this buffer.
  *
- * [StringBuffer] is `Comparable<StringBuffer>`, so without this overload it would resolve to
- * [GenericComparableAssert] and lose the text assertions.
+ * [StringBuffer] is `Comparable<StringBuffer>`; this dedicated overload keeps text assertions instead of [GenericComparableAssert].
  *
- * Example:
- * ```kotlin
- * val text = StringBuffer("Fluent").append("Assert")
- * text.assert().endsWith("Assert").hasSize(12)
- * ```
- *
- * @receiver StringBuffer? The string buffer to assert on (nullable)
- * @return CharSequenceAssert A fluent assertion object for character sequences
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.stringBuffer
  */
 fun StringBuffer?.assert(): CharSequenceAssert = CharSequenceAssert(this)
 
 /**
- * Creates a fluent assertion for any object type.
+ * Returns an [ObjectAssert] for this value.
  *
- * This extension function provides access to AssertJ's ObjectAssert methods for fluent testing
- * of any object, including null-safe operations.
+ * Fallback for receivers whose static type has no more specific overload.
  *
- * Example:
- * ```kotlin
- * val person = Person("John", 30)
- * person.assert().isNotNull().hasFieldOrPropertyWithValue("name", "John")
- * ```
- *
- * @param T The type of the object being asserted
- * @receiver T? The object to assert on (nullable)
- * @return ObjectAssert<T> A fluent assertion object for the given type
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.anyObject
  */
 fun <T> T?.assert(): ObjectAssert<T> = assertThat(this)
 
 /**
- * Creates a fluent assertion for Iterable collections.
+ * Returns an [IterableAssert] for this iterable.
  *
- * This extension function provides access to AssertJ's IterableAssert methods for fluent testing
- * of iterable collections, including null-safe operations.
+ * Only used when the static type is [Iterable]; [Collection] and [List] receivers resolve to their own overloads.
  *
- * Example:
- * ```kotlin
- * val numbers = listOf(1, 2, 3, 4, 5)
- * numbers.assert().hasSize(5).contains(3)
- * ```
- *
- * @param T The type of elements in the iterable
- * @receiver Iterable<T>? The iterable collection to assert on (nullable)
- * @return IterableAssert<T> A fluent assertion object for iterable collections
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.iterable
  */
 fun <T> Iterable<T>?.assert(): IterableAssert<T> = assertThat(this)
 
 /**
- * Creates a fluent assertion for Iterator objects.
+ * Returns an [IteratorAssert] for this iterator.
  *
- * This extension function provides access to AssertJ's IteratorAssert methods for fluent testing
- * of iterators, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val iterator = listOf(1, 2, 3).iterator()
- * iterator.assert().hasNext()
- * ```
- *
- * @param T The type of elements in the iterator
- * @receiver Iterator<T>? The iterator to assert on (nullable)
- * @return IteratorAssert<T> A fluent assertion object for iterators
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.iterator
  */
 fun <T> Iterator<T>?.assert(): IteratorAssert<T> = assertThat(this)
 
 /**
- * Creates a fluent assertion for Collection objects.
+ * Returns a [CollectionAssert] for this collection (for example a [Set]); [List] receivers resolve to [ListAssert].
  *
- * This extension function provides access to AssertJ's CollectionAssert methods for fluent testing
- * of collections, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val set = setOf("apple", "banana", "orange")
- * set.assert().hasSize(3).contains("apple")
- * ```
- *
- * @param T The type of elements in the collection
- * @receiver Collection<T>? The collection to assert on (nullable)
- * @return CollectionAssert<T> A fluent assertion object for collections
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.collection
  */
 fun <T> Collection<T>?.assert(): CollectionAssert<T> = CollectionAssert(this)
 
 /**
- * Creates a fluent assertion for Array objects.
+ * Returns an [ObjectArrayAssert] for this array.
  *
- * This extension function provides access to AssertJ's ObjectArrayAssert methods for fluent testing
- * of arrays, including null-safe operations.
+ * Primitive arrays such as [IntArray] are not `Array<T>` and have their own overloads.
  *
- * Example:
- * ```kotlin
- * val array = arrayOf("a", "b", "c")
- * array.assert().hasSize(3).contains("b")
- * ```
- *
- * @param T The type of elements in the array
- * @receiver Array<T>? The array to assert on (nullable)
- * @return ObjectArrayAssert<T> A fluent assertion object for arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.array
  */
 fun <T> Array<T>?.assert(): ObjectArrayAssert<T> = assertThat(this)
 
 /**
- * Creates a fluent assertion for BooleanArray values.
+ * Returns a [BooleanArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's BooleanArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = booleanArrayOf(true, false)
- * values.assert().contains(true)
- * ```
- *
- * @receiver BooleanArray? The array to assert on (nullable)
- * @return BooleanArrayAssert A fluent assertion object for boolean arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun BooleanArray?.assert(): BooleanArrayAssert = BooleanArrayAssert(this)
 
 /**
- * Creates a fluent assertion for ByteArray values.
+ * Returns a [ByteArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's ByteArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = byteArrayOf(1, 2, 3)
- * values.assert().hasSize(3).contains(2)
- * ```
- *
- * @receiver ByteArray? The array to assert on (nullable)
- * @return ByteArrayAssert A fluent assertion object for byte arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun ByteArray?.assert(): ByteArrayAssert = ByteArrayAssert(this)
 
 /**
- * Creates a fluent assertion for ShortArray values.
+ * Returns a [ShortArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's ShortArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = shortArrayOf(1, 2, 3)
- * values.assert().hasSize(3).contains(2)
- * ```
- *
- * @receiver ShortArray? The array to assert on (nullable)
- * @return ShortArrayAssert A fluent assertion object for short arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun ShortArray?.assert(): ShortArrayAssert = ShortArrayAssert(this)
 
 /**
- * Creates a fluent assertion for IntArray values.
+ * Returns an [IntArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's IntArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = intArrayOf(1, 2, 3)
- * values.assert().hasSize(3).containsExactly(1, 2, 3)
- * ```
- *
- * @receiver IntArray? The array to assert on (nullable)
- * @return IntArrayAssert A fluent assertion object for int arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun IntArray?.assert(): IntArrayAssert = IntArrayAssert(this)
 
 /**
- * Creates a fluent assertion for LongArray values.
+ * Returns a [LongArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's LongArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = longArrayOf(1, 2, 3)
- * values.assert().hasSize(3).contains(2L)
- * ```
- *
- * @receiver LongArray? The array to assert on (nullable)
- * @return LongArrayAssert A fluent assertion object for long arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun LongArray?.assert(): LongArrayAssert = LongArrayAssert(this)
 
 /**
- * Creates a fluent assertion for FloatArray values.
+ * Returns a [FloatArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's FloatArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = floatArrayOf(1f, 2f)
- * values.assert().hasSize(2).contains(2f)
- * ```
- *
- * @receiver FloatArray? The array to assert on (nullable)
- * @return FloatArrayAssert A fluent assertion object for float arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun FloatArray?.assert(): FloatArrayAssert = FloatArrayAssert(this)
 
 /**
- * Creates a fluent assertion for DoubleArray values.
+ * Returns a [DoubleArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's DoubleArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = doubleArrayOf(1.0, 2.0)
- * values.assert().hasSize(2).contains(2.0)
- * ```
- *
- * @receiver DoubleArray? The array to assert on (nullable)
- * @return DoubleArrayAssert A fluent assertion object for double arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun DoubleArray?.assert(): DoubleArrayAssert = DoubleArrayAssert(this)
 
 /**
- * Creates a fluent assertion for CharArray values.
+ * Returns a [CharArrayAssert] for this array.
  *
- * Primitive arrays are not `Array<T>`; this overload provides AssertJ's CharArrayAssert methods,
- * including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val values = charArrayOf('a', 'b')
- * values.assert().containsExactly('a', 'b')
- * ```
- *
- * @receiver CharArray? The array to assert on (nullable)
- * @return CharArrayAssert A fluent assertion object for char arrays
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.primitiveArrays
  */
 fun CharArray?.assert(): CharArrayAssert = CharArrayAssert(this)
 
 /**
- * Creates a fluent assertion for List objects.
+ * Returns a [ListAssert] for this list.
  *
- * This extension function provides access to AssertJ's ListAssert methods for fluent testing
- * of lists, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val items = listOf("apple", "banana", "orange")
- * items.assert().hasSize(3).contains("apple", "banana")
- * ```
- *
- * @param T The type of elements in the list
- * @receiver List<T>? The list to assert on (nullable)
- * @return ListAssert<T> A fluent assertion object for lists
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.list
  */
 fun <T> List<T>?.assert(): ListAssert<T> = ListAssert(this)
 
 /**
- * Creates a fluent assertion for Optional objects.
+ * Returns an [OptionalAssert] for this optional.
  *
- * This extension function provides access to AssertJ's OptionalAssert methods for fluent testing
- * of Optional values, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val present = Optional.of("value")
- * present.assert().isPresent().contains("value")
- *
- * val empty = Optional.empty<String>()
- * empty.assert().isEmpty()
- * ```
- *
- * @param T The type of the optional value
- * @receiver Optional<T>? The optional to assert on (nullable)
- * @return OptionalAssert<T> A fluent assertion object for optional values
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.optional
  */
 fun <T> Optional<T>?.assert(): OptionalAssert<T> = assertThat<T>(this)
 
 /**
- * Creates a fluent assertion for Map objects.
+ * Returns a [MapAssert] for this map.
  *
- * This extension function provides access to AssertJ's MapAssert methods for fluent testing
- * of maps, including null-safe operations.
- *
- * Example:
- * ```kotlin
- * val map = mapOf("key1" to "value1", "key2" to "value2")
- * map.assert().hasSize(2).containsKey("key1").containsValue("value1")
- * ```
- *
- * @param K The type of keys in the map
- * @param V The type of values in the map
- * @receiver Map<K, V>? The map to assert on (nullable)
- * @return MapAssert<K, V> A fluent assertion object for maps
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.map
  */
 fun <K, V> Map<K, V>?.assert(): MapAssert<K, V> = MapAssert(this)
 
 /**
- * Creates a fluent assertion for Stream objects.
+ * Returns a [ListAssert] over the elements of this stream.
  *
- * This extension function provides access to AssertJ's ListAssert methods for fluent testing
- * of streams by converting them to lists, including null-safe operations.
+ * The stream is consumed when the assertion is created.
  *
- * Example:
- * ```kotlin
- * val stream = listOf(1, 2, 3, 4, 5).stream()
- * stream.assert().hasSize(5).contains(3)
- * ```
- *
- * @param T The type of elements in the stream
- * @receiver Stream<T>? The stream to assert on (nullable)
- * @return ListAssert<T> A fluent assertion object for streams (converted to list)
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.stream
  */
 fun <T> Stream<T>?.assert(): ListAssert<T> = assertThat(this)
 
 /**
- * Creates a fluent assertion for Comparable objects.
+ * Returns a [GenericComparableAssert] for this comparable value.
  *
- * This extension function provides access to AssertJ's GenericComparableAssert methods for fluent testing
- * of comparable objects, enabling comparison operations. Types with more specific overloads (such as String)
- * resolve to their dedicated assertion class instead.
+ * Applies to comparable types without a more specific overload, such as user value types. A type that is also [Iterable], [Map], [java.util.concurrent.Future] or [Throwable] makes the call ambiguous; declare the receiver with the intended static type instead.
  *
- * Example:
- * ```kotlin
- * class Version(val value: Int) : Comparable<Version> {
- *     override fun compareTo(other: Version): Int = value.compareTo(other.value)
- * }
- *
- * Version(2).assert().isGreaterThan(Version(1)).isLessThan(Version(3))
- * ```
- *
- * @param T The comparable type (must implement Comparable<T>)
- * @receiver T? The comparable object to assert on (nullable)
- * @return GenericComparableAssert<T> A fluent assertion object for comparable objects
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.comparable
  */
 @Suppress("UNCHECKED_CAST")
 fun <T : Comparable<T>?> T?.assert(): GenericComparableAssert<T> = GenericComparableAssert(this as T)

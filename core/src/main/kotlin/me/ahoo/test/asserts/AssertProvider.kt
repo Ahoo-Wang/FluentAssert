@@ -17,13 +17,10 @@ import org.assertj.core.api.AssertProvider
 import org.assertj.core.api.Assertions.assertThat
 
 /**
- * Creates a fluent assertion for [AssertProvider] objects.
+ * Returns the assertion provided by this [AssertProvider], so custom domain types can be asserted with `.assert()`.
  *
- * Delegates to AssertJ's [assertThat], which internally calls [AssertProvider.assertThat]
- * to obtain the subject of the assertion.
+ * Unlike the other overloads the receiver is not nullable; AssertJ delegates to [AssertProvider.assertThat].
  *
- * @param A The assertion type provided by this provider
- * @receiver AssertProvider<A> The assert provider to assert on
- * @return A The fluent assertion for the provider's actual value
+ * @sample me.ahoo.test.asserts.samples.AssertProviderSamples.assertProvider
  */
 fun <A> AssertProvider<A>.assert(): A = assertThat(this)
