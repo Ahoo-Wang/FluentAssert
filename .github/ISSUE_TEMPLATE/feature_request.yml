@@ -1,0 +1,31 @@
+name: Feature request
+description: Propose a new `.assert()` overload or another improvement.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can't you express fluently today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: Receiver type and AssertJ assertion class it should return.
+      render: kotlin
+      placeholder: "fun Foo?.assert(): FooAssert"
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Resolution impact
+      description: |
+        New overloads change which overload existing call sites resolve to, and can create ambiguities
+        (e.g. for types that are also `Comparable`). Which existing receivers would be affected?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

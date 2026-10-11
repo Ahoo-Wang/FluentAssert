@@ -12,6 +12,9 @@ Thank you for your interest in contributing to FluentAssert! We welcome contribu
 - [Testing](#testing)
 - [Code Style](#code-style)
 - [Submitting Changes](#submitting-changes)
+- [Branching Model](#branching-model)
+- [Code Review](#code-review)
+- [Versioning and Releases](#versioning-and-releases)
 - [Reporting Issues](#reporting-issues)
 
 ## Code of Conduct
@@ -29,7 +32,7 @@ This project follows a code of conduct to ensure a welcoming environment for all
 ### Prerequisites
 
 - **Java 17 or higher** - Required for building and running the project
-- **Gradle 7.0+** - Build tool (wrapper included)
+- **Gradle** - Use the included wrapper (`./gradlew`); no separate installation needed
 - **Git** - Version control
 
 ### Fork and Clone
@@ -63,8 +66,11 @@ This project follows a code of conduct to ensure a welcoming environment for all
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run all unit tests
 ./gradlew test
+
+# Run integration tests (real file system, executors, AssertJ failure reporting)
+./gradlew :core:integrationTest
 
 # Run tests for specific module
 ./gradlew :core:test
@@ -93,7 +99,15 @@ This project follows a code of conduct to ensure a welcoming environment for all
 
 # Generate test coverage report
 ./gradlew code-coverage-report:koverHtmlReport
+
+# Verify the 100% line coverage gate (part of ./gradlew check)
+./gradlew :core:koverVerify
+
+# Verify Apache-2.0 license headers (part of ./gradlew check)
+./gradlew checkLicenseHeaders
 ```
+
+`./gradlew build` runs all of the above gates; CI runs the same command on every pull request.
 
 ### IDE Setup
 
@@ -123,12 +137,15 @@ FluentAssert/
 │   │   │       ├── JdkIO.kt            # I/O assertions
 │   │   │       ├── JdkTime.kt          # Time/date assertions
 │   │   │       └── Throwable.kt        # Exception testing
-│   │   └── test/kotlin/    # Test code
+│   │   ├── test/kotlin/            # Unit tests and OverloadResolutionContractTest
+│   │   └── integrationTest/kotlin/ # Integration tests against real JDK resources
+│   ├── api/core.api        # Reviewed public ABI dump
 │   └── build.gradle.kts    # Module build configuration
-├── dependencies/           # Dependency management
-├── config/                 # Configuration files
-│   ├── detekt/            # Static analysis rules
-│   └── logback.xml        # Logging configuration
+├── dependencies/           # Dependency platform (AssertJ BOM)
+├── code-coverage-report/   # Aggregate Kover report
+├── skills/                 # fluent-assert AI skill (SKILL.md, FULL-API.md, evals)
+├── config/
+│   └── detekt/            # Static analysis rules
 ├── gradle/wrapper/         # Gradle wrapper
 └── build.gradle.kts       # Root build configuration
 ```
@@ -164,8 +181,10 @@ When adding support for new JDK types:
 1. Create extension functions in the appropriate module file
 2. Follow the naming pattern: `Type?.assert(): AssertJTypeAssert`
 3. Handle nullable types appropriately
-4. Add comprehensive tests
-5. Update documentation
+4. Pin the resolution in `OverloadResolutionContractTest` and add focused tests
+5. Run `./gradlew :core:updateKotlinAbi` and commit the updated `core/api/core.api`
+6. Check that no existing receiver becomes ambiguous (types that are also `Comparable` are the usual trap)
+7. Update documentation, `REQUIREMENTS.md` if a guarantee changes, and `CHANGELOG.md`
 
 Example:
 ```kotlin
@@ -180,8 +199,10 @@ fun NewType?.assert(): NewTypeAssert {
 ### Test Structure
 
 - **Unit tests** in `src/test/kotlin/`
+- **Contract tests**: `OverloadResolutionContractTest` pins every receiver's overload and static return type at compile time
+- **Integration tests** in `src/integrationTest/kotlin/` exercise real JDK resources and AssertJ failure messages
 - **Test naming**: Use backticks for descriptive names
-- **Test coverage**: Aim for high coverage of public APIs
+- **Test coverage**: 100% line coverage of production code is enforced by `koverVerify`
 - **Test isolation**: Each test should be independent
 
 ### Writing Tests
@@ -221,16 +242,10 @@ class JdkTest {
 
 ### Import Organization
 
-```kotlin
-// Group imports by package
-import org.assertj.core.api.*
-import me.ahoo.test.asserts.*
-
-// No wildcard imports except for specified packages:
-// - java.util.*
-// - org.hamcrest.*
-// - org.junit.jupiter.api.Assertions.*
-```
+Use explicit imports. Wildcard imports are only allowed for `java.util.*`, `org.hamcrest.Matchers.*`,
+`org.hamcrest.MatcherAssert.*` and `org.junit.jupiter.api.Assertions.*` (enforced by detekt).
+Every Kotlin source file starts with the Apache-2.0 license header (enforced by `checkLicenseHeaders`).
+Formatting basics are defined in `.editorconfig`.
 
 ### Documentation
 
@@ -258,15 +273,15 @@ fun Boolean?.assert(): BooleanAssert = BooleanAssert(this)
 
 ### Commit Guidelines
 
-- Use clear, descriptive commit messages
-- Start with a verb in imperative mood
-- Reference issue numbers when applicable
+Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary`, with types
+`feat`, `fix`, `refactor`, `test`, `docs`, `build`, `ci` and `chore`. Keep commits scoped: do not mix
+source changes, documentation regeneration and tooling cleanup.
 
 Examples:
 ```
-Add support for Predicate assertions
-Fix null handling in Date assertions
-Update documentation for new features
+feat(core): add ScheduledFuture overload
+fix(core): stop assertThrownBy from leaking diagnostics
+build: decouple consumer Kotlin requirements from the build toolchain
 ```
 
 ### Pull Request Process
@@ -274,7 +289,7 @@ Update documentation for new features
 1. **Ensure your branch is up to date**:
    ```bash
    git fetch upstream
-   git rebase upstream/main
+   git merge upstream/main
    ```
 
 2. **Run full test suite**:
@@ -283,42 +298,50 @@ Update documentation for new features
    ```
 
 3. **Create a Pull Request**:
-   - Use a clear title
-   - Provide detailed description
-   - Reference related issues
-   - Include screenshots for UI changes
+   - Title format: `[category] : summary` (for example `[feature] : add Char overload`)
+   - Fill in the [pull request template](.github/pull_request_template.md)
+   - Reference related issues (`Fixes #123`)
+   - Labels are applied automatically from the changed paths
 
 4. **Address review feedback**:
    - Make requested changes
    - Rebase if needed
    - Keep conversation focused
 
-### Pull Request Template
+## Branching Model
 
-Please use the following template:
+- `main` is the only long-lived branch and is always releasable.
+- Work happens on short-lived topic branches (`feature/...`, `fix/...`, `docs/...`) created from `main`.
+- Changes reach `main` only through pull requests that pass CI and review, and are **squash-merged**
+  so each pull request becomes one commit on `main`.
+- Releases are tags (`vX.Y.Z`) on `main`; there are no release branches.
 
-```markdown
-## Description
-Brief description of the changes
+## Code Review
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Refactoring
-- [ ] Performance improvement
+- Every pull request needs an approving review from a [code owner](.github/CODEOWNERS) and a green CI
+  (`Build`, `CodeQL`, `Codecov`).
+- Reviewers check in particular: overload-resolution impact on existing call sites, the ABI dump diff,
+  contract and integration test coverage, and documentation/skill consistency.
+- Review comments are resolved by follow-up commits on the same branch; do not force-push during review.
 
-## Testing
-- [ ] All existing tests pass
-- [ ] New tests added
-- [ ] Manual testing performed
+## Versioning and Releases
 
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Documentation updated
-- [ ] Tests added/updated
-- [ ] No breaking changes
-```
+FluentAssert follows [Semantic Versioning](https://semver.org/). Because Kotlin picks overloads from the
+static receiver type, the public API is the overload set itself:
+
+| Change | Version bump |
+|--------|--------------|
+| Remove or change a public signature (ABI dump removes a line) | **major** |
+| Add an overload, even if existing call sites resolve to it when recompiled | **minor** |
+| Bug fix, documentation, build or dependency change without API impact | **patch** |
+
+Release process:
+
+1. Move the `Unreleased` entries in [CHANGELOG.md](CHANGELOG.md) to the new version.
+2. Bump `version` in `gradle.properties` and the install snippets (README en/zh, `FULL-API.md`) in a
+   `[chore] : bump version to X.Y.Z` pull request.
+3. After it is merged, create a GitHub Release `vX.Y.Z` on `main`. The `Packages Deploy` workflow signs
+   and publishes to GitHub Packages and Maven Central.
 
 ## Reporting Issues
 
