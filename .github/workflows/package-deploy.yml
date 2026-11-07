@@ -14,7 +14,8 @@
 name: Packages Deploy
 on:
   release:
-    types: [created]
+    # `created` never fires for a draft, so publishing a saved draft would not deploy; `published` covers both paths.
+    types: [published]
   workflow_dispatch:
 jobs:
   github-deploy:
