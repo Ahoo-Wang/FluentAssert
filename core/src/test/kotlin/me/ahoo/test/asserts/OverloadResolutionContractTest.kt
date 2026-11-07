@@ -217,7 +217,8 @@ class OverloadResolutionContractTest {
     @Test
     fun `documented fallbacks keep their resolution`() {
         val charSequence: ObjectAssert<CharSequence> = (null as CharSequence?).assert()
-        // CharBuffer is CharSequence and Comparable; there is deliberately no CharSequence overload that would make this ambiguous.
+        // There is deliberately no CharSequence overload: it would not be ambiguous, but both lines would then resolve to
+        // CharSequenceAssert, and CharBuffer would lose comparisons such as isGreaterThan.
         val charBuffer: GenericComparableAssert<CharBuffer> = (null as CharBuffer?).assert()
         listOf(charSequence, charBuffer).forEach { it.isNull() }
     }

@@ -49,8 +49,12 @@ Verified facts that drive design decisions:
 - The `Comparable` overload is as specific as the interface overloads. A type that is `Comparable` and also
   `Iterable`/`Map`/`Future`/`Throwable` is ambiguous; JDK types of this shape need a dedicated overload (as
   `ScheduledFuture`, `StringBuilder` and `StringBuffer` have), user types must use a statically typed receiver.
-- There is deliberately no `CharSequence` overload: it would make `CharBuffer` and similar types ambiguous.
-  `OverloadResolutionContractTest` pins `CharBuffer` to keep compiling.
+- A non-generic overload wins over the generic `Comparable` one, which is why `StringBuilder` and `StringBuffer`
+  overloads resolve cleanly.
+- There is deliberately no `CharSequence` overload. It would not be ambiguous, but it would change the static
+  return type of existing call sites (`CharSequence` from `ObjectAssert`, `CharBuffer` from
+  `GenericComparableAssert`, both to `CharSequenceAssert`) and break chains such as `isGreaterThan`: a public API
+  behavior change to review as such. `OverloadResolutionContractTest` pins both resolutions.
 - Intuition about Kotlin overload resolution is unreliable here. Verify every resolution claim with a test
   before writing it down, and reproduce suspected resolution bugs with a failing test first.
 
