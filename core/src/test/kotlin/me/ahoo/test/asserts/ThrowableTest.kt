@@ -13,10 +13,13 @@
 
 package me.ahoo.test.asserts
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.ThrowableAssert
+import org.assertj.core.presentation.StandardRepresentation
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import java.io.IOException
 
 class ThrowableTest {
 
@@ -71,5 +74,62 @@ class ThrowableTest {
         assertThrownBy<IllegalArgumentException> {
             throw IllegalArgumentException("boom-expected")
         }.hasMessage("boom-expected").hasMessageContaining("boom")
+    }
+
+    @Test
+    fun `given matching type when assertThrownBy then the throwable is never rendered`() {
+        val expected = UnrenderableException()
+
+        assertThrownBy<UnrenderableException> { throw expected }.isSameAs(expected)
+        assertThrownBy(UnrenderableException::class.java) { throw expected }.isSameAs(expected)
+
+        expected.renderings.assert().isZero()
+    }
+
+    @Test
+    fun `given matching type when assertThrownBy then only user descriptions are emitted`() {
+        val descriptions = mutableListOf<String>()
+        Assertions.setDescriptionConsumer { description ->
+            description.value().takeIf { it.isNotEmpty() }?.let(descriptions::add)
+        }
+        try {
+            assertThrownBy<IOException> { throw IOException("detail") }
+                .describedAs("user description")
+                .hasMessage("detail")
+        } finally {
+            Assertions.setDescriptionConsumer(null)
+        }
+        descriptions.assert().containsExactly("user description")
+    }
+
+    @Test
+    fun `given wrong type when assertThrownBy then failure uses the configured representation`() {
+        Assertions.useRepresentation(object : StandardRepresentation() {
+            override fun toStringOf(value: Any?): String? =
+                if (value is Throwable) "CUSTOM_THROWABLE" else super.toStringOf(value)
+        })
+        try {
+            val reified = assertThrows(AssertionError::class.java) {
+                assertThrownBy<IllegalArgumentException> { throw IllegalStateException("actual") }
+            }
+            val byClass = assertThrows(AssertionError::class.java) {
+                assertThrownBy(IllegalArgumentException::class.java) { throw IllegalStateException("actual") }
+            }
+            val description = "Expected IllegalArgumentException to be thrown, but was: java.lang.IllegalStateException"
+            listOf(reified, byClass).forEach {
+                it.message.assert().contains("CUSTOM_THROWABLE").contains(description)
+            }
+        } finally {
+            Assertions.useDefaultRepresentation()
+        }
+    }
+
+    private class UnrenderableException : RuntimeException("expected") {
+        var renderings = 0
+
+        override fun toString(): String {
+            renderings++
+            error("render failed")
+        }
     }
 }

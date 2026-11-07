@@ -11,7 +11,7 @@ requirement must update this file, its verification, and [CHANGELOG.md](CHANGELO
 | F1 | Every supported receiver type resolves, by its **static** type, to the most specific AssertJ assertion class listed in the README "Supported types" table. | `OverloadResolutionContractTest` (compile-time typed assignments); `DocumentationTest` (table covers the ABI) |
 | F2 | Every receiver except `AssertProvider<A>` accepts `null` and yields an assertion on `null`. | `OverloadResolutionContractTest` (all receivers are `null`), `Jdk*Test` nullable cases |
 | F3 | No JDK type covered by the library makes `.assert()` ambiguous (e.g. `ScheduledFuture`, `StringBuilder`, `CharBuffer`). | `OverloadResolutionContractTest`, `JdkConcurrentTest` |
-| F4 | `assertThrownBy<T> { }` returns `ThrowableAssert<T>` for a thrown `T`, fails for no throwable or a wrong type, and does not leak its diagnostics into chained assertions. | `ThrowableTest` |
+| F4 | `assertThrownBy<T> { }` returns `ThrowableAssert<T>` for a thrown `T`, fails for no throwable or a wrong type, and does not leak its diagnostics into chained assertions. When the type matches it neither renders the throwable nor emits descriptions of its own; a wrong-type failure renders it with AssertJ's configured `Representation`. | `ThrowableTest` |
 | F5 | `AssertProvider<A>.assert()` returns the provider's own assertion `A`. | `AssertProviderTest`, `FailureReportingIntegrationTest` |
 | F6 | Assertions behave exactly like AssertJ, including failure messages; the library adds no assertion semantics. | `FailureReportingIntegrationTest`, `FileSystemIntegrationTest`, `ConcurrencyIntegrationTest` |
 
