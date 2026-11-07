@@ -16,6 +16,10 @@
 //
 //   ./gradlew kotlinConsumerRepository
 //   ./gradlew -p compatibility/kotlin-consumer test -PkotlinVersion=2.1.21
+//
+// The repository and version default to the root build's defaults (build/kotlin-consumer-repo, gradle.properties).
+// When the root build used another build directory or -Pversion, pass what `kotlinConsumerRepository` printed:
+// -Pversion=<version> -PfluentAssertRepository=<dir> (relative paths are resolved against the repository root).
 pluginManagement {
     // Minimum supported consumer Kotlin version (README, REQUIREMENTS.md N2). Raise it only deliberately.
     val kotlinVersion = providers.gradleProperty("kotlinVersion").getOrElse("2.1.21")
@@ -31,6 +35,14 @@ pluginManagement {
 rootProject.name = "kotlin-consumer"
 
 val repoRoot = settingsDir.resolve("../..").canonicalFile
+val fluentAssertRepository: File = providers.gradleProperty("fluentAssertRepository")
+    .map { repoRoot.resolve(it).canonicalFile }
+    .getOrElse(repoRoot.resolve("build/kotlin-consumer-repo"))
+// `version` is the standard Gradle override the root build reads too, so `-Pversion` selects the same library version.
+val fluentAssertVersion: String = providers.gradleProperty("version").orNull
+    ?: java.util.Properties()
+        .apply { repoRoot.resolve("gradle.properties").inputStream().use(::load) }
+        .getProperty("version")
 
 dependencyResolutionManagement {
     // Hermetic resolution: ignore repositories injected by init scripts, and resolve FluentAssert only from the freshly
@@ -42,7 +54,7 @@ dependencyResolutionManagement {
             forRepository {
                 maven {
                     name = "fluentAssertLocal"
-                    url = repoRoot.resolve("build/kotlin-consumer-repo").toURI()
+                    url = fluentAssertRepository.toURI()
                 }
             }
             filter { includeGroup("me.ahoo.test") }
@@ -57,7 +69,6 @@ dependencyResolutionManagement {
 }
 
 gradle.rootProject {
-    extra["fluentAssertVersion"] = java.util.Properties()
-        .apply { repoRoot.resolve("gradle.properties").inputStream().use(::load) }
-        .getProperty("version")
+    extra["fluentAssertVersion"] = fluentAssertVersion
+    extra["fluentAssertRepository"] = fluentAssertRepository
 }

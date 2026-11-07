@@ -50,6 +50,11 @@ from its generated POMs:
 ./gradlew -p compatibility/kotlin-consumer test -PkotlinVersion=2.4.21     # Any other compiler version
 ```
 
+The consumer build assumes the root build's defaults: `build/kotlin-consumer-repo` and the version in
+`gradle.properties`. If you assembled the repository with `-Pversion` or a custom build directory, pass the
+`-Pversion=<version> -PfluentAssertRepository=<dir>` values that `kotlinConsumerRepository` prints; a missing
+repository fails with that hint before compilation.
+
 Run a subset with `./gradlew :core:test --tests "*JdkTest*"`. The aggregate coverage report is
 `./gradlew code-coverage-report:koverHtmlReport`.
 

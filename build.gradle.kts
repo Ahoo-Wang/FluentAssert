@@ -86,18 +86,22 @@ tasks.named("check") {
 
 // A file-based Maven repository holding the library exactly as consumers resolve it (POMs + jar), without signing.
 // compatibility/kotlin-consumer compiles and tests against it with older Kotlin compilers; see CONTRIBUTING.md.
+// The consumer build defaults to build/kotlin-consumer-repo and the version in gradle.properties; the task prints the
+// -Pversion and -PfluentAssertRepository values that select exactly this output, for a customized build directory or
+// version.
 val kotlinConsumerRepository by tasks.registering(Sync::class) {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = "Assembles a local Maven repository of the library for the Kotlin consumer compatibility build."
     val libraryVersion = version.toString()
     val core = project(":core").layout.buildDirectory
     val platform = project(":dependencies").layout.buildDirectory
+    val repositoryDir = layout.buildDirectory.dir("kotlin-consumer-repo")
     dependsOn(
         ":core:jar",
         ":core:generatePomFileForMavenLibraryPublication",
         ":dependencies:generatePomFileForMavenBomPublication",
     )
-    into(layout.buildDirectory.dir("kotlin-consumer-repo"))
+    into(repositoryDir)
     into("me/ahoo/test/fluent-assert-core/$libraryVersion") {
         from(core.file("libs/fluent-assert-core-$libraryVersion.jar"))
         from(core.file("publications/mavenLibrary/pom-default.xml")) {
@@ -108,6 +112,16 @@ val kotlinConsumerRepository by tasks.registering(Sync::class) {
         from(platform.file("publications/mavenBom/pom-default.xml")) {
             rename { "fluent-assert-dependencies-$libraryVersion.pom" }
         }
+    }
+    doLast {
+        logger.lifecycle(
+            "Kotlin consumer repository: fluent-assert {} in {}\n" +
+                "Test it with: ./gradlew -p compatibility/kotlin-consumer test -Pversion={} -PfluentAssertRepository={}",
+            libraryVersion,
+            repositoryDir.get().asFile,
+            libraryVersion,
+            repositoryDir.get().asFile,
+        )
     }
 }
 
