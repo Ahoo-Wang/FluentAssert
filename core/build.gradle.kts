@@ -2,6 +2,14 @@ dependencies {
     api("org.assertj:assertj-core")
 }
 
+// Without it, the module path derives the name from the file name: `fluent.assert.core`, which is invalid because
+// `assert` is a Java keyword. The name follows the library's only package and is a published contract.
+tasks.named<Jar>("jar") {
+    manifest {
+        attributes["Automatic-Module-Name"] = "me.ahoo.test.asserts"
+    }
+}
+
 testing {
     suites {
         // End-to-end scenarios against real JDK resources (file system, executors, AssertJ failure
@@ -22,6 +30,22 @@ testing {
 
 tasks.named("check") {
     dependsOn(testing.suites.named("integrationTest"))
+}
+
+// ModulePathIntegrationTest puts the jar consumers get, with its runtime dependencies, on a JPMS module path.
+tasks.named<Test>("integrationTest") {
+    val libraryJar = tasks.named<Jar>("jar").flatMap { it.archiveFile }
+    val libraryRuntime = files(configurations.named("runtimeClasspath"))
+    inputs.file(libraryJar).withPropertyName("libraryJar").withNormalizer(ClasspathNormalizer::class)
+    inputs.files(libraryRuntime).withPropertyName("libraryRuntime").withNormalizer(ClasspathNormalizer::class)
+    jvmArgumentProviders.add(
+        CommandLineArgumentProvider {
+            listOf(
+                "-Dfluentassert.libraryJar=${libraryJar.get().asFile.absolutePath}",
+                "-Dfluentassert.libraryRuntime=${libraryRuntime.asPath}",
+            )
+        }
+    )
 }
 
 // KDoc examples are @sample references to these executable tests, so every documented example compiles and runs.

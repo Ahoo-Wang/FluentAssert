@@ -25,3 +25,4 @@ requirement must update this file, its verification, and [CHANGELOG.md](CHANGELO
 | N4 | **Minimal dependencies**: the published POM depends only on `assertj-core` and `kotlin-stdlib`. | Generated POM review on release |
 | N5 | **Quality gates**: every change passes unit and integration tests, detekt, 100% line coverage and license-header checks in CI. | `./gradlew build` in `.github/workflows/ci.yml` |
 | N6 | **Correct documentation**: every documented code example compiles and passes, and the type tables and install versions match the code. | KDoc `@sample` tests in `samples/`; `DocumentationTest` |
+| N7 | **JPMS**: the published jar loads on the module path as the automatic module `me.ahoo.test.asserts`. | `ModulePathIntegrationTest` (module descriptor of the built jar; an extension called through a module layer) |

@@ -46,6 +46,8 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 </dependency>
 ```
 
+在 JPMS 模块路径上，该 jar 是自动模块 `me.ahoo.test.asserts`（`requires me.ahoo.test.asserts;`）。
+
 ## 使用
 
 ```kotlin
