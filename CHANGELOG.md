@@ -10,6 +10,26 @@ All notable changes to this project are documented here. The format follows
 ### Added
 - CI checks consumer compatibility: code using FluentAssert is compiled and tested with the minimum supported
   Kotlin (2.1.21) and the build toolchain's Kotlin, resolving the library from its generated POMs.
+- The jar declares `Automatic-Module-Name: me.ahoo.test.asserts`, so it loads on the JPMS module path; the name
+  derived from the file name (`fluent.assert.core`) was invalid. ([#146])
+
+### Changed
+- `Array` and `Stream` receivers are covariant (`Array<out T>`, `Stream<out T>`): `vararg` parameters and projected
+  arrays and streams assert on their element type instead of failing to compile on content checks such as
+  `contains`. Existing call sites keep their return types; the JVM signatures are unchanged. ([#139])
+
+### Fixed
+- `assertThrownBy` no longer renders a matching throwable or emits its own description on success, so a throwable
+  whose `toString()` throws passes, and AssertJ's description consumer only sees user descriptions. A wrong-type
+  failure renders the throwable with the configured `Representation` (`Assertions.useRepresentation`). ([#137])
+- `Stream.assert()` documentation: the first content check consumes the stream, not creating the assertion. ([#138])
+- The reason for having no `CharSequence` overload is documented correctly (it would change existing return types,
+  not cause an ambiguity), and nullable `CharSequence?` text is converted with `?.toString()` in the READMEs and the
+  skill. ([#142], [#144])
+- Build: `./gradlew build --configuration-cache` succeeds (`checkLicenseHeaders` captured the build script). ([#141])
+- Build: the Kotlin consumer build accepts `-Pversion` and `-PfluentAssertRepository`, which
+  `kotlinConsumerRepository` prints, so it resolves the artifacts of a customized build directory or version. ([#143])
+- Release: `Packages Deploy` runs when a draft release is published. ([#140])
 
 ## [1.2.1] - 2026-10-11
 
@@ -102,3 +122,12 @@ No API change; the library behaves exactly like 1.2.0. This release ships the co
 [#124]: https://github.com/Ahoo-Wang/FluentAssert/pull/124
 [#125]: https://github.com/Ahoo-Wang/FluentAssert/pull/125
 [#126]: https://github.com/Ahoo-Wang/FluentAssert/pull/126
+[#137]: https://github.com/Ahoo-Wang/FluentAssert/issues/137
+[#138]: https://github.com/Ahoo-Wang/FluentAssert/issues/138
+[#139]: https://github.com/Ahoo-Wang/FluentAssert/issues/139
+[#140]: https://github.com/Ahoo-Wang/FluentAssert/issues/140
+[#141]: https://github.com/Ahoo-Wang/FluentAssert/issues/141
+[#142]: https://github.com/Ahoo-Wang/FluentAssert/issues/142
+[#143]: https://github.com/Ahoo-Wang/FluentAssert/issues/143
+[#144]: https://github.com/Ahoo-Wang/FluentAssert/issues/144
+[#146]: https://github.com/Ahoo-Wang/FluentAssert/issues/146
