@@ -70,10 +70,13 @@ val checkLicenseHeaders by tasks.registering {
         exclude("**/build/**")
     }
     inputs.files(sources)
+    // A plain File: reading the script's rootDir inside the action would capture the script object, which the
+    // configuration cache cannot serialize.
+    val projectRootDir = rootDir
     doLast {
         val missing = sources.files.filterNot { it.readText().contains("Licensed under the Apache License, Version 2.0") }
         check(missing.isEmpty()) {
-            "Missing Apache-2.0 license header:\n" + missing.joinToString("\n") { it.relativeTo(rootDir).path }
+            "Missing Apache-2.0 license header:\n" + missing.joinToString("\n") { it.relativeTo(projectRootDir).path }
         }
     }
 }
