@@ -83,10 +83,10 @@ assertThrownBy<IllegalArgumentException> {
 | `Iterable<T>` | `IterableAssert<T>` |
 | `Iterator<T>` | `IteratorAssert<T>` |
 | `Map<K, V>` | `MapAssert<K, V>` |
-| `Array<T>` | `ObjectArrayAssert<T>` |
+| `Array<out T>`（包括 `vararg` 参数） | `ObjectArrayAssert<T>` |
 | `BooleanArray`, `ByteArray`, `ShortArray`, `IntArray`, `LongArray`, `FloatArray`, `DoubleArray`, `CharArray` | `BooleanArrayAssert`, `ByteArrayAssert`, `ShortArrayAssert`, `IntArrayAssert`, `LongArrayAssert`, `FloatArrayAssert`, `DoubleArrayAssert`, `CharArrayAssert` |
 | `Optional<T>` | `OptionalAssert<T>` |
-| `Stream<T>` | `ListAssert<T>`（会消费该流） |
+| `Stream<out T>` | `ListAssert<T>`（首个检查内容的断言会消费该流） |
 | `Date` | `DateAssert` |
 | `Instant`, `LocalDate`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZonedDateTime`, `YearMonth` | `InstantAssert`, `LocalDateAssert`, `LocalTimeAssert`, `LocalDateTimeAssert`, `OffsetTimeAssert`, `OffsetDateTimeAssert`, `ZonedDateTimeAssert`, `YearMonthAssert` |
 | `Duration`, `Period` | `DurationAssert`, `PeriodAssert` |

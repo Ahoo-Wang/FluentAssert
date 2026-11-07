@@ -86,10 +86,10 @@ may be `null`.
 | `Iterable<T>` | `IterableAssert<T>` |
 | `Iterator<T>` | `IteratorAssert<T>` |
 | `Map<K, V>` | `MapAssert<K, V>` |
-| `Array<T>` | `ObjectArrayAssert<T>` |
+| `Array<out T>` (including `vararg` parameters) | `ObjectArrayAssert<T>` |
 | `BooleanArray`, `ByteArray`, `ShortArray`, `IntArray`, `LongArray`, `FloatArray`, `DoubleArray`, `CharArray` | `BooleanArrayAssert`, `ByteArrayAssert`, `ShortArrayAssert`, `IntArrayAssert`, `LongArrayAssert`, `FloatArrayAssert`, `DoubleArrayAssert`, `CharArrayAssert` |
 | `Optional<T>` | `OptionalAssert<T>` |
-| `Stream<T>` | `ListAssert<T>` (the stream is consumed) |
+| `Stream<out T>` | `ListAssert<T>` (the first content check consumes the stream) |
 | `Date` | `DateAssert` |
 | `Instant`, `LocalDate`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZonedDateTime`, `YearMonth` | `InstantAssert`, `LocalDateAssert`, `LocalTimeAssert`, `LocalDateTimeAssert`, `OffsetTimeAssert`, `OffsetDateTimeAssert`, `ZonedDateTimeAssert`, `YearMonthAssert` |
 | `Duration`, `Period` | `DurationAssert`, `PeriodAssert` |

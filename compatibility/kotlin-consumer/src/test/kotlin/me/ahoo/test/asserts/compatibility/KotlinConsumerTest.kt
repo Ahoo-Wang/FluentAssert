@@ -24,6 +24,7 @@ import org.assertj.core.api.GenericComparableAssert
 import org.assertj.core.api.IntArrayAssert
 import org.assertj.core.api.IterableAssert
 import org.assertj.core.api.ListAssert
+import org.assertj.core.api.ObjectArrayAssert
 import org.assertj.core.api.StringAssert
 import org.assertj.core.api.TemporalAssert
 import org.junit.jupiter.api.Test
@@ -32,6 +33,7 @@ import java.time.temporal.Temporal
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.ScheduledFuture
+import java.util.stream.Stream
 
 /**
  * Compiled by the consumer's Kotlin compiler against the published POMs. Typed assignments check that overload
@@ -66,6 +68,17 @@ class KotlinConsumerTest {
         comparable.isGreaterThan(Version(1))
         scheduled.isNull()
         stage.isCompletedWithValue("done")
+    }
+
+    @Test
+    fun `projected arrays and streams assert on their element type`() {
+        fun tags(vararg values: String) = values.assert()
+        val projectedArray: ObjectArrayAssert<Number> = (arrayOf(1, 2) as Array<out Number>).assert()
+        val projectedStream: ListAssert<Number> = (Stream.of(1, 2) as Stream<out Number>).assert()
+
+        tags("kotlin", "assertj").contains("kotlin")
+        projectedArray.contains(1)
+        projectedStream.containsExactly(1, 2)
     }
 
     @Test

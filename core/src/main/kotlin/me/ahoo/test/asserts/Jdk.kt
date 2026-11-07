@@ -180,11 +180,14 @@ fun <T> Collection<T>?.assert(): CollectionAssert<T> = CollectionAssert(this)
 /**
  * Returns an [ObjectArrayAssert] for this array.
  *
- * Primitive arrays such as [IntArray] are not `Array<T>` and have their own overloads.
+ * The receiver is covariant, so a `vararg` parameter (an `Array<out T>` inside the function) or any other
+ * projected array asserts on its element type. Primitive arrays such as [IntArray] are not `Array<T>` and have
+ * their own overloads.
  *
  * @sample me.ahoo.test.asserts.samples.JdkSamples.array
+ * @sample me.ahoo.test.asserts.samples.JdkSamples.varargArray
  */
-fun <T> Array<T>?.assert(): ObjectArrayAssert<T> = assertThat(this)
+fun <T> Array<out T>?.assert(): ObjectArrayAssert<T> = assertThat(this)
 
 /**
  * Returns a [BooleanArrayAssert] for this array.
@@ -266,11 +269,13 @@ fun <K, V> Map<K, V>?.assert(): MapAssert<K, V> = MapAssert(this)
 /**
  * Returns a [ListAssert] over the elements of this stream.
  *
- * The stream is consumed when the assertion is created.
+ * Creating the assertion does not consume the stream: the first check that needs the elements does, so keep the
+ * stream open until then (run the content checks inside `use { }`, not after it). The receiver is covariant, so a
+ * `Stream<out T>` asserts on its element type.
  *
  * @sample me.ahoo.test.asserts.samples.JdkSamples.stream
  */
-fun <T> Stream<T>?.assert(): ListAssert<T> = assertThat(this)
+fun <T> Stream<out T>?.assert(): ListAssert<T> = assertThat(this)
 
 /**
  * Returns a [GenericComparableAssert] for this comparable value.
