@@ -43,9 +43,10 @@ fun <T : Throwable> assertThrownBy(
     if (!throwableType.isInstance(throwable)) {
         // Diagnose only a failing check: describedAs reaches AssertJ's description consumer, and AssertJ renders
         // the throwable with the configured Representation. The description names the class, never toString().
+        val actualType = throwable?.let { it.javaClass.name }
         throwable
             .assert()
-            .describedAs("Expected ${throwableType.simpleName} to be thrown, but was: ${throwable?.javaClass?.name}")
+            .describedAs("Expected ${throwableType.simpleName} to be thrown, but was: $actualType")
             .isNotNull()
             .isInstanceOf(throwableType)
     }
