@@ -47,6 +47,8 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 </dependency>
 ```
 
+On the JPMS module path the jar is the automatic module `me.ahoo.test.asserts` (`requires me.ahoo.test.asserts;`).
+
 ## Usage
 
 ```kotlin
@@ -86,10 +88,10 @@ may be `null`.
 | `Iterable<T>` | `IterableAssert<T>` |
 | `Iterator<T>` | `IteratorAssert<T>` |
 | `Map<K, V>` | `MapAssert<K, V>` |
-| `Array<T>` | `ObjectArrayAssert<T>` |
+| `Array<out T>` (including `vararg` parameters) | `ObjectArrayAssert<T>` |
 | `BooleanArray`, `ByteArray`, `ShortArray`, `IntArray`, `LongArray`, `FloatArray`, `DoubleArray`, `CharArray` | `BooleanArrayAssert`, `ByteArrayAssert`, `ShortArrayAssert`, `IntArrayAssert`, `LongArrayAssert`, `FloatArrayAssert`, `DoubleArrayAssert`, `CharArrayAssert` |
 | `Optional<T>` | `OptionalAssert<T>` |
-| `Stream<T>` | `ListAssert<T>` (the stream is consumed) |
+| `Stream<out T>` | `ListAssert<T>` (the first content check consumes the stream) |
 | `Date` | `DateAssert` |
 | `Instant`, `LocalDate`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZonedDateTime`, `YearMonth` | `InstantAssert`, `LocalDateAssert`, `LocalTimeAssert`, `LocalDateTimeAssert`, `OffsetTimeAssert`, `OffsetDateTimeAssert`, `ZonedDateTimeAssert`, `YearMonthAssert` |
 | `Duration`, `Period` | `DurationAssert`, `PeriodAssert` |
@@ -112,9 +114,11 @@ Kotlin picks the most specific overload for the **declared** type, which explain
 - **Declare the type you want to assert.** A `List` receiver gets `ListAssert`; declare it as `Iterable<T>` to
   get `IterableAssert`. A concrete `java.time` value gets its own assertion; only a `Temporal`-typed value
   gets `TemporalAssert`.
-- **Text that is only known as `CharSequence` gets `ObjectAssert`.** There is deliberately no `CharSequence`
-  overload, because types that are both `CharSequence` and `Comparable` (such as `CharBuffer`) would become
-  ambiguous. Call `.toString()` first.
+- **Text that is only known as `CharSequence` gets `ObjectAssert`.** Call `.toString()` first, or `?.toString()`
+  for a nullable `CharSequence?`: a plain `.toString()` turns `null` into the text `"null"`, which then passes
+  checks such as `isNotBlank()`. There is no `CharSequence` overload because adding one would change the assertion
+  type existing code gets: `CharBuffer` would resolve to `CharSequenceAssert` instead of `GenericComparableAssert`
+  and lose comparisons such as `isGreaterThan`.
 - **Primitive streams are not `Stream<T>`.** Use `intStream.boxed().assert()`.
 - **A custom type that is `Comparable` and also `Iterable`, `Map`, `Future` or `Throwable` is ambiguous** and
   does not compile. Pick the overload by declaring the type:

@@ -11,7 +11,7 @@ requirement must update this file, its verification, and [CHANGELOG.md](CHANGELO
 | F1 | Every supported receiver type resolves, by its **static** type, to the most specific AssertJ assertion class listed in the README "Supported types" table. | `OverloadResolutionContractTest` (compile-time typed assignments); `DocumentationTest` (table covers the ABI) |
 | F2 | Every receiver except `AssertProvider<A>` accepts `null` and yields an assertion on `null`. | `OverloadResolutionContractTest` (all receivers are `null`), `Jdk*Test` nullable cases |
 | F3 | No JDK type covered by the library makes `.assert()` ambiguous (e.g. `ScheduledFuture`, `StringBuilder`, `CharBuffer`). | `OverloadResolutionContractTest`, `JdkConcurrentTest` |
-| F4 | `assertThrownBy<T> { }` returns `ThrowableAssert<T>` for a thrown `T`, fails for no throwable or a wrong type, and does not leak its diagnostics into chained assertions. | `ThrowableTest` |
+| F4 | `assertThrownBy<T> { }` returns `ThrowableAssert<T>` for a thrown `T`, fails for no throwable or a wrong type, and does not leak its diagnostics into chained assertions. When the type matches it neither renders the throwable nor emits descriptions of its own; a wrong-type failure renders it with AssertJ's configured `Representation`. | `ThrowableTest` |
 | F5 | `AssertProvider<A>.assert()` returns the provider's own assertion `A`. | `AssertProviderTest`, `FailureReportingIntegrationTest` |
 | F6 | Assertions behave exactly like AssertJ, including failure messages; the library adds no assertion semantics. | `FailureReportingIntegrationTest`, `FileSystemIntegrationTest`, `ConcurrencyIntegrationTest` |
 
@@ -25,3 +25,4 @@ requirement must update this file, its verification, and [CHANGELOG.md](CHANGELO
 | N4 | **Minimal dependencies**: the published POM depends only on `assertj-core` and `kotlin-stdlib`. | Generated POM review on release |
 | N5 | **Quality gates**: every change passes unit and integration tests, detekt, 100% line coverage and license-header checks in CI. | `./gradlew build` in `.github/workflows/ci.yml` |
 | N6 | **Correct documentation**: every documented code example compiles and passes, and the type tables and install versions match the code. | KDoc `@sample` tests in `samples/`; `DocumentationTest` |
+| N7 | **JPMS**: the published jar loads on the module path as the automatic module `me.ahoo.test.asserts`. | `ModulePathIntegrationTest` (module descriptor of the built jar; an extension called through a module layer) |

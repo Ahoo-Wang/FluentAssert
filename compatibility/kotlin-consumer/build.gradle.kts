@@ -20,6 +20,22 @@ kotlin {
 }
 
 val fluentAssertVersion: String by extra
+val fluentAssertRepository: File by extra
+
+// Runs before compilation resolves the library, turning "Could not find me.ahoo.test:fluent-assert-core" into the fix.
+val checkFluentAssertRepository by tasks.registering {
+    val expected = fluentAssertRepository.resolve("me/ahoo/test/fluent-assert-core/$fluentAssertVersion")
+    val version = fluentAssertVersion
+    doLast {
+        check(expected.resolve("fluent-assert-core-$version.pom").isFile) {
+            "FluentAssert $version is not in $expected. Run `./gradlew kotlinConsumerRepository` first; if it used a " +
+                "custom build directory or -Pversion, pass the -Pversion and -PfluentAssertRepository values it printed."
+        }
+    }
+}
+tasks.named("compileTestKotlin") {
+    dependsOn(checkFluentAssertRepository)
+}
 
 dependencies {
     // Only the library itself: assertj-core and kotlin-stdlib must arrive through its published POM.

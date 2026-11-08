@@ -18,6 +18,7 @@ import me.ahoo.test.asserts.assertThrownBy
 import org.assertj.core.api.AssertProvider
 import org.assertj.core.api.BigDecimalAssert
 import org.assertj.core.api.StringAssert
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.time.Instant
@@ -111,6 +112,28 @@ class SkillExamples {
 
         val stage: CompletionStage<String> = CompletableFuture.completedFuture("done")
         stage.assert().isCompletedWithValue("done") // CompletableFutureAssert<String>
+    }
+
+    private fun loadText(): CharSequence? = StringBuilder("Fluent")
+
+    @Test
+    fun nullableText() {
+        val text: CharSequence? = loadText()
+        text?.toString().assert().isNotBlank() // null stays null and fails, instead of passing as the text "null"
+    }
+
+    @Test
+    fun `nullable text guidance holds for null, text and the literal null`() {
+        fun converted(text: CharSequence?): StringAssert = text?.toString().assert()
+
+        converted(null).isNull()
+        listOf<(StringAssert) -> Unit>({ it.isNotBlank() }, { it.hasSize(4) }, { it.startsWith("null") })
+            .forEach { check -> assertThrows(AssertionError::class.java) { check(converted(null)) } }
+        // The pitfall the guidance avoids: a plain toString() asserts on the text "null".
+        (null as CharSequence?).toString().assert().isNotBlank().hasSize(4).startsWith("null")
+
+        converted(StringBuilder("Fluent")).isEqualTo("Fluent")
+        converted(StringBuilder("null")).isNotBlank().hasSize(4).startsWith("null")
     }
 
     @Test

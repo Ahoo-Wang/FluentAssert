@@ -46,6 +46,8 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 </dependency>
 ```
 
+在 JPMS 模块路径上，该 jar 是自动模块 `me.ahoo.test.asserts`（`requires me.ahoo.test.asserts;`）。
+
 ## 使用
 
 ```kotlin
@@ -83,10 +85,10 @@ assertThrownBy<IllegalArgumentException> {
 | `Iterable<T>` | `IterableAssert<T>` |
 | `Iterator<T>` | `IteratorAssert<T>` |
 | `Map<K, V>` | `MapAssert<K, V>` |
-| `Array<T>` | `ObjectArrayAssert<T>` |
+| `Array<out T>`（包括 `vararg` 参数） | `ObjectArrayAssert<T>` |
 | `BooleanArray`, `ByteArray`, `ShortArray`, `IntArray`, `LongArray`, `FloatArray`, `DoubleArray`, `CharArray` | `BooleanArrayAssert`, `ByteArrayAssert`, `ShortArrayAssert`, `IntArrayAssert`, `LongArrayAssert`, `FloatArrayAssert`, `DoubleArrayAssert`, `CharArrayAssert` |
 | `Optional<T>` | `OptionalAssert<T>` |
-| `Stream<T>` | `ListAssert<T>`（会消费该流） |
+| `Stream<out T>` | `ListAssert<T>`（首个检查内容的断言会消费该流） |
 | `Date` | `DateAssert` |
 | `Instant`, `LocalDate`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZonedDateTime`, `YearMonth` | `InstantAssert`, `LocalDateAssert`, `LocalTimeAssert`, `LocalDateTimeAssert`, `OffsetTimeAssert`, `OffsetDateTimeAssert`, `ZonedDateTimeAssert`, `YearMonthAssert` |
 | `Duration`, `Period` | `DurationAssert`, `PeriodAssert` |
@@ -108,8 +110,10 @@ Kotlin 会为**声明**类型选择最具体的重载，所有"意外"都源于�
 
 - **声明你想断言的类型。** `List` 接收者得到 `ListAssert`；声明为 `Iterable<T>` 才得到 `IterableAssert`。
   具体的 `java.time` 类型得到各自的断言；只有声明为 `Temporal` 的值才得到 `TemporalAssert`。
-- **只知道是 `CharSequence` 的文本得到 `ObjectAssert`。** 这里刻意没有提供 `CharSequence` 重载，
-  因为同时实现 `CharSequence` 与 `Comparable` 的类型（如 `CharBuffer`）会产生歧义。请先调用 `.toString()`。
+- **只知道是 `CharSequence` 的文本得到 `ObjectAssert`。** 请先调用 `.toString()`；可空的 `CharSequence?`
+  请使用 `?.toString()`：直接调用 `.toString()` 会把 `null` 变成文本 `"null"`，使 `isNotBlank()` 等检查误通过。
+  这里没有提供 `CharSequence` 重载，因为新增它会改变既有代码得到的断言类型：`CharBuffer` 会从
+  `GenericComparableAssert` 变为 `CharSequenceAssert`，失去 `isGreaterThan` 等比较断言。
 - **原生类型流不是 `Stream<T>`。** 请使用 `intStream.boxed().assert()`。
 - **同时实现 `Comparable` 与 `Iterable`、`Map`、`Future` 或 `Throwable` 的自定义类型会产生歧义**，无法编译。
   请通过声明类型来选择重载：

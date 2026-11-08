@@ -158,6 +158,15 @@ class OverloadResolutionContractTest {
     }
 
     @Test
+    fun `projected arrays and streams resolve to assertions of the projection bound`() {
+        val projectedArray: ObjectArrayAssert<Number> = (null as Array<out Number>?).assert()
+        val starArray: ObjectArrayAssert<Any?> = (null as Array<*>?).assert()
+        val projectedStream: ListAssert<Number> = (null as Stream<out Number>?).assert()
+        val starStream: ListAssert<Any?> = (null as Stream<*>?).assert()
+        listOf(projectedArray, starArray, projectedStream, starStream).forEach { it.isNull() }
+    }
+
+    @Test
     fun `time receivers resolve to their dedicated assertions`() {
         val date: DateAssert = (null as Date?).assert()
         val zonedDateTime: ZonedDateTimeAssert = (null as ZonedDateTime?).assert()
@@ -208,7 +217,8 @@ class OverloadResolutionContractTest {
     @Test
     fun `documented fallbacks keep their resolution`() {
         val charSequence: ObjectAssert<CharSequence> = (null as CharSequence?).assert()
-        // CharBuffer is CharSequence and Comparable; there is deliberately no CharSequence overload that would make this ambiguous.
+        // There is deliberately no CharSequence overload: it would not be ambiguous, but both lines would then resolve to
+        // CharSequenceAssert, and CharBuffer would lose comparisons such as isGreaterThan.
         val charBuffer: GenericComparableAssert<CharBuffer> = (null as CharBuffer?).assert()
         listOf(charSequence, charBuffer).forEach { it.isNull() }
     }

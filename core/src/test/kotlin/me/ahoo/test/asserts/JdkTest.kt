@@ -36,10 +36,12 @@ import org.assertj.core.api.ObjectAssert
 import org.assertj.core.api.OptionalAssert
 import org.assertj.core.api.ShortAssert
 import org.assertj.core.api.StringAssert
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.Optional
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.stream.Stream
 
 class JdkTest {
@@ -176,6 +178,28 @@ class JdkTest {
     }
 
     @Test
+    fun `given vararg parameter when assert then content assertions accept its element type`() {
+        fun check(vararg values: String) {
+            values.assert().hasSize(2).contains("one")
+        }
+        check("one", "two")
+    }
+
+    @Test
+    fun `given projected Array when assert then ObjectArrayAssert of the projection bound`() {
+        val numbers: Array<out Number> = arrayOf(1, 2)
+        val numbersAssert: ObjectArrayAssert<Number> = numbers.assert()
+        numbersAssert.contains(1).hasSize(2)
+
+        val anything: Array<*> = arrayOf("a", 1)
+        val anythingAssert: ObjectArrayAssert<Any?> = anything.assert()
+        anythingAssert.containsExactly("a", 1)
+
+        val missing: Array<out Number>? = null
+        missing.assert().isNull()
+    }
+
+    @Test
     fun `given List when assert then ListAssert`() {
         val value = listOf("1")
         value.assert().assert().isInstanceOf(ListAssert::class.java)
@@ -205,6 +229,36 @@ class JdkTest {
     fun `given Stream when assert then ListAssert`() {
         val value = mockk<Stream<String>>()
         value.assert().assert().isInstanceOf(ListAssert::class.java)
+    }
+
+    @Test
+    fun `given projected Stream when assert then ListAssert of the projection bound`() {
+        val numbers: Stream<out Number> = Stream.of(1, 2)
+        val numbersAssert: ListAssert<Number> = numbers.assert()
+        numbersAssert.contains(1).hasSize(2)
+
+        val anything: Stream<*> = Stream.of("a", 1)
+        val anythingAssert: ListAssert<Any?> = anything.assert()
+        anythingAssert.containsExactly("a", 1)
+
+        val missing: Stream<out Number>? = null
+        missing.assert().isNull()
+    }
+
+    @Test
+    fun `given Stream when assert then the first content check consumes it`() {
+        val visits = AtomicInteger()
+        val assertion = Stream.of("one", "two").peek { visits.incrementAndGet() }.assert()
+        visits.get().assert().isZero()
+
+        assertion.isNotNull()
+        visits.get().assert().isZero()
+
+        assertion.containsExactly("one", "two")
+        visits.get().assert().isEqualTo(2)
+
+        val closedBeforeCheck = Stream.of("one").use { it.assert() }
+        assertThrows(IllegalStateException::class.java) { closedBeforeCheck.containsExactly("one") }
     }
 
     @Test

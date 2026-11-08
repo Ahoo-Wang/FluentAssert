@@ -15,7 +15,6 @@ package me.ahoo.test.asserts
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.ThrowableAssert
-import org.assertj.core.error.ShouldBeInstance.shouldBeInstance
 
 /**
  * Returns a [ThrowableAssert] for this throwable.
@@ -41,15 +40,18 @@ fun <T : Throwable> assertThrownBy(
     shouldRaiseThrowable: () -> Unit
 ): ThrowableAssert<T> {
     val throwable = Assertions.catchThrowable(shouldRaiseThrowable)
-    // describedAs/overridingErrorMessage persist on the assert instance's WritableAssertionInfo,
-    // so run the diagnostics on a throwaway instance and return a fresh one — otherwise chained
-    // assertions report their failures as type-check errors.
-    throwable
-        .assert()
-        .describedAs { "Expected ${throwableType.simpleName} to be thrown, but was: $throwable" }
-        .isNotNull()
-        .overridingErrorMessage(shouldBeInstance(throwable, throwableType).create())
-        .isInstanceOf(throwableType)
+    if (!throwableType.isInstance(throwable)) {
+        // Diagnose only a failing check: describedAs reaches AssertJ's description consumer, and AssertJ renders
+        // the throwable with the configured Representation. The description names the class, never toString().
+        val actualType = throwable?.let { it.javaClass.name }
+        throwable
+            .assert()
+            .describedAs("Expected ${throwableType.simpleName} to be thrown, but was: $actualType")
+            .isNotNull()
+            .isInstanceOf(throwableType)
+    }
+    // describedAs persists on the assert instance's WritableAssertionInfo, so the diagnostics above use a
+    // throwaway instance and a fresh one is returned; chained assertions report their own failures.
     return throwable.assert() as ThrowableAssert<T>
 }
 

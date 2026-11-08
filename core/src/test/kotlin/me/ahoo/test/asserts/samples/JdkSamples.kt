@@ -140,6 +140,15 @@ class JdkSamples {
     }
 
     @Test
+    fun varargArray() {
+        fun assertTags(vararg tags: String) {
+            tags.assert().contains("kotlin").doesNotHaveDuplicates()
+        }
+
+        assertTags("kotlin", "assertj")
+    }
+
+    @Test
     fun primitiveArrays() {
         intArrayOf(1, 2, 3).assert().containsExactly(1, 2, 3)
         longArrayOf(1, 2).assert().contains(2L)
@@ -171,8 +180,9 @@ class JdkSamples {
 
     @Test
     fun stream() {
-        val stream = Stream.of(1, 2, 3)
-        stream.assert().containsExactly(1, 2, 3)
+        Stream.of(1, 2, 3).use { stream ->
+            stream.assert().containsExactly(1, 2, 3)
+        }
     }
 
     @Test
