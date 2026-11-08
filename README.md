@@ -34,7 +34,7 @@ Requirements: JDK 17+, Kotlin 2.1+ compiler. AssertJ comes in as a transitive de
 
 ```kotlin
 // Gradle (Kotlin DSL)
-testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
+testImplementation("me.ahoo.test:fluent-assert-core:1.3.0")
 ```
 
 ```xml
@@ -42,7 +42,7 @@ testImplementation("me.ahoo.test:fluent-assert-core:1.2.1")
 <dependency>
     <groupId>me.ahoo.test</groupId>
     <artifactId>fluent-assert-core</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
     <scope>test</scope>
 </dependency>
 ```
