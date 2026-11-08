@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-07
+
+Binary compatible with 1.2.x. Recompiled code can see one behavior change: `Array` and `Stream` receivers are
+covariant, so `vararg` parameters and projected arrays and streams now support content checks. The jar can be
+used on the JPMS module path, and `assertThrownBy` reports through AssertJ's configured representation.
+
 ### Added
 - CI checks consumer compatibility: code using FluentAssert is compiled and tested with the minimum supported
   Kotlin (2.1.21) and the build toolchain's Kotlin, resolving the library from its generated POMs.
@@ -101,7 +107,8 @@ No API change; the library behaves exactly like 1.2.0. This release ships the co
 ### Added
 - Initial `.assert()` extensions, `Iterable` support and nullable receivers. ([#3], [#4])
 
-[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.0.0...v1.1.0
