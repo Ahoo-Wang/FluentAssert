@@ -147,14 +147,14 @@ Rules:
 
 - `main` is the only long-lived branch and is always releasable; it is protected.
 - Work happens on short-lived branches (`feature/...`, `fix/...`, `docs/...`) created from `main`.
-- Changes reach `main` only through pull requests that pass CI and review, and are **squash-merged**.
+- Changes reach `main` only through pull requests that pass the required checks, and are **squash-merged**.
 - Releases are tags (`vX.Y.Z`) on `main`; there are no release branches.
 
 ## Code review
 
-- Every pull request needs an approving review from a [code owner](.github/CODEOWNERS) and green required
-  checks (`Build`, `Analyze (java-kotlin)`, `Codecov`, `Kotlin minimum consumer`, `Kotlin toolchain consumer`),
-  with all conversations resolved.
+- A pull request merges once the required checks are green (`Build`, `Analyze (java-kotlin)`, `Codecov`,
+  `Kotlin minimum consumer`, `Kotlin toolchain consumer`) and all conversations are resolved. An approving review
+  is not required: the maintainers are the [code owners](.github/CODEOWNERS), who are still requested as reviewers.
 - Reviewers focus on overload-resolution impact, the ABI dump diff, test coverage of new resolutions, and
   documentation consistency.
 
