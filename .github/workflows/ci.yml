@@ -83,13 +83,21 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Assemble library repository
-        run: ./gradlew kotlinConsumerRepository --stacktrace
+        # The build directory contains a space, so the next step also verifies that the printed command quotes its
+        # arguments and can be run as is.
+        run: |
+          printf '%s\n' "allprojects { layout.buildDirectory.set(layout.projectDirectory.dir('build/with space')) }" \
+            > "$RUNNER_TEMP/space-build-dir.init.gradle"
+          ./gradlew kotlinConsumerRepository --rerun -I "$RUNNER_TEMP/space-build-dir.init.gradle" --stacktrace \
+            | tee "$RUNNER_TEMP/kotlin-consumer-repository.log"
 
       - name: Compile and test consumer
         run: |
+          COMMAND=$(sed -n 's/^Test it with: //p' "$RUNNER_TEMP/kotlin-consumer-repository.log")
+          test -n "$COMMAND"
           if [ "${{ matrix.target }}" = toolchain ]; then
             KOTLIN_VERSION=$(sed -n 's/^kotlin = "\(.*\)"$/\1/p' gradle/libs.versions.toml)
-            ./gradlew -p compatibility/kotlin-consumer test -PkotlinVersion="$KOTLIN_VERSION" --stacktrace
+            eval "$COMMAND -PkotlinVersion='$KOTLIN_VERSION' --stacktrace"
           else
-            ./gradlew -p compatibility/kotlin-consumer test --stacktrace
+            eval "$COMMAND --stacktrace"
           fi

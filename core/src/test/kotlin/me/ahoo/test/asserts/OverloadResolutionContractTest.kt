@@ -167,6 +167,20 @@ class OverloadResolutionContractTest {
     }
 
     @Test
+    fun `explicit wider type arguments resolve arrays and streams to their content assertions`() {
+        // Since 1.3.0 (covariant receivers), Array<String> and Stream<String> match Array<out Any>/Stream<out Any>,
+        // so an explicit wider type argument selects the content assertions; up to 1.2.x it fell back to ObjectAssert.
+        val array: ObjectArrayAssert<Any> = (null as Array<String>?).assert<Any>()
+        val stream: ListAssert<Any> = (null as Stream<String>?).assert<Any>()
+        // Migration for code that needs the old ObjectAssert: assert on a receiver statically typed as Any?.
+        val arrayAsObject: Any? = null as Array<String>?
+        val streamAsObject: Any? = null as Stream<String>?
+        val arrayObject: ObjectAssert<Any> = arrayAsObject.assert()
+        val streamObject: ObjectAssert<Any> = streamAsObject.assert()
+        listOf(array, stream, arrayObject, streamObject).forEach { it.isNull() }
+    }
+
+    @Test
     fun `time receivers resolve to their dedicated assertions`() {
         val date: DateAssert = (null as Date?).assert()
         val zonedDateTime: ZonedDateTimeAssert = (null as ZonedDateTime?).assert()
