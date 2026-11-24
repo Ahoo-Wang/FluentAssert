@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- Build: the consumer test command printed by `kotlinConsumerRepository` quotes its arguments, so it runs as is
+  when the repository path contains spaces. ([#150])
+- The 1.3.0 notes on covariant `Array` and `Stream` receivers record the return type change of calls with an
+  explicit wider type argument and how to keep `ObjectAssert`. ([#151])
+
 ## [1.3.0] - 2026-11-07
 
 Binary compatible with 1.2.x. Recompiled code can see one behavior change: `Array` and `Stream` receivers are
@@ -22,7 +28,11 @@ used on the JPMS module path, and `assertThrownBy` reports through AssertJ's con
 ### Changed
 - `Array` and `Stream` receivers are covariant (`Array<out T>`, `Stream<out T>`): `vararg` parameters and projected
   arrays and streams assert on their element type instead of failing to compile on content checks such as
-  `contains`. Existing call sites keep their return types; the JVM signatures are unchanged. ([#139])
+  `contains`. The JVM signatures are unchanged, so code compiled against 1.2.x keeps running. Recompiling keeps
+  the return type of calls with an inferred type argument; a call with an explicit wider type argument now resolves
+  to the content assertion: `arrayOf("one").assert<Any>()` returns `ObjectArrayAssert<Any>` and
+  `Stream.of("one").assert<Any>()` returns `ListAssert<Any>` instead of `ObjectAssert<Any>`. To keep
+  `ObjectAssert`, assert on a receiver typed as `Any?` (`val value: Any? = array; value.assert()`). ([#139], [#151])
 
 ### Fixed
 - `assertThrownBy` no longer renders a matching throwable or emits its own description on success, so a throwable
@@ -138,3 +148,5 @@ No API change; the library behaves exactly like 1.2.0. This release ships the co
 [#143]: https://github.com/Ahoo-Wang/FluentAssert/issues/143
 [#144]: https://github.com/Ahoo-Wang/FluentAssert/issues/144
 [#146]: https://github.com/Ahoo-Wang/FluentAssert/issues/146
+[#150]: https://github.com/Ahoo-Wang/FluentAssert/issues/150
+[#151]: https://github.com/Ahoo-Wang/FluentAssert/issues/151

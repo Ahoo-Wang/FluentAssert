@@ -114,13 +114,17 @@ val kotlinConsumerRepository by tasks.registering(Sync::class) {
         }
     }
     doLast {
+        // Each argument is quoted for POSIX shells, so the printed command can be pasted as is even when the path
+        // contains spaces or other shell metacharacters.
+        fun shellQuote(argument: String): String = "'" + argument.replace("'", "'\\''") + "'"
+        val repository = repositoryDir.get().asFile
         logger.lifecycle(
             "Kotlin consumer repository: fluent-assert {} in {}\n" +
-                "Test it with: ./gradlew -p compatibility/kotlin-consumer test -Pversion={} -PfluentAssertRepository={}",
+                "Test it with: ./gradlew -p compatibility/kotlin-consumer test {} {}",
             libraryVersion,
-            repositoryDir.get().asFile,
-            libraryVersion,
-            repositoryDir.get().asFile,
+            repository,
+            shellQuote("-Pversion=$libraryVersion"),
+            shellQuote("-PfluentAssertRepository=$repository"),
         )
     }
 }
