@@ -7,6 +7,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-11-24
+
+No API change; the library behaves exactly like 1.3.0.
+
 ### Fixed
 - Build: the consumer test command printed by `kotlinConsumerRepository` quotes its arguments, so it runs as is
   when the repository path contains spaces. ([#150])
@@ -117,7 +121,8 @@ No API change; the library behaves exactly like 1.2.0. This release ships the co
 ### Added
 - Initial `.assert()` extensions, `Iterable` support and nullable receivers. ([#3], [#4])
 
-[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Ahoo-Wang/FluentAssert/compare/v1.1.0...v1.2.0
